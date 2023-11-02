@@ -12,7 +12,7 @@ public class AddProductReqDto {
     private String productThumbnail;
     private String productDetailImg;
     private int categoryId;
-    private int productSizeXs;
+    private int productSizeXS;
     private int productSizeS;
     private int productSizeM;
     private int productSizeL;
@@ -28,7 +28,7 @@ public class AddProductReqDto {
                 .productThumbnail(productThumbnail)
                 .productDetailImg(productDetailImg)
                 .categoryId(categoryId)
-                .productSizeXs(productSizeXs)
+                .productSizeXS(productSizeXS)
                 .productSizeS(productSizeS)
                 .productSizeM(productSizeM)
                 .productSizeL(productSizeL)
