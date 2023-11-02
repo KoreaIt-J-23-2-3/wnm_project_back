@@ -1,5 +1,6 @@
 package com.woofnmeow.wnm_project_back.entity;
 
+import com.woofnmeow.wnm_project_back.dto.ProductRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,10 +19,32 @@ public class Product {
     private String productThumbnail;
     private String productDetailImg;
     private int categoryId;
-    private int productSizeXs;
+//  추후 join 시 사용  private String categoryName;
+    private int productSizeXS;
     private int productSizeS;
     private int productSizeM;
     private int productSizeL;
     private int productSizeXL;
     private int productSizeXXL;
+
+    public ProductRespDto toProductRespDto() {
+        return ProductRespDto.builder()
+                .productId(productId)
+                .productName(productName)
+                .productStock(productStock)
+                .productPrice(productPrice)
+                .productDetailText(productDetailText)
+                .productThumbnail(productThumbnail)
+                .productDetailImg(productDetailImg)
+                .categoryId(categoryId)
+                // .categoryName(categoryName)
+                .productSizeXS(productSizeXS)
+                .productSizeS(productSizeS)
+                .productSizeM(productSizeM)
+                .productSizeL(productSizeL)
+                .productSizeXL(productSizeXL)
+                .productSizeXXL(productSizeXXL)
+                .build();
+    }
+
 }
