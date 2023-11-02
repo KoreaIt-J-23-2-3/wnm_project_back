@@ -18,6 +18,7 @@ public class Product {
     private String productDetailText;
     private String productThumbnail;
     private String productDetailImg;
+    private int petTypeId;
     private int categoryId;
 //  추후 join 시 사용  private String categoryName;
     private int productSizeXS;
@@ -36,6 +37,7 @@ public class Product {
                 .productDetailText(productDetailText)
                 .productThumbnail(productThumbnail)
                 .productDetailImg(productDetailImg)
+                .petTypeId(petTypeId)
                 .categoryId(categoryId)
                 // .categoryName(categoryName)
                 .productSizeXS(productSizeXS)

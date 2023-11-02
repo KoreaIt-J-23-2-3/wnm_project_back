@@ -15,6 +15,7 @@
         <result property="productDetailText" column="product_detail_text"/>
         <result property="productThumbnail" column="product_thumbnail"/>
         <result property="productDetailImg" column="product_detail_img"/>
+        <result property="petTypeId" column="pet_type_id"/>
         <result property="categoryId" column="category_id"/>
         <!-- 추후 join 시 사용  <result property="category_name" column="categoryName"/>    -->
         <result column="productSizeXS" property="product_size_XS" />
@@ -28,7 +29,7 @@
     <insert id="addProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
         insert into
             product_tb
-        values(0, #{productName}, #{productStock}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{categoryId}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
+        values(0, #{productName}, #{productStock}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{categoryId}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
     </insert>
 
     <select id="getProductByProductId" resultMap="productMap">
@@ -40,6 +41,7 @@
             product_detail_text,
             product_thumbnail,
             product_detail_img,
+            pet_type_id,
             category_id,
             <!--   추후 join 시 사용 ct.category_name,    -->
             product_size_XS,
