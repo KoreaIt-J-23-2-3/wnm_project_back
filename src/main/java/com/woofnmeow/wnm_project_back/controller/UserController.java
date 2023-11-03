@@ -22,4 +22,5 @@ public class UserController {
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
         return ResponseEntity.ok().body(userService.signup(signupReqDto));
     }
+
 }

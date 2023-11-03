@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
     public Integer saveUser(User user);
+    public User findUserByOauth2Id(String oauth2Id);
 }
