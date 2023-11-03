@@ -17,7 +17,8 @@ public class SignupReqDto {
     private String email;
     @Pattern(regexp = "^[가-힣]{2,6}$", message = "이름 형식을 다시 확인해주세요.")
     private String name;
-    @Pattern(regexp = "^(?=[가-힣a-zA-Z0-9]*[a-z])(?=[가-힣a-zA-Z0-9]*[A-Z])[가-힣a-zA-Z0-9]{5,}$", message = "닉네임은 5자 이상 한글 / 영어 대,소문자 / 숫자만 사용가능합니다.")
+    @Pattern(regexp = "^(?=[가-힣a-zA-Z0-9]*[a-z])(?=[가-힣a-zA-Z0-9]*[A-Z])[가-힣a-zA-Z0-9]{5,}$",
+            message = "닉네임은 5자 이상 한글 / 영어 대,소문자 / 숫자만 사용가능합니다.")
     private String nickname;
     @Pattern(regexp = "^[0-9]{11}$", message = "전화번호를 다시 확인해주세요.")
     private String phoneNumber;
