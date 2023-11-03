@@ -19,7 +19,7 @@ spring:
             redirectUri: http://localhost:8080/login/oauth2/code/google
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: POST
-            clientName: google
+            clientName: Google
 
           # 국내기업 : provider 설정 / 구글, 페이스북 같은 세계적인 기업은 provider 생략 가능
         provider:

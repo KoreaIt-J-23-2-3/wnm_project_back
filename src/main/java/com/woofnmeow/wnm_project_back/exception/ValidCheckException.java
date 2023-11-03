@@ -13,7 +13,7 @@ public class ValidCheckException extends RuntimeException{
         super("유효성 검사 오류");
         this.errorMap = errorMap;
         errorMap.forEach((k, v) -> {
-            System.out.println(k + ": " + "v");
+            System.out.println(k + ": " + v );
         });
     }
 
