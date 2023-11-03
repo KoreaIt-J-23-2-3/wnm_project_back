@@ -31,28 +31,24 @@ public class Oauth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        // !!
-        OAuth2User principalUser = (PrincipalUser) authentication.getPrincipal();
-        String oauth2Id = principalUser.getAttributes().get("id").toString();
-        //
+        DefaultOAuth2User principalUser = (DefaultOAuth2User) authentication.getPrincipal();
+        String oauth2Id = principalUser.getName();
+        String provider = principalUser.getAttribute("provider") == null ? "google" : principalUser.getAttribute("provider").toString();
+
         User user = userMapper.findUserByOauth2Id(oauth2Id);
         
         if(user == null) {
-            String id = principalUser.getAttributes().get("id").toString();
-            String provider = principalUser.getAttributes().get("provider").toString();
-            response.sendRedirect("http//localhost:3000/api/auth/signup" +
-                    "?oauth2Id" + id +
-                    "&provider" + provider);
+            response.sendRedirect("http://localhost:3000/auth/signup" +
+                    "?oauth2Id=" + oauth2Id +
+                    "&provider=" + provider);
+            return;
         }
 
-        // 권한 넣을려면 principal필요?
-        // getAuthority로 권한 안널을거면 Principal객체로 만들 필요 없음? 
-        // -> userDetails의 메소드를 구현하는게 아니라 OAuth2User의 메소드를 구현하면서 정보를 넣어줘야 함
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
 
         String accessToken = jwtProvider.createToken(authenticationToken);
-        response.sendRedirect("http://localhost:3000/api/auth/signin" +
+        response.sendRedirect("http://localhost:3000/" +
                 "?token=" + URLEncoder.encode(accessToken, "UTF-8"));
     }
 }

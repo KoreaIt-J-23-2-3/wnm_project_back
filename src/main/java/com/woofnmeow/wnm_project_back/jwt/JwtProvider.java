@@ -29,7 +29,7 @@ public class JwtProvider {
     }
 
     public String createToken(Authentication authentication) {
-        OAuth2User principalUser = (PrincipalUser) authentication.getPrincipal();
+        OAuth2User principalUser = (OAuth2User) authentication.getPrincipal();
         String oauth2Id = principalUser.getAttributes().get("id").toString();
 
         // token에 추가로 받은 유저 정보를 넣으려면 찾아와야함
@@ -41,7 +41,7 @@ public class JwtProvider {
                 .setSubject("accessToken")
                 .setExpiration(date)
                 .claim("oauth2Id", oauth2Id)
-                .claim("userId", user.getUserId())
+//                .claim("userId", user.getUserId())
                 .claim("authority", principalUser.getAuthorities())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
