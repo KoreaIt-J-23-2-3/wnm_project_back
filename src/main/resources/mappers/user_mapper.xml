@@ -11,4 +11,24 @@
         values(0, 'ROLE_USER', #{oauth2Id}, #{provider}, #{name}, #{nickname}, #{email}, #{phoneNumber}, #{defaultAddressNumber}, #{defaultAddressName}, #{defaultAddressDetailName}, default)
     </insert>
 
+    <select id="findUserByOauth2Id" resultType="com.woofnmeow.wnm_project_back.entity.User">
+        select
+            user_id,
+            role_name,
+            oauth2_id,
+            provider,
+            name,
+            nickname,
+            email,
+            phone_number,
+            default_address_number,
+            default_address_name,
+            default_address_detail_name,
+            profile_url
+        from
+            user_tb
+        where
+            oauth2_id = #{oauth2Id}
+    </select>
+
 </mapper>
