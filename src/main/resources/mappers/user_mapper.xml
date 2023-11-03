@@ -5,13 +5,29 @@
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.UserMapper">
 
+    <resultMap id="userMap" type="com.woofnmeow.wnm_project_back.entity.User">
+        <id property="userId" column="user_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="oauth2Id" column="oauth2_id"/>
+        <result property="provider" column="provider"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="defaultAddressNumber" column="default_address_number"/>
+        <result property="defaultAddressName" column="default_address_name"/>
+        <result property="defaultAddressDetailName" column="default_address_detail_name"/>
+        <result property="profileUrl" column="profile_url"/>
+    </resultMap>
+    <!-- 정보 등록 -->
     <insert id="saveUser" parameterType="com.woofnmeow.wnm_project_back.entity.User">
         insert into
             user_tb
-        values(0, 'ROLE_USER', #{oauth2Id}, #{provider}, #{name}, #{nickname}, #{email}, #{phoneNumber}, #{defaultAddressNumber}, #{defaultAddressName}, #{defaultAddressDetailName}, default)
+        values(0, 'ROLE_USER', #{oauth2Id}, #{provider},
+                #{name}, #{nickname}, #{email}, #{phoneNumber},
+                #{defaultAddressNumber}, #{defaultAddressName}, #{defaultAddressDetailName}, default)
     </insert>
-
-    <select id="findUserByOauth2Id" resultType="com.woofnmeow.wnm_project_back.entity.User">
+    <!-- Oauth2 회원 정보 검색 -->
+    <select id="findUserByOauth2Id" resultMap="userMap">
         select
             user_id,
             role_name,
@@ -30,5 +46,45 @@
         where
             oauth2_id = #{oauth2Id}
     </select>
-
+    <!-- userId 회원 정보 검색 -->
+    <select id="findUserByUserId" resultMap="userMap">
+        select
+            user_id,
+            role_name,
+            oauth2_id,
+            provider,
+            name,
+            nickname,
+            email,
+            phone_number,
+            default_address_number,
+            default_address_name,
+            default_address_detail_name,
+            profile_url
+        from
+            user_tb
+        where
+            user_id = #{userId}
+    </select>
+    <!-- userId 회원 정보 수정 -->
+    <update id="editUser" parameterType="com.woofnmeow.wnm_project_back.entity.User">
+        update user_tb
+        set
+            nickname = #{nickname},
+            phone_number = #{phoneNumber},
+            default_address_number = #{defaultAddressNumber},
+            default_address_name = #{defaultAddressName},
+            default_address_detail_name = #{defaultAddressDetailName},
+            profile_url = #{profileUrl}
+        where
+            user_id = #{userId}
+    </update>
+    <!-- userId 회원 정보 삭제 -->
+    <delete id="deleteUser">
+        delete
+        from
+            user_tb
+        where
+            user_id = #{userId}
+    </delete>
 </mapper>
