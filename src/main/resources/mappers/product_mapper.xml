@@ -15,6 +15,7 @@
         <result property="productThumbnail" column="product_thumbnail"/>
         <result property="productDetailImg" column="product_detail_img"/>
         <result property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
         <result property="productCategoryId" column="product_category_id"/>
         <result property="productCategoryName" column="product_category_name"/>
         <result property="noSize" column="no_size"/>
@@ -41,6 +42,7 @@
             pt.product_thumbnail,
             pt.product_detail_img,
             pt.pet_type_id,
+            ptt.pet_type_name,
             pt.product_category_id,
             pct.product_category_name,
             pt.no_size,
@@ -53,6 +55,7 @@
         from
             product_tb pt
             left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)
+            left outer join pet_type_tb ptt on (ptt.pet_type_id = pt.pet_type_id)
         where
             pt.product_id = #{productId};
     </select>
@@ -85,5 +88,59 @@
         where
             product_id = #{productId}
     </delete>
+
+    <select id="getProducts" parameterType="hashmap" resultMap="productMap">
+        select
+            pt.product_id,
+            pt.product_name,
+            pt.product_price,
+            pt.product_detail_text,
+            pt.product_thumbnail,
+            pt.product_detail_img,
+            pt.pet_type_id,
+            ptt.pet_type_name,
+            pt.product_category_id,
+            pct.product_category_name,
+            pt.no_size,
+            pt.product_size_XS,
+            pt.product_size_S,
+            pt.product_size_M,
+            pt.product_size_L,
+            pt.product_size_XL,
+            pt.product_size_XXL
+        from
+            product_tb pt
+            left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)
+            left outer join pet_type_tb ptt on (ptt.pet_type_id = pt.pet_type_id)
+        where
+            1 = 1
+        <choose>
+            <when test="searchOption.equals('제목')">
+                and pt.product_name like concat("%", #{searchValue}, "%")
+            </when>
+        </choose>
+        <if test="!petTypeName.equals('all')">
+            and ptt.pet_type_name = #{petTypeName}
+        </if>
+        <if test="!productCategoryName.equals('all')">
+            and pct.product_category_name = #{productCategoryName}
+        </if>
+        order by
+        <choose>
+            <when test="sortOption.equals('낮은가격')">
+                product_price asc
+            </when>
+            <when test="sortOption.equals('높은가격')">
+                product_price desc
+            </when>
+            <when test="sortOption.equals('상품명')">
+                product_name desc
+            </when>
+            <otherwise>
+                product_id desc
+            </otherwise>
+        </choose>
+        limit #{pageIndex}, 10
+    </select>
 
 </mapper>
