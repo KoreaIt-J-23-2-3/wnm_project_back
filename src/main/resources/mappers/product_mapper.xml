@@ -16,8 +16,8 @@
         <result property="productDetailImg" column="product_detail_img"/>
         <result property="petTypeId" column="pet_type_id"/>
         <result property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
         <result property="noSize" column="no_size"/>
-        <!-- 추후 join 시 사용  <result property="category_name" column="categoryName"/>    -->
         <result column="productSizeXS" property="product_size_XS" />
         <result column="productSizeS" property="product_size_S" />
         <result column="productSizeM" property="product_size_M" />
@@ -34,27 +34,27 @@
 
     <select id="getProductByProductId" resultMap="productMap">
         select
-            product_id,
-            product_name,
-            product_price,
-            product_detail_text,
-            product_thumbnail,
-            product_detail_img,
-            pet_type_id,
-            product_category_id,
-            no_size,
-            <!--   추후 join 시 사용 ct.category_name,    -->
-            product_size_XS,
-            product_size_S,
-            product_size_M,
-            product_size_L,
-            product_size_XL,
-            product_size_XXL
+            pt.product_id,
+            pt.product_name,
+            pt.product_price,
+            pt.product_detail_text,
+            pt.product_thumbnail,
+            pt.product_detail_img,
+            pt.pet_type_id,
+            pt.product_category_id,
+            pct.product_category_name,
+            pt.no_size,
+            pt.product_size_XS,
+            pt.product_size_S,
+            pt.product_size_M,
+            pt.product_size_L,
+            pt.product_size_XL,
+            pt.product_size_XXL
         from
-            product_tb
-            <!--  추후 join 시 사용  left outer join category_tb ct on (ct.category_id = pt.categoryid)    -->
+            product_tb pt
+            left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)
         where
-            product_id = #{productId};
+            pt.product_id = #{productId};
     </select>
 
     <update id="updateProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
