@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ProductMapper {
     public Integer addProduct(Product product);
     public Product getProductByProductId(int productId);
+    public Integer updateProduct(Product product);
+    public Integer deleteProduct(int productId);
 }
