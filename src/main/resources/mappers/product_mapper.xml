@@ -15,7 +15,7 @@
         <result property="productThumbnail" column="product_thumbnail"/>
         <result property="productDetailImg" column="product_detail_img"/>
         <result property="petTypeId" column="pet_type_id"/>
-        <result property="categoryId" column="category_id"/>
+        <result property="productCategoryId" column="product_category_id"/>
         <result property="noSize" column="no_size"/>
         <!-- 추후 join 시 사용  <result property="category_name" column="categoryName"/>    -->
         <result column="productSizeXS" property="product_size_XS" />
@@ -29,7 +29,7 @@
     <insert id="addProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
         insert into
             product_tb
-        values(0, #{productName}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{categoryId}, #{noSize}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
+        values(0, #{productName}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{productCategoryId}, #{noSize}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
     </insert>
 
     <select id="getProductByProductId" resultMap="productMap">
@@ -41,7 +41,7 @@
             product_thumbnail,
             product_detail_img,
             pet_type_id,
-            category_id,
+            product_category_id,
             no_size,
             <!--   추후 join 시 사용 ct.category_name,    -->
             product_size_XS,
@@ -57,7 +57,6 @@
             product_id = #{productId};
     </select>
 
-
     <update id="updateProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
         update
             product_tb
@@ -68,7 +67,7 @@
             product_thumbnail = #{productThumbnail},
             product_detail_img = #{productDetailImg},
             pet_type_id = #{petTypeId},
-            category_id = #{categoryId},
+            product_category_id = #{productCategoryId},
             no_size = #{noSize},
             product_size_XS = #{productSizeXS},
             product_size_S = #{productSizeS},
@@ -80,11 +79,11 @@
             product_id = #{productId}
     </update>
 
-
     <delete id="deleteProduct">
         delete from
             product_tb
         where
             product_id = #{productId}
     </delete>
+
 </mapper>
