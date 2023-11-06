@@ -33,7 +33,7 @@ public class Product {
                 .productId(productId)
                 .productName(productName)
                 .productPrice(productPrice)
-                .productDetailText(productDetailText)
+                .productDetailText(productDetailText.replaceAll("\n", "<br>"))
                 .productThumbnail(productThumbnail)
                 .productDetailImg(productDetailImg)
                 .petTypeId(petTypeId)
