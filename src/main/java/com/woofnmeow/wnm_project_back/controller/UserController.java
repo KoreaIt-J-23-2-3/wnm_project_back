@@ -20,13 +20,11 @@ public class UserController {
     @ValidAop
     @PostMapping("/api/auth/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
-        System.out.println(signupReqDto);
         return ResponseEntity.ok().body(userService.signup(signupReqDto));
     }
 
     @GetMapping("/api/user/{userId}")
     public ResponseEntity<?> getUser(@PathVariable int userId) {
-
         return ResponseEntity.ok().body(userService.getUser(userId));
     }
 
@@ -39,7 +37,6 @@ public class UserController {
 
     @DeleteMapping("/api/user/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable int userId) {
-
         return ResponseEntity.ok().body(userService.delete(userId));
     }
 
