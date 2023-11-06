@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WnmProjectBackApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(WnmProjectBackApplication.class, args);
 	}
 

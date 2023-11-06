@@ -29,7 +29,7 @@
     <insert id="addProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
         insert into
             product_tb
-        values(0, #{productName}, #{productStock}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{categoryId}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
+        values(0, #{productName}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{categoryId}, #{noSize}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
     </insert>
 
     <select id="getProductByProductId" resultMap="productMap">

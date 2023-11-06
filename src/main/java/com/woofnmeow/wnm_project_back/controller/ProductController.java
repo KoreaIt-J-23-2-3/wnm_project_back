@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
+
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
@@ -19,5 +21,11 @@ public class ProductController {
     @GetMapping("/api/product/{productId}")
     public ResponseEntity<?> getProductByProductId(@PathVariable int productId) {
         return ResponseEntity.ok().body(productService.getProductByProductId(productId));
+    }
+
+    @PostMapping("/api/crowling")
+    public ResponseEntity<?> crowling() throws FileNotFoundException {
+        productService.crowling();
+        return ResponseEntity.ok().body(true);
     }
 }
