@@ -13,7 +13,7 @@ public class ProductRespDto {
     private String productThumbnail;
     private String productDetailImg;
     private int petTypeId;
-    private int categoryId;
+    private int productCategoryId;
     private int noSize;
     // 나중에 카테고리 이름을 불러올 시 category_tb에 join해서 가져올 것
     // private String categoryName;

@@ -11,7 +11,7 @@ public class EditProductReqDto {
     private String productThumbnail;
     private String productDetailImg;
     private int petTypeId;
-    private int categoryId;
+    private int productCategoryId;
     private int noSize;
     private int productSizeXS;
     private int productSizeS;

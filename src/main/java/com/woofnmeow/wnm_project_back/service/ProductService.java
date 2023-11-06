@@ -33,7 +33,7 @@ public class ProductService {
                 .productThumbnail(editProductReqDto.getProductThumbnail())
                 .productDetailImg(editProductReqDto.getProductDetailImg())
                 .petTypeId(editProductReqDto.getPetTypeId())
-                .categoryId(editProductReqDto.getCategoryId())
+                .productCategoryId(editProductReqDto.getProductCategoryId())
                 .noSize(editProductReqDto.getNoSize())
                 .productSizeXS(editProductReqDto.getProductSizeXS())
                 .productSizeS(editProductReqDto.getProductSizeS())
