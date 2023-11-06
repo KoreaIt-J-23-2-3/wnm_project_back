@@ -56,4 +56,35 @@
         where
             product_id = #{productId};
     </select>
+
+
+    <update id="updateProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
+        update
+            product_tb
+        set
+            product_name = #{productName},
+            product_price = #{productPrice},
+            product_detail_text = #{productDetailText},
+            product_thumbnail = #{productThumbnail},
+            product_detail_img = #{productDetailImg},
+            pet_type_id = #{petTypeId},
+            category_id = #{categoryId},
+            no_size = #{noSize},
+            product_size_XS = #{productSizeXS},
+            product_size_S = #{productSizeS},
+            product_size_M = #{productSizeM},
+            product_size_L = #{productSizeL},
+            product_size_XL = #{productSizeXL},
+            product_size_XXL = #{productSizeXXL}
+        where
+            product_id = #{productId}
+    </update>
+
+
+    <delete id="deleteProduct">
+        delete from
+            product_tb
+        where
+            product_id = #{productId}
+    </delete>
 </mapper>
