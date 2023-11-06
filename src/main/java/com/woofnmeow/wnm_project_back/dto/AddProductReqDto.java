@@ -7,12 +7,12 @@ import lombok.Data;
 public class AddProductReqDto {
     private String productName;
     private int productPrice;
-    private int productStock;
     private String productDetailText;
     private String productThumbnail;
     private String productDetailImg;
     private int petTypeId;
     private int categoryId;
+    private int noSize;
     private int productSizeXS;
     private int productSizeS;
     private int productSizeM;
@@ -24,12 +24,12 @@ public class AddProductReqDto {
         return Product.builder()
                 .productName(productName)
                 .productPrice(productPrice)
-                .productStock(productStock)
                 .productDetailText(productDetailText)
                 .productThumbnail(productThumbnail)
                 .productDetailImg(productDetailImg)
                 .petTypeId(petTypeId)
                 .categoryId(categoryId)
+                .noSize(noSize)
                 .productSizeXS(productSizeXS)
                 .productSizeS(productSizeS)
                 .productSizeM(productSizeM)

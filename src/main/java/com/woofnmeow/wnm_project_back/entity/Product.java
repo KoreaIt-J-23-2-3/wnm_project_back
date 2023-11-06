@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 public class Product {
     private int productId;
     private String productName;
-    private int productStock;
     private int productPrice;
     private String productDetailText;
     private String productThumbnail;
     private String productDetailImg;
     private int petTypeId;
     private int categoryId;
+    private int noSize;
 //  추후 join 시 사용  private String categoryName;
     private int productSizeXS;
     private int productSizeS;
@@ -32,13 +32,13 @@ public class Product {
         return ProductRespDto.builder()
                 .productId(productId)
                 .productName(productName)
-                .productStock(productStock)
                 .productPrice(productPrice)
                 .productDetailText(productDetailText)
                 .productThumbnail(productThumbnail)
                 .productDetailImg(productDetailImg)
                 .petTypeId(petTypeId)
                 .categoryId(categoryId)
+                .noSize(noSize)
                 // .categoryName(categoryName)
                 .productSizeXS(productSizeXS)
                 .productSizeS(productSizeS)
