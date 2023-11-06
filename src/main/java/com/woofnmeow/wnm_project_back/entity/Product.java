@@ -19,8 +19,8 @@ public class Product {
     private String productDetailImg;
     private int petTypeId;
     private int productCategoryId;
+    private String productCategoryName;
     private int noSize;
-//  추후 join 시 사용  private String categoryName;
     private int productSizeXS;
     private int productSizeS;
     private int productSizeM;
@@ -39,7 +39,7 @@ public class Product {
                 .petTypeId(petTypeId)
                 .productCategoryId(productCategoryId)
                 .noSize(noSize)
-                // .categoryName(categoryName)
+                .productCategoryName(productCategoryName)
                 .productSizeXS(productSizeXS)
                 .productSizeS(productSizeS)
                 .productSizeM(productSizeM)
