@@ -10,13 +10,13 @@
     <resultMap id="productMap" type="com.woofnmeow.wnm_project_back.entity.Product" >
         <id property="productId" column="product_id"/>
         <result property="productName" column="product_name"/>
-        <result property="productStock" column="product_stock"/>
         <result property="productPrice" column="product_price"/>
         <result property="productDetailText" column="product_detail_text"/>
         <result property="productThumbnail" column="product_thumbnail"/>
         <result property="productDetailImg" column="product_detail_img"/>
         <result property="petTypeId" column="pet_type_id"/>
         <result property="categoryId" column="category_id"/>
+        <result property="noSize" column="no_size"/>
         <!-- 추후 join 시 사용  <result property="category_name" column="categoryName"/>    -->
         <result column="productSizeXS" property="product_size_XS" />
         <result column="productSizeS" property="product_size_S" />
@@ -29,20 +29,20 @@
     <insert id="addProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
         insert into
             product_tb
-        values(0, #{productName}, #{productStock}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{categoryId}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
+        values(0, #{productName}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{categoryId}, #{noSize}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
     </insert>
 
     <select id="getProductByProductId" resultMap="productMap">
         select
             product_id,
             product_name,
-            product_stock,
             product_price,
             product_detail_text,
             product_thumbnail,
             product_detail_img,
             pet_type_id,
             category_id,
+            no_size,
             <!--   추후 join 시 사용 ct.category_name,    -->
             product_size_XS,
             product_size_S,
