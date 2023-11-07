@@ -13,6 +13,7 @@ public class ProductRespDto {
     private String productThumbnail;
     private String productDetailImg;
     private int petTypeId;
+    private String petTypeName;
     private int productCategoryId;
     private String productCategoryName;
     private int noSize;

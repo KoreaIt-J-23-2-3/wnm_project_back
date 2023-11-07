@@ -18,6 +18,7 @@ public class Product {
     private String productThumbnail;
     private String productDetailImg;
     private int petTypeId;
+    private String petTypeName;
     private int productCategoryId;
     private String productCategoryName;
     private int noSize;
@@ -37,6 +38,7 @@ public class Product {
                 .productThumbnail(productThumbnail)
                 .productDetailImg(productDetailImg)
                 .petTypeId(petTypeId)
+                .petTypeName(petTypeName)
                 .productCategoryId(productCategoryId)
                 .noSize(noSize)
                 .productCategoryName(productCategoryName)
