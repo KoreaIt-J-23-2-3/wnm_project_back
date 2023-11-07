@@ -1,6 +1,7 @@
 package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.EditUserReqDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserRespDto;
 import com.woofnmeow.wnm_project_back.dto.SignupReqDto;
 import com.woofnmeow.wnm_project_back.entity.User;
 import com.woofnmeow.wnm_project_back.repository.UserMapper;
@@ -18,8 +19,8 @@ public class UserService {
         return userMapper.saveUser(signupReqDto.toEntity()) > 0;
     }
 
-    public User getUser(int userId) {
-        return userMapper.findUserByUserId(userId);
+    public GetUserRespDto getUser(int userId) {
+        return userMapper.findUserByUserId(userId).toRespDto();
     }
 
     @Transactional(rollbackFor = Exception.class)
