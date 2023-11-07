@@ -2,7 +2,7 @@ package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
-import com.woofnmeow.wnm_project_back.dto.ProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
 import com.woofnmeow.wnm_project_back.dto.SearchProductsReqDto;
 import com.woofnmeow.wnm_project_back.entity.Product;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
@@ -25,12 +25,12 @@ public class ProductService {
         return productMapper.addProduct(addProductReqDto.toEntity()) > 0;
     }
 
-    public ProductRespDto getProductByProductId(int productId) {
+    public GetProductRespDto getProductByProductId(int productId) {
         return productMapper.getProductByProductId(productId).toProductRespDto();
     }
 
-    public List<ProductRespDto> getProducts(String petTypeName, String productCategoryName, int pageIndex, SearchProductsReqDto searchProductsReqDto) {
-        List<ProductRespDto> respList = new ArrayList<>();
+    public List<GetProductRespDto> getProducts(String petTypeName, String productCategoryName, int pageIndex, SearchProductsReqDto searchProductsReqDto) {
+        List<GetProductRespDto> respList = new ArrayList<>();
         Map<String, Object> reqMap = new HashMap<>();
 
         if(petTypeName == "dog") {

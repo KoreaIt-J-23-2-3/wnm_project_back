@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.entity;
 
-import com.woofnmeow.wnm_project_back.dto.ProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +29,8 @@ public class Product {
     private int productSizeXL;
     private int productSizeXXL;
 
-    public ProductRespDto toProductRespDto() {
-        return ProductRespDto.builder()
+    public GetProductRespDto toProductRespDto() {
+        return GetProductRespDto.builder()
                 .productId(productId)
                 .productName(productName)
                 .productPrice(productPrice)
