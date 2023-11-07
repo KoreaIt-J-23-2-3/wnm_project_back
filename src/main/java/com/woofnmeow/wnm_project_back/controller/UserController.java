@@ -31,7 +31,6 @@ public class UserController {
     @ValidAop
     @PutMapping("/api/user/{userId}")
     public ResponseEntity<?> editUser(@PathVariable int userId, @RequestBody EditUserReqDto editUserReqDto, BindingResult bindingResult) {
-        System.out.println(editUserReqDto);
         return ResponseEntity.ok().body(userService.editUser(userId, editUserReqDto));
     }
 

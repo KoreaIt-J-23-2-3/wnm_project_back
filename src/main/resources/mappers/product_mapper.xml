@@ -19,12 +19,12 @@
         <result property="productCategoryId" column="product_category_id"/>
         <result property="productCategoryName" column="product_category_name"/>
         <result property="noSize" column="no_size"/>
-        <result column="productSizeXS" property="product_size_XS" />
-        <result column="productSizeS" property="product_size_S" />
-        <result column="productSizeM" property="product_size_M" />
-        <result column="productSizeL" property="product_size_L" />
-        <result column="productSizeXL" property="product_size_XL" />
-        <result column="productSizeXXL" property="product_size_XXL" />
+        <result property="productSizeXS" column="product_size_XS" />
+        <result property="productSizeS" column="product_size_S" />
+        <result property="productSizeM" column="product_size_M" />
+        <result property="productSizeL" column="product_size_L" />
+        <result property="productSizeXL" column="product_size_XL" />
+        <result property="productSizeXXL" column="product_size_XXL" />
     </resultMap>
 
     <insert id="addProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
