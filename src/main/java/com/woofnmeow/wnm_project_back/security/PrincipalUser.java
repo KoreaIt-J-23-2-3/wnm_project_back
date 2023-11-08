@@ -13,21 +13,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-public class PrincipalUser implements OAuth2User {
+public class PrincipalUser extends DefaultOAuth2User {
 
     // oAuth2 로그인 후 추가로 받은 정보를 가져올 때 필요???
     @Getter
     private User user;
-    private Map<String, Object> attributes;
 
-    public PrincipalUser(User user, Map<String, Object> attributes) {
+    public PrincipalUser(User user, Map<String, Object> attributes, String nameAttributeKey) {
+        super(null, attributes, nameAttributeKey);
         this.user = user;
-        this.attributes = attributes;
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return attributes;
     }
 
     @Override
@@ -39,21 +33,11 @@ public class PrincipalUser implements OAuth2User {
 
     @Override
     public String getName() {
-        return attributes.get("id").toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
+        // 소셜 로그인 마다 id가 다른데 이거 수정 해야 되는거 같은데?
+        if(user.getProvider() == "google") {
+            return super.getAttributes().get("sub").toString();
+        } else {
+            return super.getAttributes().get("id").toString();
+        }
     }
 }

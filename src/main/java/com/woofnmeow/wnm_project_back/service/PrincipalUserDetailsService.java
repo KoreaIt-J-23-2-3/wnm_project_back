@@ -26,7 +26,6 @@ public class PrincipalUserDetailsService extends DefaultOAuth2UserService {
             case "naver":
                 attributes = (Map<String, Object>) oAuth2User.getAttributes().get("response");
                 attributes.put("provider", registrationId);
-                System.out.println("service부분" + attributes.get("provider"));
                 nameAttributeKey = "id";
                 break;
             case "google":
