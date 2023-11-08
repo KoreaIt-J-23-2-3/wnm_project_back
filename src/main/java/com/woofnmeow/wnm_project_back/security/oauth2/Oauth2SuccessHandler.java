@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -31,9 +32,11 @@ public class Oauth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        DefaultOAuth2User principalUser = (DefaultOAuth2User) authentication.getPrincipal();
-        String oauth2Id = principalUser.getName();
-        String provider = principalUser.getAttribute("provider") == null ? "google" : principalUser.getAttribute("provider").toString();
+        OAuth2AuthenticationToken authenticationToken = (OAuth2AuthenticationToken) authentication;
+        OAuth2User oAuth2User = authenticationToken.getPrincipal();
+
+        String oauth2Id = oAuth2User.getName();
+        String provider = oAuth2User.getAttribute("provider") == null ? "google" : oAuth2User.getAttribute("provider").toString();
 
         User user = userMapper.findUserByOauth2Id(oauth2Id);
         
@@ -43,11 +46,9 @@ public class Oauth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     "&provider=" + provider);
             return;
         }
+        PrincipalUser principalUser = new PrincipalUser(user, oAuth2User.getAttributes(), provider.equals("google") ? "sub" : "id");
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
-
-        String accessToken = jwtProvider.createToken(authenticationToken);
+        String accessToken = jwtProvider.createToken(principalUser);
         response.sendRedirect("http://localhost:3000/auth/oauth2/signin" +
                 "?token=" + URLEncoder.encode(accessToken, "UTF-8"));
     }
