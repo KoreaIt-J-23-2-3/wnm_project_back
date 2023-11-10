@@ -6,26 +6,97 @@
 
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.OrderMapper">
-<!--    <resultMap id="ordersMap" type="">-->
 
-<!--    </resultMap>-->
-
+    <resultMap id="ordersMap" type="com.woofnmeow.wnm_project_back.entity.Order">
+        <id property="orderId" column="order_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderDate" column="order_data"/>
+        <result property="shippingName" column="shipping_name"/>
+        <result property="shippingPhone" column="shipping_phone"/>
+        <result property="shippingAddressNumber" column="shipping_address_number"/>
+        <result property="shippingAddressName" column="shipping_address_name"/>
+        <result property="shippingAddressDetailName" column="shipping_address_detail_name"/>
+        <result property="productId" column="product_id"/>
+        <result property="size" column="size"/>
+        <result property="count" column="count"/>
+        <result property="productName" column="product_name"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="productThumbnail" column="product_thumbnail"/>
+        <result property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
+    </resultMap>
 
     <insert id="addOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
         insert into
             order_tb
         values
-            (0, #{userId}, now(), #{shippingName}, #{shippingPhone},
-            #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName})
+            (0, #{userId}, now(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName})
     </insert>
 
-    <insert id="addOrderProducts">
+    <insert id="addOrderProducts" parameterType="com.woofnmeow.wnm_project_back.entity.OrderProducts">
         insert into
             order_products_tb
         values(0, #{orderId}, #{productId}, #{size}, #{count});
     </insert>
 
-
-
+    <select id="selectOrders" parameterType="hashmap" resultMap="ordersMap">
+        select
+            ot.order_id,
+            ot.user_id,
+            ot.order_date,
+            ot.shipping_name,
+            ot.shipping_phone,
+            ot.shipping_address_number,
+            ot.shipping_address_name,
+            ot.shipping_address_detail_name,
+            opt.product_id,
+            opt.size,
+            opt.count,
+            pt.product_name,
+            pt.product_price,
+            pt.product_thumbnail,
+            pt.pet_type_id,
+            ptt.pet_type_name,
+            pt.product_category_id,
+            pct.product_category_name
+        from
+            order_products_tb opt
+            left outer join order_tb ot on(ot.order_id = opt.order_id)
+            left outer join product_tb pt on(pt.product_id = opt.product_id)
+            left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)
+            left outer join pet_type_tb ptt on (ptt.pet_type_id = pt.pet_type_id)
+        where
+            user_id = #{userId}
+        <choose>
+            <when test="searchOption.equals('받는사람')">
+                and ot.shipping_name like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('전화번호')">
+                and ot.shipping_phone like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('우편번호')">
+                and ot.shipping_address_number like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('주소')">
+                and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
+                    or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
+            </when>
+            <when test="searchOption.equals('상품명')">
+                and opt.pt.product_name like concat("%", #{searchValue}, "%")
+            </when>
+        </choose>
+        order by
+        <choose>
+            <when test="sortOption.equals('주문일자 올림차순')">
+                UNIX_TIMESTAMP(order_date) desc
+            </when>
+            <otherwise>
+                UNIX_TIMESTAMP(order_date) desc
+            </otherwise>
+        </choose>
+        limit #{pageIndex}, 10
+    </select>
 
 </mapper>
