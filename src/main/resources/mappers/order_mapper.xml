@@ -90,7 +90,7 @@
         order by
         <choose>
             <when test="sortOption.equals('주문일자 올림차순')">
-                UNIX_TIMESTAMP(order_date) desc
+                UNIX_TIMESTAMP(order_date) asc
             </when>
             <otherwise>
                 UNIX_TIMESTAMP(order_date) desc
