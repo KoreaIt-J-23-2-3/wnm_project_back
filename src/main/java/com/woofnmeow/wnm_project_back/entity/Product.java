@@ -1,5 +1,6 @@
 package com.woofnmeow.wnm_project_back.entity;
 
+import com.woofnmeow.wnm_project_back.dto.AddCartReqDto;
 import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,5 +51,7 @@ public class Product {
                 .productSizeXXL(productSizeXXL)
                 .build();
     }
+
+
 
 }

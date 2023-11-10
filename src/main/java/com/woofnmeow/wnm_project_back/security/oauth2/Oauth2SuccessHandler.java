@@ -35,6 +35,7 @@ public class Oauth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         OAuth2AuthenticationToken authenticationToken = (OAuth2AuthenticationToken) authentication;
         OAuth2User oAuth2User = authenticationToken.getPrincipal();
 
+
         String oauth2Id = oAuth2User.getName();
         String provider = oAuth2User.getAttribute("provider") == null ? "google" : oAuth2User.getAttribute("provider").toString();
 
