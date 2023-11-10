@@ -17,6 +17,7 @@ public class AddOrderReqDto {
     private String shippingAddressNumber;
     private String shippingAddressName;
     private String shippingAddressDetailName;
+
     private List<OrderProductsReqDto> orderData;
 
     public Order toOrderEntity() {
@@ -32,6 +33,7 @@ public class AddOrderReqDto {
 
     public List<OrderProducts> toOrderProductsEntity(int orderId) {
         List<OrderProducts> orderProductsList = new ArrayList<>();
+
         orderData.forEach(od -> {
             orderProductsList.add(OrderProducts.builder()
                     .orderId(orderId)
