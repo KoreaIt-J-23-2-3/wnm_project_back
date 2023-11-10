@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.woofnmeow.wnm_project_back.repository.OrderMapper">
+<!--    <resultMap id="ordersMap" type="">-->
+
+<!--    </resultMap>-->
+
+
+    <insert id="addOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
+        insert into
+            order_tb
+        values
+            (0, #{userId}, now(), #{shippingName}, #{shippingPhone},
+            #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName})
+    </insert>
+
+    <insert id="addOrderProducts">
+        insert into
+            order_products_tb
+        values(0, #{orderId}, #{productId}, #{size}, #{count});
+    </insert>
+
+
+
+
+</mapper>
