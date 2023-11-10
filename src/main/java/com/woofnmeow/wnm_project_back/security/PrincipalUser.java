@@ -21,6 +21,7 @@ public class PrincipalUser extends DefaultOAuth2User {
 
     public PrincipalUser(User user, Map<String, Object> attributes, String nameAttributeKey) {
         super(null, attributes, nameAttributeKey);
+        System.out.println("PrincipalUser 만들 때?" + attributes);
         this.user = user;
     }
 
@@ -33,8 +34,7 @@ public class PrincipalUser extends DefaultOAuth2User {
 
     @Override
     public String getName() {
-        // 소셜 로그인 마다 id가 다른데 이거 수정 해야 되는거 같은데?
-        if(user.getProvider() == "google") {
+        if(user.getProvider().equals("google")) {
             return super.getAttributes().get("sub").toString();
         } else {
             return super.getAttributes().get("id").toString();

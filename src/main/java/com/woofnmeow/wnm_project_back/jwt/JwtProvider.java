@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -42,11 +41,8 @@ public class JwtProvider {
             oauth2Id = principalUser.getAttributes().get("id").toString();
         }
 
-        System.out.println(principalUser.getAuthorities());
-
         // token에 추가로 받은 유저 정보를 넣으려면 찾아와야함
         User user = userMapper.findUserByOauth2Id(oauth2Id);
-        System.out.println("oauth2id로 찾은 user의 id없음?" + user.getUserId());
 
         Date date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
 
@@ -56,7 +52,7 @@ public class JwtProvider {
                 .claim("oauth2Id", oauth2Id)
                 .claim("userId", user.getUserId())
                 .claim("authority", principalUser.getAuthorities())
-                .claim("provider", principalUser.getAttribute("provider"))
+                .claim("provider", user.getProvider())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -69,7 +65,6 @@ public class JwtProvider {
     }
 
     public Claims getClaims(String jwtToken) {
-        System.out.println("getClaims" + jwtToken);
         Claims claims = null;
 
         try {
@@ -86,15 +81,15 @@ public class JwtProvider {
 
     public Authentication getAuthenticated(String jwtToken) {
         Claims claims = getClaims(jwtToken);
+        System.out.println("getAuthenticated : " + claims);
+
         if(claims == null) {
             return null;
         }
 
         User user = userMapper.findUserByUserId((Integer) claims.get("userId"));
-        System.out.println("getAuthenticate에 user정보 찍힘? : " + user);
 
         if(user == null) {
-            System.out.println("if는 도냐?");
             return null;
         }
 
@@ -102,7 +97,7 @@ public class JwtProvider {
         int userId = (Integer) claims.get("userId");
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("provider", provider);
-        if(user.getProvider() == "google") {
+        if(user.getProvider().equals("google")) {
             attributes.put("sub", userId);
         } else {
             // getName이 어디서 실행되는지는 못찾았는데 attributes에서 id를 반환해야되서 userId로 넣어놈
