@@ -9,7 +9,8 @@ import org.apache.ibatis.annotations.Options;
 public interface OrderMapper {
     @Options(useGeneratedKeys = true, keyProperty = "orderId")
     public int addOrder(Order order);
-
     public Integer addOrderProducts(OrderProducts orderProducts);
+    public Integer editOrder(Order order);
+    public Integer editOrderProducts(OrderProducts orderProducts);
 
 }

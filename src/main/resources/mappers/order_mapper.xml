@@ -6,26 +6,58 @@
 
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.OrderMapper">
-<!--    <resultMap id="ordersMap" type="">-->
+    <resultMap id="orderMap" type="com.woofnmeow.wnm_project_back.entity.Order">
+        <id property="orderId" column="order_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderDate" column="order_date"/>
+        <result property="shippingName" column="shipping_name"/>
+        <result property="shippingPhone" column="shipping_phone"/>
+        <result property="shippingAddressNumber" column="shipping_address_number"/>
+        <result property="shippingAddressName" column="shipping_address_name"/>
+        <result property="shippingAddressDetailName" column="shipping_address_detail_name"/>
+    </resultMap>
 
-<!--    </resultMap>-->
+    <resultMap id="orderProductMap" type="com.woofnmeow.wnm_project_back.entity.OrderProducts">
+        <id property="orderProductsId" column="order_products_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="size" column="size"/>
+        <result property="count" column="count"/>
+    </resultMap>
 
-
-    <insert id="addOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
-        insert into
-            order_tb
-        values
-            (0, #{userId}, now(), #{shippingName}, #{shippingPhone},
-            #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName})
+    <insert id="addOrder" parameterType="com.woofnmeow.wnm_project_back.dto.AddOrderReqDto" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO order_tb (user_id, order_date, shipping_name, shipping_phone, shipping_address_number, shipping_address_name, shipping_address_detail_name)
+        VALUES (#{userId}, NOW(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName})
     </insert>
 
-    <insert id="addOrderProducts">
-        insert into
-            order_products_tb
-        values(0, #{orderId}, #{productId}, #{size}, #{count});
+    <insert id="addOrderProducts" parameterType="com.woofnmeow.wnm_project_back.dto.OrderProductsReqDto">
+        INSERT INTO order_products_tb (order_id, product_id, size, count)
+        VALUES (#{orderId}, #{productId}, #{size}, #{count})
     </insert>
 
+    <update id="editOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order">
+        UPDATE order_tb
+        SET
+            user_id = #{userId},
+            shipping_name = #{shippingName},
+            shipping_phone = #{shippingPhone},
+            shipping_address_number = #{shippingAddressNumber},
+            shipping_address_name = #{shippingAddressName},
+            shipping_address_detail_name = #{shippingAddressDetailName},
+            order_date = NOW()
+        WHERE
+            order_id = #{orderId}
+    </update>
 
-
+    <update id="editOrderProducts" parameterType="com.woofnmeow.wnm_project_back.entity.OrderProducts">
+        UPDATE order_products_tb
+        SET
+            product_id = #{productId},
+            size = #{size},
+            count = #{count}
+        WHERE
+            order_id = #{orderId}
+            and order_products_id = #{orderProductsId}
+    </update>
 
 </mapper>

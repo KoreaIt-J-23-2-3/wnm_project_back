@@ -51,7 +51,4 @@ public class Product {
                 .productSizeXXL(productSizeXXL)
                 .build();
     }
-
-
-
 }
