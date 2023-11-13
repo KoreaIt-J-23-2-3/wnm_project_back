@@ -20,6 +20,7 @@ public class FindOrdersRespDto {
     private String shippingAddressNumber;
     private String shippingAddressName;
     private String shippingAddressDetailName;
+    private int orderStatus;
     private int orderProductsId;
     private int productId;
     private String size;
