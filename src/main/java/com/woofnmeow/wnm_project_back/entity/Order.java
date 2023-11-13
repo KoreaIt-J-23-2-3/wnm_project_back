@@ -1,8 +1,10 @@
 package com.woofnmeow.wnm_project_back.entity;
 
 import com.woofnmeow.wnm_project_back.dto.FindOrdersRespDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +27,7 @@ public class Order {
     // join을 위한 변수들
 
     // order_products_tb
+    private int orderProductsId;
     private int productId;
     private String size;
     private int count;
@@ -50,6 +53,7 @@ public class Order {
                 .shippingAddressNumber(shippingAddressNumber)
                 .shippingAddressName(shippingAddressName)
                 .shippingAddressDetailName(shippingAddressDetailName)
+                .orderProductsId(orderProductsId)
                 .productId(productId)
                 .size(size)
                 .count(count)
