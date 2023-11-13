@@ -18,7 +18,6 @@ public class AccountController {
                         .getAuthentication().getPrincipal();
 
         User user = principalUser.getUser();
-        System.out.println("getPrincipal" + user);
 
         PrincipalRespDto principalRespDto = user.toPrincipalRespDto();
 

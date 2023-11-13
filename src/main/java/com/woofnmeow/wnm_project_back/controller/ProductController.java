@@ -24,7 +24,8 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/{petTypeName}/{productCategoryName}/{pageIndex}")
-    public ResponseEntity<?> getProducts(@PathVariable String petTypeName, @PathVariable String productCategoryName, @PathVariable int pageIndex, @RequestBody SearchProductsReqDto searchProductsReqDto) {
+    public ResponseEntity<?> getProducts(@PathVariable String petTypeName, @PathVariable String productCategoryName, @PathVariable int pageIndex, SearchProductsReqDto searchProductsReqDto) {
+        System.out.println(searchProductsReqDto);
         return ResponseEntity.ok().body(productService.getProducts(petTypeName, productCategoryName, pageIndex, searchProductsReqDto));
     }
 
