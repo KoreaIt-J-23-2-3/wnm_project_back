@@ -6,13 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class CartController {
 
     private final CartService cartService;
     @PostMapping("/api/cart/{userId}")
-    public ResponseEntity<?> addToCart(@PathVariable int userId, @RequestBody AddCartReqDto addCartReqDto) {
+    public ResponseEntity<?> addToCart(@PathVariable int userId, @RequestBody List<AddCartReqDto> addCartReqDto) {
         return ResponseEntity.ok(cartService.addCart(userId, addCartReqDto));
     }
 

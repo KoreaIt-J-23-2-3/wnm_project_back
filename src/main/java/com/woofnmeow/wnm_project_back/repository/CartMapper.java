@@ -7,10 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface CartMapper {
-    public int addCart(Cart cart);
-
     public List<Cart> findCartByUserId(int userId);
 
     public int deleteCartProduct(int cartId);
 
+    public int addCart(List<Cart> cart);
 }

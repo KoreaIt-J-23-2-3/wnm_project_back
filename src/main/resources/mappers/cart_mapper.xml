@@ -7,7 +7,6 @@
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.CartMapper">
 
-
     <resultMap id="CartMap" type="com.woofnmeow.wnm_project_back.entity.Cart">
         <id property="cartId" column="cart_id"/>
         <result property="userId" column="user_id"/>
@@ -18,11 +17,6 @@
         <result property="productPrice" column="product_price"/>
         <result property="productThumbnail" column="product_thumbnail"/>
     </resultMap>
-
-    <insert id="addCart" parameterType="com.woofnmeow.wnm_project_back.entity.Cart">
-        insert into cart_tb
-        values(0, #{userId}, #{productId}, #{size}, #{count})
-    </insert>
 
     <select id="findCartByUserId" resultMap="CartMap">
         select
@@ -49,4 +43,17 @@
         where
             cart_id = #{cartId}
     </delete>
+
+    <insert id="addCart" parameterType="java.util.ArrayList">
+        insert into cart_tb values
+        <foreach collection="list" item="product" separator=",">
+            (
+                0,
+                #{product.userId},
+                #{product.productId},
+                #{product.size},
+                #{product.count}
+            )
+        </foreach>;
+    </insert>
 </mapper >

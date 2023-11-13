@@ -22,7 +22,6 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getProductByProductId(productId));
     }
 
-    //
     @GetMapping("/api/products/{petTypeName}/{productCategoryName}")
     public ResponseEntity<?> getProducts(@PathVariable String petTypeName,
                                          @PathVariable String productCategoryName,
@@ -30,16 +29,15 @@ public class ProductController {
                                          @RequestParam String value,
                                          @RequestParam String sort,
                                          @RequestParam int page
-                                         ) {
+    ) {
         return ResponseEntity.ok().body(productService.getProducts
                 (petTypeName,
-                productCategoryName,
-                option,
-                value,
-                sort,
-                page));
+                        productCategoryName,
+                        option,
+                        value,
+                        sort,
+                        page));
     }
-    //
 
     @PutMapping("/api/product/{productId}")
     public ResponseEntity<?> editProduct(@PathVariable int productId, @RequestBody EditProductReqDto editProductReqDto) {

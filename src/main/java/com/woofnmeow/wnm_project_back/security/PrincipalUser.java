@@ -21,7 +21,6 @@ public class PrincipalUser extends DefaultOAuth2User {
 
     public PrincipalUser(User user, Map<String, Object> attributes, String nameAttributeKey) {
         super(null, attributes, nameAttributeKey);
-        System.out.println("PrincipalUser 만들 때?" + attributes);
         this.user = user;
     }
 
