@@ -6,10 +6,16 @@
 
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.CartMapper">
-
-    <insert id="addCart" parameterType="com.woofnmeow.wnm_project_back.entity.Cart">
-        insert into cart_tb
-        values(0, #{userId}, #{productId}, #{size}, #{count})
+    <insert id="addCart" parameterType="java.util.ArrayList">
+        insert into cart_tb values
+        <foreach collection="list" item="product" separator=",">
+            (
+                0,
+                #{product.userId},
+                #{product.productId},
+                #{product.size},
+                #{product.count}
+            )
+        </foreach>;
     </insert>
-
 </mapper >

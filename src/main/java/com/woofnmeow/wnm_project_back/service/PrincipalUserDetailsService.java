@@ -17,7 +17,6 @@ public class PrincipalUserDetailsService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println("loadUser : " + oAuth2User.getAttributes());
 
         String registrationId  = userRequest.getClientRegistration().getRegistrationId();
 
@@ -44,7 +43,6 @@ public class PrincipalUserDetailsService extends DefaultOAuth2UserService {
                 break;
         }
 
-        System.out.println("DefaultOAuth2User" + attributes);
         return new DefaultOAuth2User(new ArrayList<>(), attributes, nameAttributeKey);
     }
 }
