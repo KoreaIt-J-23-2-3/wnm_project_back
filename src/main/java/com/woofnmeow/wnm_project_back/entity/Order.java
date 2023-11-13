@@ -21,6 +21,7 @@ public class Order {
     private String shippingAddressNumber;
     private String shippingAddressName;
     private String shippingAddressDetailName;
+    private int orderStatus;
 
 
 
@@ -53,6 +54,7 @@ public class Order {
                 .shippingAddressNumber(shippingAddressNumber)
                 .shippingAddressName(shippingAddressName)
                 .shippingAddressDetailName(shippingAddressDetailName)
+                .orderStatus(orderStatus)
                 .orderProductsId(orderProductsId)
                 .productId(productId)
                 .size(size)
