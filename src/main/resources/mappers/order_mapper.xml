@@ -16,6 +16,8 @@
         <result property="shippingAddressNumber" column="shipping_address_number"/>
         <result property="shippingAddressName" column="shipping_address_name"/>
         <result property="shippingAddressDetailName" column="shipping_address_detail_name"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="orderProductsId" column="order_products_id"/>
         <result property="productId" column="product_id"/>
         <result property="size" column="size"/>
         <result property="count" column="count"/>
@@ -32,7 +34,7 @@
         insert into
             order_tb
         values
-            (0, #{userId}, now(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName})
+            (0, #{userId}, now(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName}, 0)
     </insert>
 
     <insert id="addOrderProducts" parameterType="com.woofnmeow.wnm_project_back.entity.OrderProducts">
@@ -51,6 +53,8 @@
             ot.shipping_address_number,
             ot.shipping_address_name,
             ot.shipping_address_detail_name,
+            ot.order_status,
+            opt.order_products_id,
             opt.product_id,
             opt.size,
             opt.count,
@@ -83,13 +87,13 @@
                 and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
                     or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
             </when>
-            <when test="searchOption.equals('상품명')">
-                and opt.pt.product_name like concat("%", #{searchValue}, "%")
+            <when test="searchOption.equals('product')">
+                and pt.product_name like concat("%", #{searchValue}, "%")
             </when>
         </choose>
         order by
         <choose>
-            <when test="sortOption.equals('주문일자 올림차순')">
+            <when test="sortOption.equals('일자올림차순')">
                 UNIX_TIMESTAMP(order_date) asc
             </when>
             <otherwise>

@@ -3,7 +3,6 @@ package com.woofnmeow.wnm_project_back.service;
 import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
-import com.woofnmeow.wnm_project_back.dto.SearchProductsReqDto;
 import com.woofnmeow.wnm_project_back.entity.Product;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +28,15 @@ public class ProductService {
         return productMapper.getProductByProductId(productId).toProductRespDto();
     }
 
-    public List<GetProductRespDto> getProducts(String petTypeName, String productCategoryName, int pageIndex, SearchProductsReqDto searchProductsReqDto) {
+    public List<GetProductRespDto> getProducts(String petTypeName,
+                                               String productCategoryName,
+                                               String option,
+                                               String value,
+                                               String sort,
+                                               int page) {
         List<GetProductRespDto> respList = new ArrayList<>();
         Map<String, Object> reqMap = new HashMap<>();
+
 
         if(petTypeName == "dog") {
             petTypeName = "강아지";
@@ -53,10 +58,10 @@ public class ProductService {
 
         reqMap.put("petTypeName", petTypeName);
         reqMap.put("productCategoryName", productCategoryName);
-        reqMap.put("pageIndex", (pageIndex - 1) * 10);
-        reqMap.put("searchOption", searchProductsReqDto.getSearchOption());
-        reqMap.put("searchValue", searchProductsReqDto.getSearchValue());
-        reqMap.put("sortOption", searchProductsReqDto.getSortOption());
+        reqMap.put("pageIndex", (page - 1) * 10);
+        reqMap.put("searchOption", option);
+        reqMap.put("searchValue", value);
+        reqMap.put("sortOption", sort);
         System.out.println(reqMap);
         productMapper.getProducts(reqMap).forEach(product -> {
             respList.add(product.toProductRespDto());
