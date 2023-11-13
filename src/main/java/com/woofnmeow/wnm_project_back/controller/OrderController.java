@@ -1,14 +1,10 @@
 package com.woofnmeow.wnm_project_back.controller;
 
 import com.woofnmeow.wnm_project_back.dto.AddOrderReqDto;
-import com.woofnmeow.wnm_project_back.dto.FindOrdersReqDto;
 import com.woofnmeow.wnm_project_back.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +17,12 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.addOrder(addOrderReqDto));
     }
 
-    @GetMapping("/api/orders/{pageIndex}")
-    public ResponseEntity<?> findOrders(@PathVariable int pageIndex, @RequestBody FindOrdersReqDto findOrdersReqDto) {
-        return ResponseEntity.ok().body(orderService.selectOrders(pageIndex, findOrdersReqDto));
+    @GetMapping("/api/orders/{searchOption}")
+    public ResponseEntity<?> findOrders(
+            @PathVariable String searchOption,
+            @RequestParam String value,
+            @RequestParam String sort,
+            @RequestParam int page) {
+        return ResponseEntity.ok().body(orderService.selectOrders(searchOption, value, sort, page));
     }
 }

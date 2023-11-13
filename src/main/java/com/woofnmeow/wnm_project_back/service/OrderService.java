@@ -1,15 +1,15 @@
 package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.AddOrderReqDto;
-import com.woofnmeow.wnm_project_back.dto.FindOrdersReqDto;
 import com.woofnmeow.wnm_project_back.dto.FindOrdersRespDto;
 import com.woofnmeow.wnm_project_back.entity.Order;
 import com.woofnmeow.wnm_project_back.repository.OrderMapper;
+import com.woofnmeow.wnm_project_back.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,15 +30,18 @@ public class OrderService {
         return true;
     }
 
-    public List<FindOrdersRespDto> selectOrders(int pageIndex, FindOrdersReqDto findOrdersReqDto) {
+    public List<FindOrdersRespDto> selectOrders(String searchOption, String value, String sort, int page) {
         Map<String, Object> reqMap = new HashMap<>();
         List<FindOrdersRespDto> respDtoList = new ArrayList<>();
 
-        reqMap.put("pageIndex", (pageIndex - 1) * 10);
-        reqMap.put("userId", findOrdersReqDto.getUserId());
-        reqMap.put("searchOption", findOrdersReqDto.getSearchOption());
-        reqMap.put("searchValue", findOrdersReqDto.getSearchValue());
-        reqMap.put("sortOption", findOrdersReqDto.getSortOption());
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = (Integer) principalUser.getAttributes().get("id");
+
+        reqMap.put("pageIndex", (page - 1) * 10);
+        reqMap.put("userId", userId);
+        reqMap.put("searchOption", searchOption);
+        reqMap.put("searchValue", value);
+        reqMap.put("sortOption", sort);
 
         orderMapper.selectOrders(reqMap).forEach(resp -> {
             respDtoList.add(resp.toFindOrdersRespDto());
