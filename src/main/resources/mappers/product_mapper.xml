@@ -8,85 +8,31 @@
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ProductMapper">
 
     <resultMap id="productMap" type="com.woofnmeow.wnm_project_back.entity.Product" >
-        <id property="productId" column="product_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="productPrice" column="product_price"/>
-        <result property="productDetailText" column="product_detail_text"/>
-        <result property="productThumbnail" column="product_thumbnail"/>
-        <result property="productDetailImg" column="product_detail_img"/>
-        <result property="petTypeId" column="pet_type_id"/>
-        <result property="petTypeName" column="pet_type_name"/>
-        <result property="productCategoryId" column="product_category_id"/>
-        <result property="productCategoryName" column="product_category_name"/>
-        <result property="noSize" column="no_size"/>
-        <result property="productSizeXS" column="product_size_XS" />
-        <result property="productSizeS" column="product_size_S" />
-        <result property="productSizeM" column="product_size_M" />
-        <result property="productSizeL" column="product_size_L" />
-        <result property="productSizeXL" column="product_size_XL" />
-        <result property="productSizeXXL" column="product_size_XXL" />
+
     </resultMap>
 
-    <insert id="addProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
+    <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.Product" useGeneratedKeys="true" keyProperty="productMstId">
         insert into
-            product_tb
-        values(0, #{productName}, #{productPrice}, #{productDetailText}, #{productThumbnail}, #{productDetailImg}, #{petTypeId}, #{productCategoryId}, #{noSize}, #{productSizeXS}, #{productSizeS}, #{productSizeM}, #{productSizeL}, #{productSizeXL}, #{productSizeXXL})
+            product_mst_tb
+        values(0, #{productName}, #{petTypeId}, #{productCategoryId}, #{productDetailText}, #{productThumbnailUrl}, #{productDetailUrl}, now())
     </insert>
 
-    <select id="getProductByProductId" resultMap    ="productMap">
-        select
-            pt.product_id,
-            pt.product_name,
-            pt.product_price,
-            pt.product_detail_text,
-            pt.product_thumbnail,
-            pt.product_detail_img,
-            pt.pet_type_id,
-            ptt.pet_type_name,
-            pt.product_category_id,
-            pct.product_category_name,
-            pt.no_size,
-            pt.product_size_XS,
-            pt.product_size_S,
-            pt.product_size_M,
-            pt.product_size_L,
-            pt.product_size_XL,
-            pt.product_size_XXL
-        from
-            product_tb pt
-            left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)
-            left outer join pet_type_tb ptt on (ptt.pet_type_id = pt.pet_type_id)
-        where
-            pt.product_id = #{productId};
+    <insert id="addProductDetail" parameterType="hashmap">
+        insert into
+            product_dtl_tb
+        values(0, #{productMstId}, #{price}, #{sizeId})
+    </insert>
+
+    <select id="getProductByProductId" resultMap="productMap">
+
     </select>
 
     <update id="updateProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
-        update
-            product_tb
-        set
-            product_name = #{productName},
-            product_price = #{productPrice},
-            product_detail_text = #{productDetailText},
-            product_thumbnail = #{productThumbnail},
-            product_detail_img = #{productDetailImg},
-            pet_type_id = #{petTypeId},
-            product_category_id = #{productCategoryId},
-            no_size = #{noSize},
-            product_size_XS = #{productSizeXS},
-            product_size_S = #{productSizeS},
-            product_size_M = #{productSizeM},
-            product_size_L = #{productSizeL},
-            product_size_XL = #{productSizeXL},
-            product_size_XXL = #{productSizeXXL}
-        where
-            product_id = #{productId}
+
     </update>
 
     <delete id="deleteProduct">
-        delete from
-            product_tb
-        where
-            product_id = #{productId}
+
     </delete>
 
     <select id="getProducts" parameterType="hashmap" resultMap="productMap">

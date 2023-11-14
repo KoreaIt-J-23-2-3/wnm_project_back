@@ -12,6 +12,7 @@ import java.util.Map;
 public interface OrderMapper {
     @Options(useGeneratedKeys = true, keyProperty = "orderId")
     public Integer addOrder(Order order);
+
     public Integer addOrderProducts(OrderProducts orderProducts);
     public List<Order> selectOrders(Map<String, Object> reqMap);
 }

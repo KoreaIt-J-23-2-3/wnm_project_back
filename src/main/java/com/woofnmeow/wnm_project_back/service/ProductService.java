@@ -6,6 +6,7 @@ import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
 import com.woofnmeow.wnm_project_back.entity.Product;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,24 @@ public class ProductService {
 
     @Transactional(rollbackFor = Exception.class)
     public boolean addProduct(AddProductReqDto addProductReqDto) {
-        return productMapper.addProduct(addProductReqDto.toEntity()) > 0;
+        Map<String, Object> map = new HashMap<>();
+        Product product = addProductReqDto.toEntity();
+        productMapper.addProductMaster(product);
+
+        map.put("productMstId", product.getProductMstId());
+        map.put("price", addProductReqDto.getPrice());
+        if(addProductReqDto.getProductCategoryId() == 4 && addProductReqDto.getPetTypeId() == 1) {
+            map.put("sizeId", 2);
+            for(int i = 0; i < 6; i++) {
+                productMapper.addProductDetail(map);
+                map.replace("sizeId", i + 3);
+            }
+        }else {
+            map.put("sizeId", 1);
+            productMapper.addProductDetail(map);
+        }
+
+        return true;
     }
 
     public GetProductRespDto getProductByProductId(int productId) {
@@ -38,23 +56,6 @@ public class ProductService {
         Map<String, Object> reqMap = new HashMap<>();
 
 
-        if(petTypeName == "dog") {
-            petTypeName = "강아지";
-        }else if(petTypeName == "cat") {
-            petTypeName = "고양이";
-        }
-
-        if(productCategoryName == "homeliving") {
-            productCategoryName = "홈·리빙";
-        }else if(productCategoryName == "outdoor") {
-            productCategoryName = "산책";
-        }else if(productCategoryName == "carrier") {
-            productCategoryName = "이동";
-        }else if(productCategoryName == "fashion") {
-            productCategoryName = "패션";
-        }else if(productCategoryName == "toy") {
-            productCategoryName = "장난감";
-        }
 
         reqMap.put("petTypeName", petTypeName);
         reqMap.put("productCategoryName", productCategoryName);
@@ -73,21 +74,6 @@ public class ProductService {
     @Transactional(rollbackFor = Exception.class)
     public boolean editProduct(int productId, EditProductReqDto editProductReqDto) {
         Product product = Product.builder()
-                .productId(productId)
-                .productName(editProductReqDto.getProductName())
-                .productPrice(editProductReqDto.getProductPrice())
-                .productDetailText(editProductReqDto.getProductDetailText())
-                .productThumbnail(editProductReqDto.getProductThumbnail())
-                .productDetailImg(editProductReqDto.getProductDetailImg())
-                .petTypeId(editProductReqDto.getPetTypeId())
-                .productCategoryId(editProductReqDto.getProductCategoryId())
-                .noSize(editProductReqDto.getNoSize())
-                .productSizeXS(editProductReqDto.getProductSizeXS())
-                .productSizeS(editProductReqDto.getProductSizeS())
-                .productSizeM(editProductReqDto.getProductSizeM())
-                .productSizeL(editProductReqDto.getProductSizeL())
-                .productSizeXL(editProductReqDto.getProductSizeXL())
-                .productSizeXXL(editProductReqDto.getProductSizeXXL())
                 .build();
 
         return productMapper.updateProduct(product) > 0;

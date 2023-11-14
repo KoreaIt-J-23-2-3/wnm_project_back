@@ -5,18 +5,23 @@ import lombok.Data;
 
 @Data
 public class EditProductReqDto {
+    private int productDtlId;
     private String productName;
-    private int productPrice;
     private String productDetailText;
-    private String productThumbnail;
-    private String productDetailImg;
+    private String productThumbnailUrl;
+    private String productDetailUrl;
     private int petTypeId;
     private int productCategoryId;
-    private int noSize;
-    private int productSizeXS;
-    private int productSizeS;
-    private int productSizeM;
-    private int productSizeL;
-    private int productSizeXL;
-    private int productSizeXXL;
+
+    public Product toProductEntity() {
+        return Product.builder()
+                .productDtlId(productDtlId)
+                .productName(productName)
+                .productDetailText(productDetailText)
+                .productThumbnailUrl(productThumbnailUrl)
+                .productDetailUrl(productDetailUrl)
+                .petTypeId(petTypeId)
+                .productCategoryId(productCategoryId)
+                .build();
+    }
 }

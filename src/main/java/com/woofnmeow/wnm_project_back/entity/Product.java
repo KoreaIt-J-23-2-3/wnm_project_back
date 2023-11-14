@@ -7,50 +7,67 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
 public class Product {
-    private int productId;
+    // product_dtl_tb
+    private int productDtlId;
+    private int productMstId;
+    private int price;
+    private int sizeId;
+
+    // product_mst_tb
     private String productName;
-    private int productPrice;
-    private String productDetailText;
-    private String productThumbnail;
-    private String productDetailImg;
     private int petTypeId;
-    private String petTypeName;
     private int productCategoryId;
+    private String productDetailText;
+    private String productThumbnailUrl;
+    private String productDetailUrl;
+    private LocalDateTime createDate;
+
+    // size_tb
+    private String sizeName;
+
+    // pet_type_tb
+    private String petTypeName;
+
+    // product_category_tb
     private String productCategoryName;
-    private int noSize;
-    private int productSizeXS;
-    private int productSizeS;
-    private int productSizeM;
-    private int productSizeL;
-    private int productSizeXL;
-    private int productSizeXXL;
+
+
+    // 실제 재고 수량
+    private int currentQuantity;
+    // 가용 재고 수량 (실제 재고 - 주문 재고)
+    private int availableQuantity;
+
 
     public GetProductRespDto toProductRespDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return GetProductRespDto.builder()
-                .productId(productId)
+                .productDtlId(productDtlId)
+                .productMstId(productMstId)
+                .price(price)
+                .sizeId(sizeId)
                 .productName(productName)
-                .productPrice(productPrice)
-                .productDetailText(productDetailText.replaceAll("\n", "<br>"))
-                .productThumbnail(productThumbnail)
-                .productDetailImg(productDetailImg)
                 .petTypeId(petTypeId)
-                .petTypeName(petTypeName)
                 .productCategoryId(productCategoryId)
-                .noSize(noSize)
+                .productDetailText(productDetailText.replaceAll("\n", "<br>"))
+                .productThumbnailUrl(productThumbnailUrl)
+                .productDetailUrl(productDetailUrl)
+                .createDate(createDate.format(formatter))
+                .sizeName(sizeName)
+                .petTypeName(petTypeName)
                 .productCategoryName(productCategoryName)
-                .productSizeXS(productSizeXS)
-                .productSizeS(productSizeS)
-                .productSizeM(productSizeM)
-                .productSizeL(productSizeL)
-                .productSizeXL(productSizeXL)
-                .productSizeXXL(productSizeXXL)
+                .currentQuantity(currentQuantity)
+                .availableQuantity(availableQuantity)
                 .build();
     }
+
 
 
 

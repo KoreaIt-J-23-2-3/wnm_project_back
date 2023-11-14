@@ -39,12 +39,13 @@ public class ProductController {
                         page));
     }
 
-    @PutMapping("/api/product/{productId}")
+    @PutMapping("/api/admin/product/{productId}")
     public ResponseEntity<?> editProduct(@PathVariable int productId, @RequestBody EditProductReqDto editProductReqDto) {
+        System.out.println(editProductReqDto);
         return ResponseEntity.ok().body(productService.editProduct(productId, editProductReqDto));
     }
 
-    @DeleteMapping("/api/product/{productId}")
+    @DeleteMapping("/api/admin/product/{productId}")
     public ResponseEntity<?> removeProduct(@PathVariable int productId) {
         return ResponseEntity.ok().body(productService.removeProduct(productId));
     }

@@ -3,24 +3,37 @@ package com.woofnmeow.wnm_project_back.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class GetProductRespDto {
-    private int productId;
+    // product_dtl_tb
+    private int productDtlId;
+    private int productMstId;
+    private int price;
+    private int sizeId;
+
+    // product_mst_tb
     private String productName;
-    private int productPrice;
-    private String productDetailText;
-    private String productThumbnail;
-    private String productDetailImg;
     private int petTypeId;
-    private String petTypeName;
     private int productCategoryId;
+    private String productDetailText;
+    private String productThumbnailUrl;
+    private String productDetailUrl;
+    private String createDate;
+
+    // size_tb
+    private String sizeName;
+
+    // pet_type_tb
+    private String petTypeName;
+
+    // product_category_tb
     private String productCategoryName;
-    private int noSize;
-    private int productSizeXS;
-    private int productSizeS;
-    private int productSizeM;
-    private int productSizeL;
-    private int productSizeXL;
-    private int productSizeXXL;
+
+    // 실제 재고 수량
+    private int currentQuantity;
+    // 가용 재고 수량 (실제 재고 - 주문 재고)
+    private int availableQuantity;
 }
