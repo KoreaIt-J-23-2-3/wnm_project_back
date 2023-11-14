@@ -23,6 +23,18 @@
         values(0, #{productMstId}, #{price}, #{sizeId})
     </insert>
 
+    <insert id="incomingQuantity" parameterType="hashmap">
+        insert into
+            incoming_history_tb
+        values(0, #{productDtlId}, #{count}, now())
+    </insert>
+
+    <insert id="outgoingQuantity" parameterType="hashmap">
+        insert into
+            outgoing_history_tb
+        values(0, #{productDtlId}, #{count}, now())
+    </insert>
+
     <select id="getProductByProductId" resultMap="productMap">
 
     </select>

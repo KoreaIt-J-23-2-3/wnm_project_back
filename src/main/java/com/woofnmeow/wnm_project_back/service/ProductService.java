@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +40,21 @@ public class ProductService {
             map.put("sizeId", 1);
             productMapper.addProductDetail(map);
         }
-
         return true;
+    }
+
+    public boolean incomingQuantity(int productDtlId, int count) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("productDtlId", productDtlId);
+        map.put("count", count);
+        return productMapper.incomingQuantity(map) > 0;
+    }
+
+    public boolean outgoingQuantity(int productDtlId, int count) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("productDtlId", productDtlId);
+        map.put("count", count);
+        return productMapper.outgoingQuantity(map) > 0;
     }
 
     public GetProductRespDto getProductByProductId(int productId) {

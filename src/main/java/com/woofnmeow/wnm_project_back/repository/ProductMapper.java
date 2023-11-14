@@ -12,10 +12,10 @@ public interface ProductMapper {
     @Options(useGeneratedKeys = true, keyProperty = "productMstId")
     public Integer addProductMaster(Product product);
     public Integer addProductDetail(Map<String, Object> map);
+    public Integer incomingQuantity(Map<String, Object> map);
+    public Integer outgoingQuantity(Map<String, Object> map);
 
 
-    // public Integer incomingQuantity()  productDtlId, count
-    // public Integer outgoingQuantity()  productDtlId, count
     public Product getProductByProductId(int productId);
     public Integer updateProduct(Product product);
     public Integer deleteProduct(int productId);

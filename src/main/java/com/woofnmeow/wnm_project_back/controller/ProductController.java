@@ -17,6 +17,16 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.addProduct(addProductReqDto));
     }
 
+    @PostMapping("/api/admin/incoming/{productDtlId}")
+    public ResponseEntity<?> incomingQuantity(@PathVariable int productDtlId, @RequestBody int count) {
+        return ResponseEntity.ok().body(productService.incomingQuantity(productDtlId, count));
+    }
+
+    @PostMapping("/api/admin/outgoing/{productDtlId}")
+    public ResponseEntity<?> outgoingQuantity(@PathVariable int productDtlId, @RequestBody int count) {
+        return ResponseEntity.ok().body(productService.outgoingQuantity(productDtlId, count));
+    }
+
     @GetMapping("/api/product/{productId}")
     public ResponseEntity<?> getProductByProductId(@PathVariable int productId) {
         return ResponseEntity.ok().body(productService.getProductByProductId(productId));
