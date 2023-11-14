@@ -44,6 +44,20 @@
             cart_id = #{cartId}
     </delete>
 
+    <delete id="deleteOrderCart">
+        delete
+        from
+            cart_tb
+        where
+            user_id = #{userId}
+        and (
+        <foreach collection="products" item="product" open="(" close=")" separator="or">
+            product_id = #{product.productId}
+            and size = #{product.size}
+        </foreach>
+        )
+    </delete>
+
     <insert id="addCart" parameterType="java.util.ArrayList">
         insert into cart_tb values
         <foreach collection="list" item="product" separator=",">
