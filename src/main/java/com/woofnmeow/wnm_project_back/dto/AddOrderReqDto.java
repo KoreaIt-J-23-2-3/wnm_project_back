@@ -19,6 +19,7 @@ public class AddOrderReqDto {
     private String shippingAddressDetailName;
 
     private List<OrderProductsReqDto> orderData;
+    private Boolean isCart;
 
     public Order toOrderEntity() {
         return Order.builder()
