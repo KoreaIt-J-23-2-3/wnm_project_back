@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +27,6 @@ public class CartController {
     @DeleteMapping("/api/cart/{cartId}")
     public ResponseEntity<?> deleteCartProduct(@PathVariable int cartId) {
 
-        System.out.println("머니?" + cartId);
         return ResponseEntity.ok(cartService.deleteCartProduct(cartId));
     }
 
