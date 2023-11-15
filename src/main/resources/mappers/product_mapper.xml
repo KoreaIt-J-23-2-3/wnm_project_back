@@ -7,26 +7,30 @@
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ProductMapper">
 
-    <resultMap id="productMap" type="com.woofnmeow.wnm_project_back.entity.Product" >
-        <id property="productDtlId" column="product_dtl_id" />
-        <result property="productMstId" column="product_mst_id" />
+    <resultMap id="productMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
+        <id property="productMstId" column="product_mst_id" />
         <result property="productName" column="product_name" />
-        <result property="price" column="price" />
         <result property="petTypeId" column="pet_type_id" />
         <result property="petTypeName" column="pet_type_name" />
         <result property="productCategoryId" column="product_category_id" />
         <result property="productCategoryName" column="product_category_name" />
-        <result property="sizeId" column="size_id" />
-        <result property="sizeName" column="size_name" />
         <result property="productDetailText" column="product_detail_text" />
         <result property="productThumbnailUrl" column="product_thumbnail_url" />
         <result property="productDetailUrl" column="product_detail_url" />
-        <result property="actualStock" column="actual_stock" />
-        <result property="tempStock" column="temp_stock" />
         <result property="createDate" column="create_date" />
+        <collection property="productDtlList" javaType="list" resultMap="ProductDtlMap"/>
     </resultMap>
 
-    <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.Product" useGeneratedKeys="true" keyProperty="productMstId">
+    <resultMap id="ProductDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+        <id property="productDtlId" column="product_dtl_id" />
+        <result property="price" column="price" />
+        <result property="sizeId" column="size_id" />
+        <result property="sizeName" column="size_name" />
+        <result property="actualStock" column="actual_stock" />
+        <result property="tempStock" column="temp_stock" />
+    </resultMap>
+
+    <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.ProductMst" useGeneratedKeys="true" keyProperty="productMstId">
         insert into
             product_mst_tb
         values(0, #{productName}, #{petTypeId}, #{productCategoryId}, #{productDetailText}, #{productThumbnailUrl}, #{productDetailUrl}, now())
@@ -70,7 +74,7 @@
             pmt.create_date
         from
             product_dtl_tb pdt
-            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_dtl_id)
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
             left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
             left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
             left outer join size_tb st on(st.size_id = pdt.size_id)
@@ -79,66 +83,98 @@
             pdt.product_dtl_id = #{productDtlId}
     </select>
 
-    <update id="updateProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">
-
-    </update>
-
-    <delete id="deleteProduct">
-
-    </delete>
-
-    <select id="getProducts" parameterType="hashmap" resultMap="productMap">
+    <select id="getProductByProductMstId" resultMap="productMap">
         select
-            pt.product_id,
-            pt.product_name,
-            pt.product_price,
-            pt.product_detail_text,
-            pt.product_thumbnail,
-            pt.product_detail_img,
-            pt.pet_type_id,
+            pdt.product_dtl_id,
+            pmt.product_mst_id,
+            pmt.product_name,
+            pdt.price,
+            ptt.pet_type_id,
             ptt.pet_type_name,
-            pt.product_category_id,
+            pct.product_category_id,
             pct.product_category_name,
-            pt.no_size,
-            pt.product_size_XS,
-            pt.product_size_S,
-            pt.product_size_M,
-            pt.product_size_L,
-            pt.product_size_XL,
-            pt.product_size_XXL
+            st.size_id,
+            st.size_name,
+            pmt.product_detail_text,
+            pmt.product_thumbnail_url,
+            pmt.product_detail_url,
+            psv.actual_stock,
+            psv.temp_stock,
+            pmt.create_date
         from
-            product_tb pt
-            left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)
-            left outer join pet_type_tb ptt on (ptt.pet_type_id = pt.pet_type_id)
+            product_mst_tb pmt
+            left outer join  product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
+            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
         where
-            1 = 1
-        <choose>
-            <when test="searchOption.equals('제목')">
-                and pt.product_name like concat("%", #{searchValue}, "%")
-            </when>
-        </choose>
-        <if test="!petTypeName.equals('all')">
-            and ptt.pet_type_name = #{petTypeName}
-        </if>
-        <if test="!productCategoryName.equals('all')">
-            and pct.product_category_name = #{productCategoryName}
-        </if>
-        order by
-        <choose>
-            <when test="sortOption.equals('낮은가격')">
-                product_price asc
-            </when>
-            <when test="sortOption.equals('높은가격')">
-                product_price desc
-            </when>
-            <when test="sortOption.equals('상품명')">
-                product_name COLLATE utf8mb4_unicode_ci
-            </when>
-            <otherwise>
-                product_id desc
-            </otherwise>
-        </choose>
-        limit #{pageIndex}, 10
+            pmt.product_mst_id = #{productMstId}
     </select>
+
+
+
+
+<!--    <update id="updateProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">-->
+
+<!--    </update>-->
+
+<!--    <delete id="deleteProduct">-->
+
+<!--    </delete>-->
+
+<!--    <select id="getProducts" parameterType="hashmap" resultMap="productMap">-->
+<!--        select-->
+<!--            pt.product_id,-->
+<!--            pt.product_name,-->
+<!--            pt.product_price,-->
+<!--            pt.product_detail_text,-->
+<!--            pt.product_thumbnail,-->
+<!--            pt.product_detail_img,-->
+<!--            pt.pet_type_id,-->
+<!--            ptt.pet_type_name,-->
+<!--            pt.product_category_id,-->
+<!--            pct.product_category_name,-->
+<!--            pt.no_size,-->
+<!--            pt.product_size_XS,-->
+<!--            pt.product_size_S,-->
+<!--            pt.product_size_M,-->
+<!--            pt.product_size_L,-->
+<!--            pt.product_size_XL,-->
+<!--            pt.product_size_XXL-->
+<!--        from-->
+<!--            product_tb pt-->
+<!--            left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)-->
+<!--            left outer join pet_type_tb ptt on (ptt.pet_type_id = pt.pet_type_id)-->
+<!--        where-->
+<!--            1 = 1-->
+<!--        <choose>-->
+<!--            <when test="searchOption.equals('제목')">-->
+<!--                and pt.product_name like concat("%", #{searchValue}, "%")-->
+<!--            </when>-->
+<!--        </choose>-->
+<!--        <if test="!petTypeName.equals('all')">-->
+<!--            and ptt.pet_type_name = #{petTypeName}-->
+<!--        </if>-->
+<!--        <if test="!productCategoryName.equals('all')">-->
+<!--            and pct.product_category_name = #{productCategoryName}-->
+<!--        </if>-->
+<!--        order by-->
+<!--        <choose>-->
+<!--            <when test="sortOption.equals('낮은가격')">-->
+<!--                product_price asc-->
+<!--            </when>-->
+<!--            <when test="sortOption.equals('높은가격')">-->
+<!--                product_price desc-->
+<!--            </when>-->
+<!--            <when test="sortOption.equals('상품명')">-->
+<!--                product_name COLLATE utf8mb4_unicode_ci-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                product_id desc-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+<!--        limit #{pageIndex}, 10-->
+<!--    </select>-->
 
 </mapper>

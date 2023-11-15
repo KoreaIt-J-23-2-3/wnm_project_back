@@ -1,6 +1,5 @@
 package com.woofnmeow.wnm_project_back.dto;
 
-import com.woofnmeow.wnm_project_back.entity.Product;
 import lombok.Data;
 
 import java.util.HashMap;

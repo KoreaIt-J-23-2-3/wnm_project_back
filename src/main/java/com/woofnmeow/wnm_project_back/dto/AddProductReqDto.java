@@ -1,9 +1,7 @@
 package com.woofnmeow.wnm_project_back.dto;
 
-import com.woofnmeow.wnm_project_back.entity.Product;
+import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 public class AddProductReqDto {
@@ -15,10 +13,9 @@ public class AddProductReqDto {
     private String productThumbnailUrl;
     private String productDetailUrl;
 
-    public Product toEntity() {
-        return Product.builder()
+    public ProductMst toEntity() {
+        return ProductMst.builder()
                 .productName(productName)
-                .price(price)
                 .petTypeId(petTypeId)
                 .productCategoryId(productCategoryId)
                 .productDetailText(productDetailText)

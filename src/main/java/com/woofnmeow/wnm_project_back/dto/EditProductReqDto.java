@@ -1,6 +1,5 @@
 package com.woofnmeow.wnm_project_back.dto;
 
-import com.woofnmeow.wnm_project_back.entity.Product;
 import lombok.Data;
 
 @Data
@@ -13,15 +12,15 @@ public class EditProductReqDto {
     private int petTypeId;
     private int productCategoryId;
 
-    public Product toProductEntity() {
-        return Product.builder()
-                .productDtlId(productDtlId)
-                .productName(productName)
-                .productDetailText(productDetailText)
-                .productThumbnailUrl(productThumbnailUrl)
-                .productDetailUrl(productDetailUrl)
-                .petTypeId(petTypeId)
-                .productCategoryId(productCategoryId)
-                .build();
-    }
+//    public Product toProductEntity() {
+//        return Product.builder()
+//                .productDtlId(productDtlId)
+//                .productName(productName)
+//                .productDetailText(productDetailText)
+//                .productThumbnailUrl(productThumbnailUrl)
+//                .productDetailUrl(productDetailUrl)
+//                .petTypeId(petTypeId)
+//                .productCategoryId(productCategoryId)
+//                .build();
+//    }
 }
