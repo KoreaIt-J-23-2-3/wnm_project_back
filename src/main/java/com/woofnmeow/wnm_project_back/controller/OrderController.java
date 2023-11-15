@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
+
     private final OrderService orderService;
 
+    // order > order_product_tb(주문 상품 등록)
     @PostMapping("/api/order")
     public ResponseEntity<?> addOrder(@RequestBody AddOrderReqDto addOrderReqDto) {
-        System.out.println(addOrderReqDto);
         return ResponseEntity.ok().body(orderService.addOrder(addOrderReqDto));
     }
 
@@ -23,6 +24,7 @@ public class OrderController {
             @RequestParam String value,
             @RequestParam String sort,
             @RequestParam int page) {
+
         return ResponseEntity.ok().body(orderService.selectOrders(searchOption, value, sort, page));
     }
 }

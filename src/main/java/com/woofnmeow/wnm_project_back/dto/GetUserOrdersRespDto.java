@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class FindOrdersRespDto {
+@AllArgsConstructor
+@Builder
+@Data
+public class GetUserOrdersRespDto {
+    // 사용자 주문 조회
     private int orderId;
     private int userId;
     private String orderDate;
@@ -21,16 +22,6 @@ public class FindOrdersRespDto {
     private String shippingAddressName;
     private String shippingAddressDetailName;
     private int orderStatus;
-    private int orderProductsId;
-    private int productId;
-    private String size;
-    private int count;
-    private String productName;
-    private int productPrice;
-    private String productThumbnail;
-    private int petTypeId;
-    private String petTypeName;
-    private int productCategoryId;
-    private String productCategoryName;
 
+    private List<GetUserOrderProductsRespDto> getUserOrderProductsRespDtos;
 }

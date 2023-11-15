@@ -10,25 +10,27 @@
     <resultMap id="ordersMap" type="com.woofnmeow.wnm_project_back.entity.Order">
         <id property="orderId" column="order_id"/>
         <result property="userId" column="user_id"/>
-        <result property="orderDate" column="order_data"/>
+        <result property="orderDate" column="order_date"/>
         <result property="shippingName" column="shipping_name"/>
         <result property="shippingPhone" column="shipping_phone"/>
         <result property="shippingAddressNumber" column="shipping_address_number"/>
         <result property="shippingAddressName" column="shipping_address_name"/>
         <result property="shippingAddressDetailName" column="shipping_address_detail_name"/>
         <result property="orderStatus" column="order_status"/>
-        <result property="orderProductsId" column="order_products_id"/>
-        <result property="productId" column="product_id"/>
-        <result property="size" column="size"/>
-        <result property="count" column="count"/>
-        <result property="productName" column="product_name"/>
-        <result property="productPrice" column="product_price"/>
-        <result property="productThumbnail" column="product_thumbnail"/>
-        <result property="petTypeId" column="pet_type_id"/>
-        <result property="petTypeName" column="pet_type_name"/>
-        <result property="productCategoryId" column="product_category_id"/>
-        <result property="productCategoryName" column="product_category_name"/>
+        <collection property="orderProducts" javaType="List" resultMap="orderProductsMap"/>
     </resultMap>
+
+    <resultMap id="orderProductsMap" type="com.woofnmeow.wnm_project_back.entity.OrderProducts">
+        <id property="orderProductsId" column="order_products_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="count" column="count"/>
+        <result property="productMstId" column="product_mst_id"/>
+        <result property="price" column="price"/>
+        <result property="sizeName" column="size_name"/>
+        <result property="productName" column="product_name"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+    </resultMap>
+
 
     <insert id="addOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
         insert into
@@ -37,10 +39,10 @@
             (0, #{userId}, now(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName}, 0)
     </insert>
 
-    <insert id="addOrderProducts" parameterType="com.woofnmeow.wnm_project_back.entity.OrderProducts">
+    <insert id="addOrderProducts" parameterType="hashmap">
         insert into
             order_products_tb
-        values(0, #{orderId}, #{productId}, #{size}, #{count});
+        values(0, #{orderId}, #{productDtlId}, #{count})
     </insert>
 
     <select id="selectOrders" parameterType="hashmap" resultMap="ordersMap">
@@ -53,24 +55,21 @@
             ot.shipping_address_number,
             ot.shipping_address_name,
             ot.shipping_address_detail_name,
-            ot.order_status,
             opt.order_products_id,
-            opt.product_id,
-            opt.size,
             opt.count,
-            pt.product_name,
-            pt.product_price,
-            pt.product_thumbnail,
-            pt.pet_type_id,
-            ptt.pet_type_name,
-            pt.product_category_id,
-            pct.product_category_name
+            pdt.product_dtl_id,
+            pdt.price,
+            st.size_id,
+            st.size_name,
+            pmt.product_mst_id,
+            pmt.product_name,
+            pmt.product_thumbnail_url
         from
-            order_products_tb opt
-            left outer join order_tb ot on(ot.order_id = opt.order_id)
-            left outer join product_tb pt on(pt.product_id = opt.product_id)
-            left outer join product_category_tb pct on (pct.product_category_id = pt.product_category_id)
-            left outer join pet_type_tb ptt on (ptt.pet_type_id = pt.pet_type_id)
+            order_tb ot
+            left outer join order_products_tb opt on(opt.order_id = ot.order_id)
+            left outer join product_dtl_tb pdt on(pdt.product_dtl_id = opt.product_dtl_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
         where
             user_id = #{userId}
         <choose>
@@ -88,7 +87,7 @@
                     or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
             </when>
             <when test="searchOption.equals('product')">
-                and pt.product_name like concat("%", #{searchValue}, "%")
+                and pmt.product_name like concat("%", #{searchValue}, "%")
             </when>
         </choose>
         order by

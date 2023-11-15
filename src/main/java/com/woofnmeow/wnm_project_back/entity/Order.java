@@ -1,6 +1,7 @@
 package com.woofnmeow.wnm_project_back.entity;
 
-import com.woofnmeow.wnm_project_back.dto.FindOrdersRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserOrderProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserOrdersRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class Order {
@@ -23,49 +27,25 @@ public class Order {
     private String shippingAddressDetailName;
     private int orderStatus;
 
+    private List<OrderProducts> orderProducts;
 
+    public GetUserOrdersRespDto toGetUserOrdersRespDto () {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    // join을 위한 변수들
-
-    // order_products_tb
-    private int orderProductsId;
-    private int productId;
-    private String size;
-    private int count;
-
-    // product_tb
-    private String productName;
-    private int productPrice;
-    private String productThumbnail;
-    private int petTypeId;
-    private String petTypeName;
-    private int productCategoryId;
-    private String productCategoryName;
-
-    public FindOrdersRespDto toFindOrdersRespDto() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        return FindOrdersRespDto.builder()
+        return GetUserOrdersRespDto.builder()
                 .orderId(orderId)
                 .userId(userId)
-                .orderDate(orderDate.format(formatter))
+                .orderDate(orderDate.format(dateTimeFormatter))
                 .shippingName(shippingName)
                 .shippingPhone(shippingPhone)
                 .shippingAddressNumber(shippingAddressNumber)
                 .shippingAddressName(shippingAddressName)
                 .shippingAddressDetailName(shippingAddressDetailName)
                 .orderStatus(orderStatus)
-                .orderProductsId(orderProductsId)
-                .productId(productId)
-                .size(size)
-                .count(count)
-                .productName(productName)
-                .productPrice(productPrice)
-                .productThumbnail(productThumbnail)
-                .petTypeId(petTypeId)
-                .petTypeName(petTypeName)
-                .productCategoryId(productCategoryId)
-                .productCategoryName(productCategoryName)
+                .getUserOrderProductsRespDtos(orderProducts.stream().map(OrderProducts::toGetUserOrderProductsRespDto).collect(Collectors.toList()))
                 .build();
     }
+
+
+
 }
