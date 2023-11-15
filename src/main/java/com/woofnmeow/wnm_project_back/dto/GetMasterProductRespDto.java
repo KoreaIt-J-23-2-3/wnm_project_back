@@ -18,6 +18,7 @@ public class GetMasterProductRespDto {
     private String createDate;
     private String productDetailText;
     private String productThumbnailUrl;
+    private String productDetailUrl;
     private List<ProductDtl> productDetailData;
 
 }

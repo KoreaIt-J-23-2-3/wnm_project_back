@@ -39,6 +39,7 @@ public class ProductMst {
                 .createDate(createDate.format(formatter))
                 .productDetailText(productDetailText.replaceAll("\n", "<br>"))
                 .productThumbnailUrl(productThumbnailUrl)
+                .productDetailUrl(productDetailUrl)
                 .productDetailData(productDtlList)
                 .build();
     }
