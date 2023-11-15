@@ -39,11 +39,10 @@ public class Product {
     // product_category_tb
     private String productCategoryName;
 
-
     // 실제 재고 수량
-    private int currentQuantity;
+    private int actualStock;
     // 가용 재고 수량 (실제 재고 - 주문 재고)
-    private int availableQuantity;
+    private int tempStock;
 
 
     public GetProductRespDto toProductRespDto() {
@@ -63,8 +62,8 @@ public class Product {
                 .sizeName(sizeName)
                 .petTypeName(petTypeName)
                 .productCategoryName(productCategoryName)
-                .currentQuantity(currentQuantity)
-                .availableQuantity(availableQuantity)
+                .actualStock(actualStock)
+                .tempStock(tempStock)
                 .build();
     }
 

@@ -8,7 +8,22 @@
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ProductMapper">
 
     <resultMap id="productMap" type="com.woofnmeow.wnm_project_back.entity.Product" >
-
+        <id property="productDtlId" column="product_dtl_id" />
+        <result property="productMstId" column="product_mst_id" />
+        <result property="productName" column="product_name" />
+        <result property="price" column="price" />
+        <result property="petTypeId" column="pet_type_id" />
+        <result property="petTypeName" column="pet_type_name" />
+        <result property="productCategoryId" column="product_category_id" />
+        <result property="productCategoryName" column="product_category_name" />
+        <result property="sizeId" column="size_id" />
+        <result property="sizeName" column="size_name" />
+        <result property="productDetailText" column="product_detail_text" />
+        <result property="productThumbnailUrl" column="product_thumbnail_url" />
+        <result property="productDetailUrl" column="product_detail_url" />
+        <result property="actualStock" column="actual_stock" />
+        <result property="tempStock" column="temp_stock" />
+        <result property="createDate" column="create_date" />
     </resultMap>
 
     <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.Product" useGeneratedKeys="true" keyProperty="productMstId">
@@ -35,8 +50,33 @@
         values(0, #{productDtlId}, #{count}, now())
     </insert>
 
-    <select id="getProductByProductId" resultMap="productMap">
-
+    <select id="getProductByProductDtlId" resultMap="productMap">
+        select
+            pdt.product_dtl_id,
+            pmt.product_mst_id,
+            pmt.product_name,
+            pdt.price,
+            ptt.pet_type_id,
+            ptt.pet_type_name,
+            pct.product_category_id,
+            pct.product_category_name,
+            st.size_id,
+            st.size_name,
+            pmt.product_detail_text,
+            pmt.product_thumbnail_url,
+            pmt.product_detail_url,
+            psv.actual_stock,
+            psv.temp_stock,
+            pmt.create_date
+        from
+            product_dtl_tb pdt
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_dtl_id)
+            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
+        where
+            pdt.product_dtl_id = #{productDtlId}
     </select>
 
     <update id="updateProduct" parameterType="com.woofnmeow.wnm_project_back.entity.Product">

@@ -33,7 +33,7 @@ public class GetProductRespDto {
     private String productCategoryName;
 
     // 실제 재고 수량
-    private int currentQuantity;
+    private int actualStock;
     // 가용 재고 수량 (실제 재고 - 주문 재고)
-    private int availableQuantity;
+    private int tempStock;
 }

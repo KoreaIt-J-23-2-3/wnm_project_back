@@ -27,9 +27,9 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.outgoingQuantity(productDtlId, count));
     }
 
-    @GetMapping("/api/product/{productId}")
-    public ResponseEntity<?> getProductByProductId(@PathVariable int productId) {
-        return ResponseEntity.ok().body(productService.getProductByProductId(productId));
+    @GetMapping("/api/product/{productDtlId}")
+    public ResponseEntity<?> getProductByProductDtlId(@PathVariable int productDtlId) {
+        return ResponseEntity.ok().body(productService.getProductByProductDtlId(productDtlId));
     }
 
     @GetMapping("/api/products/{petTypeName}/{productCategoryName}")

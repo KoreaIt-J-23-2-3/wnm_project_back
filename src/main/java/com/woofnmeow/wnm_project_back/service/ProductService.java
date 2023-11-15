@@ -30,6 +30,7 @@ public class ProductService {
 
         map.put("productMstId", product.getProductMstId());
         map.put("price", addProductReqDto.getPrice());
+
         if(addProductReqDto.getProductCategoryId() == 4 && addProductReqDto.getPetTypeId() == 1) {
             map.put("sizeId", 2);
             for(int i = 0; i < 6; i++) {
@@ -57,8 +58,8 @@ public class ProductService {
         return productMapper.outgoingQuantity(map) > 0;
     }
 
-    public GetProductRespDto getProductByProductId(int productId) {
-        return productMapper.getProductByProductId(productId).toProductRespDto();
+    public GetProductRespDto getProductByProductDtlId(int productDtlId) {
+        return productMapper.getProductByProductDtlId(productDtlId).toProductRespDto();
     }
 
     public List<GetProductRespDto> getProducts(String petTypeName,
