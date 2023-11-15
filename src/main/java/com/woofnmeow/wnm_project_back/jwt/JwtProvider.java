@@ -81,7 +81,6 @@ public class JwtProvider {
 
     public Authentication getAuthenticated(String jwtToken) {
         Claims claims = getClaims(jwtToken);
-        System.out.println("getAuthenticated : " + claims);
 
         if(claims == null) {
             return null;

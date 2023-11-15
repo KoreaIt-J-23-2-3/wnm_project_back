@@ -2,8 +2,9 @@ package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
+import com.woofnmeow.wnm_project_back.dto.GetMasterProductRespDto;
 import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
-import com.woofnmeow.wnm_project_back.entity.Product;
+import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,40 +22,56 @@ public class ProductService {
 
     @Transactional(rollbackFor = Exception.class)
     public boolean addProduct(AddProductReqDto addProductReqDto) {
-        return productMapper.addProduct(addProductReqDto.toEntity()) > 0;
+        Map<String, Object> map = new HashMap<>();
+        ProductMst productMst = addProductReqDto.toEntity();
+        productMapper.addProductMaster(productMst);
+
+        map.put("productMstId", productMst.getProductMstId());
+        map.put("price", addProductReqDto.getPrice());
+
+        if(addProductReqDto.getProductCategoryId() == 4 && addProductReqDto.getPetTypeId() == 1) {
+            map.put("sizeId", 2);
+            for(int i = 0; i < 6; i++) {
+                productMapper.addProductDetail(map);
+                map.replace("sizeId", i + 3);
+            }
+        }else {
+            map.put("sizeId", 1);
+            productMapper.addProductDetail(map);
+        }
+        return true;
     }
 
-    public GetProductRespDto getProductByProductId(int productId) {
-        return productMapper.getProductByProductId(productId).toProductRespDto();
+    public boolean incomingQuantity(int productDtlId, int count) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("productDtlId", productDtlId);
+        map.put("count", count);
+        return productMapper.incomingQuantity(map) > 0;
     }
 
-    public List<GetProductRespDto> getProducts(String petTypeName,
+    public boolean outgoingQuantity(int productDtlId, int count) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("productDtlId", productDtlId);
+        map.put("count", count);
+        return productMapper.outgoingQuantity(map) > 0;
+    }
+
+    public GetMasterProductRespDto getProductByProductDtlId(int productDtlId) {
+        return productMapper.getProductByProductDtlId(productDtlId).toMasterProductRespDto();
+    }
+
+    public GetMasterProductRespDto getProductByProductMstId(int productMstId) {
+        return productMapper.getProductByProductMstId(productMstId).toMasterProductRespDto();
+    }
+
+    public List<GetMasterProductRespDto> getProducts(String petTypeName,
                                                String productCategoryName,
                                                String option,
                                                String value,
                                                String sort,
                                                int page) {
-        List<GetProductRespDto> respList = new ArrayList<>();
+        List<GetMasterProductRespDto> respList = new ArrayList<>();
         Map<String, Object> reqMap = new HashMap<>();
-
-
-        if(petTypeName == "dog") {
-            petTypeName = "강아지";
-        }else if(petTypeName == "cat") {
-            petTypeName = "고양이";
-        }
-
-        if(productCategoryName == "homeliving") {
-            productCategoryName = "홈·리빙";
-        }else if(productCategoryName == "outdoor") {
-            productCategoryName = "산책";
-        }else if(productCategoryName == "carrier") {
-            productCategoryName = "이동";
-        }else if(productCategoryName == "fashion") {
-            productCategoryName = "패션";
-        }else if(productCategoryName == "toy") {
-            productCategoryName = "장난감";
-        }
 
         reqMap.put("petTypeName", petTypeName);
         reqMap.put("productCategoryName", productCategoryName);
@@ -63,38 +80,29 @@ public class ProductService {
         reqMap.put("searchValue", value);
         reqMap.put("sortOption", sort);
         System.out.println(reqMap);
-        productMapper.getProducts(reqMap).forEach(product -> {
-            respList.add(product.toProductRespDto());
+        productMapper.getMasterProductList(reqMap).forEach(productMst -> {
+            respList.add(productMst.toMasterProductRespDto());
         });
 
         return respList;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean editProduct(int productId, EditProductReqDto editProductReqDto) {
-        Product product = Product.builder()
-                .productId(productId)
-                .productName(editProductReqDto.getProductName())
-                .productPrice(editProductReqDto.getProductPrice())
-                .productDetailText(editProductReqDto.getProductDetailText())
-                .productThumbnail(editProductReqDto.getProductThumbnail())
-                .productDetailImg(editProductReqDto.getProductDetailImg())
-                .petTypeId(editProductReqDto.getPetTypeId())
-                .productCategoryId(editProductReqDto.getProductCategoryId())
-                .noSize(editProductReqDto.getNoSize())
-                .productSizeXS(editProductReqDto.getProductSizeXS())
-                .productSizeS(editProductReqDto.getProductSizeS())
-                .productSizeM(editProductReqDto.getProductSizeM())
-                .productSizeL(editProductReqDto.getProductSizeL())
-                .productSizeXL(editProductReqDto.getProductSizeXL())
-                .productSizeXXL(editProductReqDto.getProductSizeXXL())
-                .build();
+    public boolean editProduct(int productDtlId, EditProductReqDto editProductReqDto) {
+        Map<String, Object> map = new HashMap<>();
+        productMapper.updateProductDtl(editProductReqDto.toProductDtlEntity(productDtlId));
+        map.put("productName", editProductReqDto.getProductName());
+        map.put("productDetailText", editProductReqDto.getProductDetailText());
+        map.put("productThumbnailUrl", editProductReqDto.getProductThumbnailUrl());
+        map.put("productDetailUrl", editProductReqDto.getProductDetailUrl());
+        map.put("productMstId", editProductReqDto.getProductMstId());
+        productMapper.updateProductMst(map);
 
-        return productMapper.updateProduct(product) > 0;
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean removeProduct(int productId) {
-        return productMapper.deleteProduct(productId) > 0;
+    public boolean removeProduct(int productMstId) {
+        return productMapper.deleteProduct(productMstId) > 0;
     }
 }
