@@ -37,7 +37,7 @@ public class ProductMst {
                 .productCategoryId(productCategoryId)
                 .productCategoryName(productCategoryName)
                 .createDate(createDate.format(formatter))
-                .productDetailText(productDetailText)
+                .productDetailText(productDetailText.replaceAll("\n", "<br>"))
                 .productThumbnailUrl(productThumbnailUrl)
                 .productDetailData(productDtlList)
                 .build();

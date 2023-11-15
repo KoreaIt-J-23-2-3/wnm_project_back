@@ -1,26 +1,24 @@
 package com.woofnmeow.wnm_project_back.dto;
 
+import com.woofnmeow.wnm_project_back.entity.ProductDtl;
+import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import lombok.Data;
 
 @Data
 public class EditProductReqDto {
-    private int productDtlId;
+    private int productMstId;
     private String productName;
     private String productDetailText;
     private String productThumbnailUrl;
     private String productDetailUrl;
-    private int petTypeId;
-    private int productCategoryId;
 
-//    public Product toProductEntity() {
-//        return Product.builder()
-//                .productDtlId(productDtlId)
-//                .productName(productName)
-//                .productDetailText(productDetailText)
-//                .productThumbnailUrl(productThumbnailUrl)
-//                .productDetailUrl(productDetailUrl)
-//                .petTypeId(petTypeId)
-//                .productCategoryId(productCategoryId)
-//                .build();
-//    }
+    private int price;
+
+
+    public ProductDtl toProductDtlEntity(int productDtlId) {
+        return ProductDtl.builder()
+                .productDtlId(productDtlId)
+                .price(price)
+                .build();
+    }
 }

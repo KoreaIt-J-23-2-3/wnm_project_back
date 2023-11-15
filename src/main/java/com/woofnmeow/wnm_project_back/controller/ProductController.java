@@ -37,28 +37,28 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getProductByProductMstId(productMstId));
     }
 
-//    @GetMapping("/api/products/{petTypeName}/{productCategoryName}")
-//    public ResponseEntity<?> getProducts(@PathVariable String petTypeName,
-//                                         @PathVariable String productCategoryName,
-//                                         @RequestParam String option,
-//                                         @RequestParam String value,
-//                                         @RequestParam String sort,
-//                                         @RequestParam int page
-//    ) {
-//        return ResponseEntity.ok().body(productService.getProducts
-//                (petTypeName,
-//                        productCategoryName,
-//                        option,
-//                        value,
-//                        sort,
-//                        page));
-//    }
+    @GetMapping("/api/products/{petTypeName}/{productCategoryName}")
+    public ResponseEntity<?> getProducts(@PathVariable String petTypeName,
+                                         @PathVariable String productCategoryName,
+                                         @RequestParam String option,
+                                         @RequestParam String value,
+                                         @RequestParam String sort,
+                                         @RequestParam int page
+    ) {
+        return ResponseEntity.ok().body(productService.getProducts
+                (petTypeName,
+                        productCategoryName,
+                        option,
+                        value,
+                        sort,
+                        page));
+    }
 
-//    @PutMapping("/api/admin/product/{productId}")
-//    public ResponseEntity<?> editProduct(@PathVariable int productId, @RequestBody EditProductReqDto editProductReqDto) {
-//        System.out.println(editProductReqDto);
-//        return ResponseEntity.ok().body(productService.editProduct(productId, editProductReqDto));
-//    }
+    @PutMapping("/api/admin/product/{productDtlId}")
+    public ResponseEntity<?> editProduct(@PathVariable int productDtlId, @RequestBody EditProductReqDto editProductReqDto) {
+        System.out.println(editProductReqDto);
+        return ResponseEntity.ok().body(productService.editProduct(productDtlId, editProductReqDto));
+    }
 
     @DeleteMapping("/api/admin/product/{productMstId}")
     public ResponseEntity<?> removeProduct(@PathVariable int productMstId) {

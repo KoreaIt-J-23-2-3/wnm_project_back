@@ -64,38 +64,42 @@ public class ProductService {
         return productMapper.getProductByProductMstId(productMstId).toMasterProductRespDto();
     }
 
-//    public List<GetProductRespDto> getProducts(String petTypeName,
-//                                               String productCategoryName,
-//                                               String option,
-//                                               String value,
-//                                               String sort,
-//                                               int page) {
-//        List<GetProductRespDto> respList = new ArrayList<>();
-//        Map<String, Object> reqMap = new HashMap<>();
-//
-//
-//
-//        reqMap.put("petTypeName", petTypeName);
-//        reqMap.put("productCategoryName", productCategoryName);
-//        reqMap.put("pageIndex", (page - 1) * 10);
-//        reqMap.put("searchOption", option);
-//        reqMap.put("searchValue", value);
-//        reqMap.put("sortOption", sort);
-//        System.out.println(reqMap);
-//        productMapper.getProducts(reqMap).forEach(product -> {
-//            respList.add(product.toProductRespDto());
-//        });
-//
-//        return respList;
-//    }
+    public List<GetMasterProductRespDto> getProducts(String petTypeName,
+                                               String productCategoryName,
+                                               String option,
+                                               String value,
+                                               String sort,
+                                               int page) {
+        List<GetMasterProductRespDto> respList = new ArrayList<>();
+        Map<String, Object> reqMap = new HashMap<>();
 
-//    @Transactional(rollbackFor = Exception.class)
-//    public boolean editProduct(int productId, EditProductReqDto editProductReqDto) {
-//        Product product = Product.builder()
-//                .build();
-//
-//        return productMapper.updateProduct(product) > 0;
-//    }
+        reqMap.put("petTypeName", petTypeName);
+        reqMap.put("productCategoryName", productCategoryName);
+        reqMap.put("pageIndex", (page - 1) * 10);
+        reqMap.put("searchOption", option);
+        reqMap.put("searchValue", value);
+        reqMap.put("sortOption", sort);
+        System.out.println(reqMap);
+        productMapper.getMasterProductList(reqMap).forEach(productMst -> {
+            respList.add(productMst.toMasterProductRespDto());
+        });
+
+        return respList;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean editProduct(int productDtlId, EditProductReqDto editProductReqDto) {
+        Map<String, Object> map = new HashMap<>();
+        productMapper.updateProductDtl(editProductReqDto.toProductDtlEntity(productDtlId));
+        map.put("productName", editProductReqDto.getProductName());
+        map.put("productDetailText", editProductReqDto.getProductDetailText());
+        map.put("productThumbnailUrl", editProductReqDto.getProductThumbnailUrl());
+        map.put("productDetailUrl", editProductReqDto.getProductDetailUrl());
+        map.put("productMstId", editProductReqDto.getProductMstId());
+        productMapper.updateProductMst(map);
+
+        return true;
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public boolean removeProduct(int productMstId) {
