@@ -22,7 +22,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.incomingQuantity(productDtlId, count));
     }
 
-    @PostMapping("/api/admin/outgoing/{productDtlId}")
+    @PostMapping("/api/outgoing/{productDtlId}")
     public ResponseEntity<?> outgoingQuantity(@PathVariable int productDtlId, @RequestBody int count) {
         return ResponseEntity.ok().body(productService.outgoingQuantity(productDtlId, count));
     }
