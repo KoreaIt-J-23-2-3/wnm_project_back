@@ -21,6 +21,6 @@ public interface ProductMapper {
     public ProductMst getProductByProductMstId(int productMstId);
 
 //    public Integer updateProduct(Product product);
-//    public Integer deleteProduct(int productId);
-//    public List<Product> getProducts(Map<String, Object> reqMap);
+    public Integer deleteProduct(int productMstId);
+//    public List<Product> getMasterProductList(Map<String, Object> reqMap);
 }

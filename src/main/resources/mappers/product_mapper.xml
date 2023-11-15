@@ -119,9 +119,13 @@
 
 <!--    </update>-->
 
-<!--    <delete id="deleteProduct">-->
-
-<!--    </delete>-->
+    <delete id="deleteProduct">
+        delete
+            from
+                product_mst_tb
+            where
+                product_mst_id = #{productMstId}
+    </delete>
 
 <!--    <select id="getProducts" parameterType="hashmap" resultMap="productMap">-->
 <!--        select-->

@@ -97,8 +97,8 @@ public class ProductService {
 //        return productMapper.updateProduct(product) > 0;
 //    }
 
-//    @Transactional(rollbackFor = Exception.class)
-//    public boolean removeProduct(int productId) {
-//        return productMapper.deleteProduct(productId) > 0;
-//    }
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeProduct(int productMstId) {
+        return productMapper.deleteProduct(productMstId) > 0;
+    }
 }

@@ -60,9 +60,9 @@ public class ProductController {
 //        return ResponseEntity.ok().body(productService.editProduct(productId, editProductReqDto));
 //    }
 
-//    @DeleteMapping("/api/admin/product/{productId}")
-//    public ResponseEntity<?> removeProduct(@PathVariable int productId) {
-//        return ResponseEntity.ok().body(productService.removeProduct(productId));
-//    }
+    @DeleteMapping("/api/admin/product/{productMstId}")
+    public ResponseEntity<?> removeProduct(@PathVariable int productMstId) {
+        return ResponseEntity.ok().body(productService.removeProduct(productMstId));
+    }
 
 }
