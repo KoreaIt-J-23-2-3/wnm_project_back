@@ -1,7 +1,8 @@
 package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.AddOrderReqDto;
-import com.woofnmeow.wnm_project_back.dto.FindOrdersRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserOrderProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserOrdersRespDto;
 import com.woofnmeow.wnm_project_back.dto.OrderProductsReqDto;
 import com.woofnmeow.wnm_project_back.entity.Order;
 import com.woofnmeow.wnm_project_back.repository.CartMapper;
@@ -23,32 +24,25 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
     private final OrderMapper orderMapper;
-    private final CartMapper cartMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public boolean addOrder(AddOrderReqDto addOrderReqDto) {
+
             Order order = addOrderReqDto.toOrderEntity();
             orderMapper.addOrder(order);
-            addOrderReqDto.toOrderProductsEntity(order.getOrderId()).forEach(orderProduct -> {
-                orderMapper.addOrderProducts(orderProduct);
-            });
-            if(addOrderReqDto.getIsCart()) {
-                DeleteOrderCartVo deleteOrderCartVo = DeleteOrderCartVo.builder()
-                        .userId(addOrderReqDto.getUserId())
-                        .products(addOrderReqDto.getOrderData().stream().map(OrderProductsReqDto::toProductEntity).collect(Collectors.toList()))
-                        .build();
 
-                cartMapper.deleteOrderCart(deleteOrderCartVo);
-            }
+            addOrderReqDto.getOrderProductData().forEach(productData -> {
+
+                orderMapper.addOrderProducts(productData.toProductDtlMap(order.getOrderId()));
+            });
         return true;
     }
 
-    public List<FindOrdersRespDto> selectOrders(String searchOption, String value, String sort, int page) {
+    public List<GetUserOrdersRespDto> selectOrders(String searchOption, String value, String sort, int page) {
         Map<String, Object> reqMap = new HashMap<>();
-        List<FindOrdersRespDto> respDtoList = new ArrayList<>();
 
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int userId = (Integer) principalUser.getAttributes().get("id");
+        String userId = principalUser.getName();
 
         reqMap.put("pageIndex", (page - 1) * 10);
         reqMap.put("userId", userId);
@@ -56,13 +50,6 @@ public class OrderService {
         reqMap.put("searchValue", value);
         reqMap.put("sortOption", sort);
 
-        orderMapper.selectOrders(reqMap).forEach(resp -> {
-            respDtoList.add(resp.toFindOrdersRespDto());
-        });
-
-        return respDtoList;
+        return orderMapper.selectOrders(reqMap).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
     }
-
-
-
 }

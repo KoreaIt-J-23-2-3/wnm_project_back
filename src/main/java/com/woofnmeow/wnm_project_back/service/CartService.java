@@ -7,6 +7,7 @@ import com.woofnmeow.wnm_project_back.entity.Cart;
 import com.woofnmeow.wnm_project_back.repository.CartMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class CartService {
 
     private final CartMapper cartMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean addCart(int userId, List<AddCartReqDto> addCartReqDto) {
         List<Cart> cartList = new ArrayList<>();
         addCartReqDto.forEach(product -> {
@@ -32,6 +34,7 @@ public class CartService {
         return cartMapper.findCartByUserId(userId).stream().map(Cart::toCartRespDto).collect(Collectors.toList());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Boolean deleteCartProduct(int cartId) {
 
         return cartMapper.deleteCartProduct(cartId) > 0;

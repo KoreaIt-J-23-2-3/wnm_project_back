@@ -1,24 +1,22 @@
 package com.woofnmeow.wnm_project_back.dto;
 
 import com.woofnmeow.wnm_project_back.entity.Order;
-import com.woofnmeow.wnm_project_back.entity.OrderProducts;
-import com.woofnmeow.wnm_project_back.dto.OrderProductsReqDto;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class AddOrderReqDto {
+    // 배송지 정보
     private int userId;
     private String shippingName;
     private String shippingPhone;
     private String shippingAddressNumber;
     private String shippingAddressName;
     private String shippingAddressDetailName;
-
-    private List<OrderProductsReqDto> orderData;
+    // 주문 상품 정보
+    private List<OrderProductsReqDto> orderProductData;
+    // 장바구니 구매, 바로 구매 구별
     private Boolean isCart;
 
     public Order toOrderEntity() {
@@ -30,20 +28,5 @@ public class AddOrderReqDto {
                 .shippingAddressName(shippingAddressName)
                 .shippingAddressDetailName(shippingAddressDetailName)
                 .build();
-    }
-
-    public List<OrderProducts> toOrderProductsEntity(int orderId) {
-        List<OrderProducts> orderProductsList = new ArrayList<>();
-
-        orderData.forEach(od -> {
-            orderProductsList.add(OrderProducts.builder()
-                    .orderId(orderId)
-                    .productId(od.getProductId())
-                    .count(od.getCount())
-                    .size(od.getSize())
-                    .build()
-            );
-        });
-        return orderProductsList;
     }
 }
