@@ -5,13 +5,12 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GetCartProductsRespDto {
-    private int cartId;
-    private int userId;
+public class GetUserCartProductsRespDto {
     private int productDtlId;
-    private String sizeName;
     private int count;
+    private String sizeName;
+    private int price;
+    private int productMstId;
     private String productName;
-    private int Price;
-    private String productThumbnail;
+    private String productThumbnailUrl;
 }

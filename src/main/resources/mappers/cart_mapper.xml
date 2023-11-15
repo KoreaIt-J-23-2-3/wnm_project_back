@@ -9,14 +9,27 @@
 
     <resultMap id="CartMap" type="com.woofnmeow.wnm_project_back.entity.Cart">
         <id property="cartId" column="cart_id"/>
+        <result property="userId" column="user_id" />
+        <collection property="cartProducts" javaType="List" resultMap="CartProductMap" />
     </resultMap>
 
-    <insert id="addCart" parameterType="java.util.ArrayList">
+    <resultMap id="CartProductMap" type="com.woofnmeow.wnm_project_back.entity.CartProducts">
+        <id property="productDtlId" column="product_dtl_id"/>
+        <result property="count" column="count" />
+        <result property="sizeId" column="size_id" />
+        <result property="sizeName" column="size_name" />
+        <result property="price" column="price" />
+        <result property="productMstId" column="product_mst_id" />
+        <result property="productName" column="product_name" />
+        <result property="productThumbnailUrl" column="product_thumbnail_url" />
+    </resultMap>
+
+    <insert id="addCart" parameterType="com.woofnmeow.wnm_project_back.entity.Cart">
         insert into cart_tb values
-        <foreach collection="list" item="product" separator=",">
+        <foreach collection="cartProducts" item="product" separator=",">
             (
                 0,
-                #{product.userId},
+                #{userId},
                 #{product.productDtlId},
                 #{product.count}
             )
@@ -42,6 +55,16 @@
             left outer join size_tb st on(st.size_id = pdt.size_id)
         where
             ut.user_id = #{user_id}
+    </select>
+
+    <select id="getProductCount" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            cart_tb
+        where
+            product_dtl_id = #{productDtlId}
+            and user_id = #{userId}
     </select>
 
     <delete id="deleteCartProduct">

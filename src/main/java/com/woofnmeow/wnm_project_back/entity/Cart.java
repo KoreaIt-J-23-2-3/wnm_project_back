@@ -1,10 +1,15 @@
 package com.woofnmeow.wnm_project_back.entity;
 
-import com.woofnmeow.wnm_project_back.dto.GetCartProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserCartProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserCartRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserOrdersRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,23 +21,12 @@ public class Cart {
     private int productDtlId;
     private int count;
 
-//    // join 변수
-//    private String productName;
-//    private int productPrice;
-//    private String productThumbnail;
-//
-//    // joing
-//
-//    public GetCartProductsRespDto toCartRespDto() {
-//        return GetCartProductsRespDto.builder()
-//                .cartId(cartId)
-//                .userId(userId)
-//                .productId(productId)
-//                .size(size)
-//                .count(count)
-//                .productName(productName)
-//                .productPrice(productPrice)
-//                .productThumbnail(productThumbnail)
-//                .build();
-//    }
+    private List<CartProducts> cartProducts;
+
+    public GetUserCartRespDto toGetUserCartRespDto() {
+        return GetUserCartRespDto.builder()
+                .userId(userId)
+                .getUserCartProductsRespDtos(cartProducts.stream().map(CartProducts::toGetUserCartProductsRespDto).collect(Collectors.toList()))
+                .build();
+    }
 }
