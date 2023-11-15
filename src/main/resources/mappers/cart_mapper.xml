@@ -9,29 +9,37 @@
 
     <resultMap id="CartMap" type="com.woofnmeow.wnm_project_back.entity.Cart">
         <id property="cartId" column="cart_id"/>
-        <result property="userId" column="user_id"/>
-        <result property="productId" column="product_Id"/>
-        <result property="size" column="size"/>
-        <result property="count" column="count"/>
-        <result property="productName" column="product_name"/>
-        <result property="productPrice" column="product_price"/>
-        <result property="productThumbnail" column="product_thumbnail"/>
     </resultMap>
+
+    <insert id="addCart" parameterType="java.util.ArrayList">
+        insert into cart_tb values
+        <foreach collection="list" item="product" separator=",">
+            (
+                0,
+                #{product.userId},
+                #{product.productDtlId},
+                #{product.count}
+            )
+        </foreach>;
+    </insert>
 
     <select id="findCartByUserId" resultMap="CartMap">
         select
             ct.cart_id,
-            ct.size,
             ct.count,
             ut.user_id,
-            pt.product_id,
-            pt.product_name,
-            pt.product_price,
-            pt.product_thumbnail
+            pdt.product_dtl_id,
+            pdt.price,
+            pmt.product_mst_id,
+            pmt.product_name,
+            pmt.product_thumbnail_url,
+            st.size_name
         from
             cart_tb ct
             left outer join user_tb ut on(ut.user_id = ct.user_id)
-            left outer join product_tb pt on(pt.product_id = ct.product_id)
+            left outer join product_dtl_tb pdt on(pdt.product_dtl_id = ct.product_dtl_id)
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
         where
             ut.user_id = #{user_id}
     </select>
@@ -58,16 +66,4 @@
         )
     </delete>
 
-    <insert id="addCart" parameterType="java.util.ArrayList">
-        insert into cart_tb values
-        <foreach collection="list" item="product" separator=",">
-            (
-                0,
-                #{product.userId},
-                #{product.productId},
-                #{product.size},
-                #{product.count}
-            )
-        </foreach>;
-    </insert>
 </mapper >

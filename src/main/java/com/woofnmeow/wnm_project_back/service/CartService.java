@@ -29,10 +29,10 @@ public class CartService {
         return cartMapper.addCart(cartList) > 0;
     }
 
-    public List<GetCartProductsRespDto> getCartProductsByUserId(int userId) {
-
-        return cartMapper.findCartByUserId(userId).stream().map(Cart::toCartRespDto).collect(Collectors.toList());
-    }
+//    public List<GetCartProductsRespDto> getCartProductsByUserId(int userId) {
+//
+//        return cartMapper.findCartByUserId(userId).stream().map(Cart::toCartRespDto).collect(Collectors.toList());
+//    }
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean deleteCartProduct(int cartId) {

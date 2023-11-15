@@ -8,12 +8,10 @@ import lombok.Data;
 public class GetCartProductsRespDto {
     private int cartId;
     private int userId;
-    private int productId;
-    private String size;
+    private int productDtlId;
+    private String sizeName;
     private int count;
     private String productName;
-    private int productPrice;
+    private int Price;
     private String productThumbnail;
-
-
 }

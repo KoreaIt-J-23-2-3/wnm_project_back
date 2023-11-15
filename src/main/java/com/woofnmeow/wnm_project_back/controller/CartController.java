@@ -14,15 +14,16 @@ import java.util.Map;
 public class CartController {
 
     private final CartService cartService;
+
     @PostMapping("/api/cart/{userId}")
     public ResponseEntity<?> addToCart(@PathVariable int userId, @RequestBody List<AddCartReqDto> addCartReqDto) {
         return ResponseEntity.ok(cartService.addCart(userId, addCartReqDto));
     }
 
-    @GetMapping("/api/cart/{userId}")
-    public ResponseEntity<?> getCartProducts(@PathVariable int userId) {
-        return ResponseEntity.ok(cartService.getCartProductsByUserId(userId));
-    }
+//    @GetMapping("/api/cart/{userId}")
+//    public ResponseEntity<?> getCartProducts(@PathVariable int userId) {
+//        return ResponseEntity.ok(cartService.getCartProductsByUserId(userId));
+//    }
 
     @DeleteMapping("/api/cart/{cartId}")
     public ResponseEntity<?> deleteCartProduct(@PathVariable int cartId) {

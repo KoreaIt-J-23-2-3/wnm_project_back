@@ -13,25 +13,26 @@ import lombok.NoArgsConstructor;
 public class Cart {
     private int cartId;
     private int userId;
-    private int productId;
-    private String size;
+    private int productDtlId;
     private int count;
 
-    // join 변수
-    private String productName;
-    private int productPrice;
-    private String productThumbnail;
-
-    public GetCartProductsRespDto toCartRespDto() {
-        return GetCartProductsRespDto.builder()
-                .cartId(cartId)
-                .userId(userId)
-                .productId(productId)
-                .size(size)
-                .count(count)
-                .productName(productName)
-                .productPrice(productPrice)
-                .productThumbnail(productThumbnail)
-                .build();
-    }
+//    // join 변수
+//    private String productName;
+//    private int productPrice;
+//    private String productThumbnail;
+//
+//    // joing
+//
+//    public GetCartProductsRespDto toCartRespDto() {
+//        return GetCartProductsRespDto.builder()
+//                .cartId(cartId)
+//                .userId(userId)
+//                .productId(productId)
+//                .size(size)
+//                .count(count)
+//                .productName(productName)
+//                .productPrice(productPrice)
+//                .productThumbnail(productThumbnail)
+//                .build();
+//    }
 }
