@@ -48,6 +48,18 @@ public class ProductService {
         return productMapper.incomingQuantity(map) > 0;
     }
 
+    public boolean updateIncomingQuantity(int incomingHistoryId, int count) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("incomingHistoryId", incomingHistoryId);
+        map.put("count", count);
+        return productMapper.updateIncomingQuantity(map) > 0;
+    }
+
+    public boolean deleteIncomingQuantity(int incomingHistoryId) {
+        return productMapper.deleteIncomingQuantity(incomingHistoryId) > 0;
+    }
+
+
     public boolean outgoingQuantity(int productDtlId, int count) {
         Map<String, Object> map = new HashMap<>();
         map.put("productDtlId", productDtlId);
