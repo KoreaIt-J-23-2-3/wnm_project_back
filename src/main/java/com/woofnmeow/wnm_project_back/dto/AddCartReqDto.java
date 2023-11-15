@@ -1,7 +1,6 @@
 package com.woofnmeow.wnm_project_back.dto;
 
 import com.woofnmeow.wnm_project_back.entity.Cart;
-import com.woofnmeow.wnm_project_back.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
