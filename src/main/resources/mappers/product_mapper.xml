@@ -48,6 +48,23 @@
         values(0, #{productDtlId}, #{count}, now())
     </insert>
 
+    <update id="updateIncomingQuantity" parameterType="hashmap">
+        update
+            incoming_history_tb
+        set
+            incoming_count = #{count}
+        where
+            incoming_history_id = #{incomingHistoryId}
+    </update>
+
+    <delete id="deleteIncomingQuantity">
+        delete
+            from
+                incoming_history_tb
+            where
+                incoming_history_id = #{incomingHistoryId}
+    </delete>
+
     <insert id="outgoingQuantity" parameterType="hashmap">
         insert into
             outgoing_history_tb
