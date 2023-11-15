@@ -14,6 +14,8 @@ public interface ProductMapper {
     public Integer addProductMaster(ProductMst productMst);
     public Integer addProductDetail(Map<String, Object> map);
     public Integer incomingQuantity(Map<String, Object> map);
+    public Integer updateIncomingQuantity(Map<String, Object> map);
+    public Integer deleteIncomingQuantity(int incomingHistoryId);
     public Integer outgoingQuantity(Map<String, Object> map);
     public ProductMst getProductByProductDtlId(int productDtlId);
     public ProductMst getProductByProductMstId(int productMstId);
