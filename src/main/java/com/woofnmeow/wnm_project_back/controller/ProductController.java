@@ -22,6 +22,16 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.incomingQuantity(productDtlId, count));
     }
 
+    @PutMapping("/api/admin/incoming/{incomingHistoryId}")
+    public ResponseEntity<?> updateIncomingQuantity(@PathVariable int incomingHistoryId, @RequestBody int count) {
+        return ResponseEntity.ok().body(productService.updateIncomingQuantity(incomingHistoryId, count));
+    }
+
+    @DeleteMapping("/api/admin/incoming/{incomingHistoryId}")
+    public ResponseEntity<?> deleteIncomingQuantity(@PathVariable int incomingHistoryId) {
+        return ResponseEntity.ok().body(productService.deleteIncomingQuantity(incomingHistoryId));
+    }
+
     @PostMapping("/api/outgoing/{productDtlId}")
     public ResponseEntity<?> outgoingQuantity(@PathVariable int productDtlId, @RequestBody int count) {
         return ResponseEntity.ok().body(productService.outgoingQuantity(productDtlId, count));
