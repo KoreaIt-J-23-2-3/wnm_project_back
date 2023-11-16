@@ -2,6 +2,8 @@ package com.woofnmeow.wnm_project_back.controller;
 
 import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
+import com.woofnmeow.wnm_project_back.dto.GetSearchedMstProductsReqDto;
+import com.woofnmeow.wnm_project_back.dto.SearchMasterProductReqDto;
 import com.woofnmeow.wnm_project_back.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -47,26 +49,19 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getProductByProductMstId(productMstId));
     }
 
-    @GetMapping("/api/products/{petTypeName}/{productCategoryName}")
-    public ResponseEntity<?> getProducts(@PathVariable String petTypeName,
-                                         @PathVariable String productCategoryName,
-                                         @RequestParam String option,
-                                         @RequestParam String value,
-                                         @RequestParam String sort,
-                                         @RequestParam int page
-    ) {
-        return ResponseEntity.ok().body(productService.getProducts
-                (petTypeName,
-                        productCategoryName,
-                        option,
-                        value,
-                        sort,
-                        page));
+    @GetMapping("/api/admin/products")
+    public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        System.out.println(searchMasterProductReqDto);
+        return ResponseEntity.ok().body(productService.getProducts(searchMasterProductReqDto));
+    }
+    @GetMapping("/api/products")
+    public ResponseEntity<?> getSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        System.out.println(searchMasterProductReqDto);
+        return ResponseEntity.ok().body(productService.getSearchedProducts(searchMasterProductReqDto));
     }
 
     @PutMapping("/api/admin/product/{productDtlId}")
     public ResponseEntity<?> editProduct(@PathVariable int productDtlId, @RequestBody EditProductReqDto editProductReqDto) {
-        System.out.println(editProductReqDto);
         return ResponseEntity.ok().body(productService.editProduct(productDtlId, editProductReqDto));
     }
 

@@ -30,6 +30,15 @@
         <result property="tempStock" column="temp_stock" />
     </resultMap>
 
+    <resultMap id="productMstListMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="petTypeName" column="pet_type_name"/>
+        <result property="productCategoryName" column="product_category_name"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="createDate" column="create_date"/>
+    </resultMap>
+
     <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.ProductMst" useGeneratedKeys="true" keyProperty="productMstId">
         insert into
             product_mst_tb
@@ -129,6 +138,54 @@
             pmt.product_mst_id = #{productMstId}
     </select>
 
+    <select id="getMasterProductList" parameterType="hashmap" resultMap="productMstListMap">
+        select
+            pmt.product_mst_id,
+            pmt.product_name,
+            ptt.pet_type_name,
+            pct.product_category_name,
+            pmt.product_thumbnail_url,
+            pmt.create_date
+        from
+            product_mst_tb pmt
+            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        where
+        1 = 1
+        <choose>
+            <when test="searchOption.equals('number')">
+                and pmt.product_mst_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('name')">
+                and pmt.product_name like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('all')">
+                and (pmt.product_name like concat("%", #{searchValue}, "%")
+                    or pct.product_category_name like concat("%", #{searchValue}, "%")
+                    or ptt.pet_type_name like concat("%", #{searchValue}, "%"))
+            </when>
+        </choose>
+        <if test="!petTypeName.equals('all')">
+            and ptt.pet_type_name = #{petTypeName}
+        </if>
+        <if test="!productCategoryName.equals('all')">
+            and pct.product_category_name = #{productCategoryName}
+        </if>
+        order by
+        <choose>
+            <when test="sortOption.equals('name')">
+                pmt.product_name COLLATE utf8mb4_unicode_ci
+            </when>
+            <when test="sortOption.equals('number')">
+                pmt.product_mst_id desc
+            </when>
+            <otherwise>
+                pmt.product_mst_id desc
+            </otherwise>
+        </choose>
+        limit #{pageIndex}, #{limit}
+    </select>
+
 
     <update id="updateProductMst" parameterType="hashmap">
         update
@@ -159,60 +216,5 @@
                 product_mst_id = #{productMstId}
     </delete>
 
-    <select id="getMasterProductList" parameterType="hashmap" resultMap="productMap">
-        select
-            pdt.product_dtl_id,
-            pmt.product_mst_id,
-            pmt.product_name,
-            pdt.price,
-            ptt.pet_type_id,
-            ptt.pet_type_name,
-            pct.product_category_id,
-            pct.product_category_name,
-            st.size_id,
-            st.size_name,
-            pmt.product_detail_text,
-            pmt.product_thumbnail_url,
-            pmt.product_detail_url,
-            psv.actual_stock,
-            psv.temp_stock,
-            pmt.create_date
-        from
-            product_mst_tb pmt
-            left outer join  product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
-            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
-            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
-            left outer join size_tb st on(st.size_id = pdt.size_id)
-            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
-        where
-            1 = 1
-        <choose>
-            <when test="searchOption.equals('제목')">
-                and pmt.product_name like concat("%", #{searchValue}, "%")
-            </when>
-        </choose>
-        <if test="!petTypeName.equals('all')">
-            and ptt.pet_type_name = #{petTypeName}
-        </if>
-        <if test="!productCategoryName.equals('all')">
-            and pct.product_category_name = #{productCategoryName}
-        </if>
-        order by
-        <choose>
-            <when test="sortOption.equals('낮은가격')">
-                price asc
-            </when>
-            <when test="sortOption.equals('높은가격')">
-                price desc
-            </when>
-            <when test="sortOption.equals('상품명')">
-                product_name COLLATE utf8mb4_unicode_ci
-            </when>
-            <otherwise>
-                pmt.product_mst_id desc
-            </otherwise>
-        </choose>
-        limit #{pageIndex}, 10
-    </select>
 
 </mapper>
