@@ -2,6 +2,7 @@ package com.woofnmeow.wnm_project_back.controller;
 
 import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
+import com.woofnmeow.wnm_project_back.dto.SearchMasterProductReqDto;
 import com.woofnmeow.wnm_project_back.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,20 +49,8 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/{petTypeName}/{productCategoryName}")
-    public ResponseEntity<?> getProducts(@PathVariable String petTypeName,
-                                         @PathVariable String productCategoryName,
-                                         @RequestParam String option,
-                                         @RequestParam String value,
-                                         @RequestParam String sort,
-                                         @RequestParam int page
-    ) {
-        return ResponseEntity.ok().body(productService.getProducts
-                (petTypeName,
-                        productCategoryName,
-                        option,
-                        value,
-                        sort,
-                        page));
+    public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        return ResponseEntity.ok().body(productService.getProducts(searchMasterProductReqDto));
     }
 
     @PutMapping("/api/admin/product/{productDtlId}")

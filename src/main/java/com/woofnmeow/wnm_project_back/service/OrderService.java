@@ -1,9 +1,6 @@
 package com.woofnmeow.wnm_project_back.service;
 
-import com.woofnmeow.wnm_project_back.dto.AddOrderReqDto;
-import com.woofnmeow.wnm_project_back.dto.GetUserOrderProductsRespDto;
-import com.woofnmeow.wnm_project_back.dto.GetUserOrdersRespDto;
-import com.woofnmeow.wnm_project_back.dto.OrderProductsReqDto;
+import com.woofnmeow.wnm_project_back.dto.*;
 import com.woofnmeow.wnm_project_back.entity.Order;
 import com.woofnmeow.wnm_project_back.repository.CartMapper;
 import com.woofnmeow.wnm_project_back.repository.OrderMapper;
@@ -38,17 +35,17 @@ public class OrderService {
         return true;
     }
 
-    public List<GetUserOrdersRespDto> selectOrders(String searchOption, String value, String sort, int page) {
+    public List<GetUserOrdersRespDto> selectOrders(SearchOrderReqDto searchOrderReqDto) {
         Map<String, Object> reqMap = new HashMap<>();
 
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId = principalUser.getName();
 
-        reqMap.put("pageIndex", (page - 1) * 10);
+        reqMap.put("pageIndex", (searchOrderReqDto.getPageIndex() - 1) * 10);
         reqMap.put("userId", userId);
-        reqMap.put("searchOption", searchOption);
-        reqMap.put("searchValue", value);
-        reqMap.put("sortOption", sort);
+        reqMap.put("searchOption", searchOrderReqDto.getSearchOption());
+        reqMap.put("searchValue", searchOrderReqDto.getSearchValue());
+        reqMap.put("sortOption", searchOrderReqDto.getSortOption());
 
         return orderMapper.selectOrders(reqMap).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
     }
