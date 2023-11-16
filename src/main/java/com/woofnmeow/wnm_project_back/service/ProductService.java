@@ -76,7 +76,7 @@ public class ProductService {
 
     public List<GetMasterProductRespDto> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
         Map<String, Object> reqMap = new HashMap<>();
-        reqMap.put("petTypeName", searchMasterProductReqDto.getPetType());
+        reqMap.put("petTypeName", searchMasterProductReqDto.getPetTypeName());
         reqMap.put("productCategoryName", searchMasterProductReqDto.getProductCategoryName());
         reqMap.put("pageIndex", (searchMasterProductReqDto.getPageIndex() - 1) * 10);
         reqMap.put("searchOption", searchMasterProductReqDto.getSearchOption());
