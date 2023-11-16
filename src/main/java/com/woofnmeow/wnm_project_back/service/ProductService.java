@@ -1,9 +1,6 @@
 package com.woofnmeow.wnm_project_back.service;
 
-import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
-import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
-import com.woofnmeow.wnm_project_back.dto.GetMasterProductRespDto;
-import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.*;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
 import lombok.RequiredArgsConstructor;
@@ -77,21 +74,14 @@ public class ProductService {
         return productMapper.getProductByProductMstId(productMstId).toProductRespDto();
     }
 
-    public List<GetMasterProductRespDto> getProducts(String petTypeName,
-                                               String productCategoryName,
-                                               String option,
-                                               String value,
-                                               String sort,
-                                               int page) {
+    public List<GetMasterProductRespDto> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
         Map<String, Object> reqMap = new HashMap<>();
-
-        reqMap.put("petTypeName", petTypeName);
-        reqMap.put("productCategoryName", productCategoryName);
-        reqMap.put("pageIndex", (page - 1) * 10);
-        reqMap.put("searchOption", option);
-        reqMap.put("searchValue", value);
-        reqMap.put("sortOption", sort);
-        System.out.println(reqMap);
+        reqMap.put("petTypeName", searchMasterProductReqDto.getPetType());
+        reqMap.put("productCategoryName", searchMasterProductReqDto.getProductCategoryName());
+        reqMap.put("pageIndex", (searchMasterProductReqDto.getPageIndex() - 1) * 10);
+        reqMap.put("searchOption", searchMasterProductReqDto.getSearchOption());
+        reqMap.put("searchValue", searchMasterProductReqDto.getSearchValue());
+        reqMap.put("sortOption", searchMasterProductReqDto.getSortOption());
 
         return productMapper.getMasterProductList(reqMap).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
     }

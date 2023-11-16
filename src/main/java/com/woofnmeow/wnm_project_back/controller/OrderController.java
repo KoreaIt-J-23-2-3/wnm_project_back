@@ -1,6 +1,7 @@
 package com.woofnmeow.wnm_project_back.controller;
 
 import com.woofnmeow.wnm_project_back.dto.AddOrderReqDto;
+import com.woofnmeow.wnm_project_back.dto.SearchOrderReqDto;
 import com.woofnmeow.wnm_project_back.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,8 @@ public class OrderController {
     }
 
     @GetMapping("/api/orders/{searchOption}")
-    public ResponseEntity<?> findOrders(
-            @PathVariable String searchOption,
-            @RequestParam String value,
-            @RequestParam String sort,
-            @RequestParam int page) {
+    public ResponseEntity<?> findOrders(SearchOrderReqDto searchOrderReqDto) {
 
-        return ResponseEntity.ok().body(orderService.selectOrders(searchOption, value, sort, page));
+        return ResponseEntity.ok().body(orderService.selectOrders(searchOrderReqDto));
     }
 }
