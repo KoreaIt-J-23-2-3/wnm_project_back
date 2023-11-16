@@ -29,23 +29,20 @@ public class Order {
 
     private List<OrderProducts> orderProducts;
 
-    public GetUserOrdersRespDto toGetUserOrdersRespDto () {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
+    public GetUserOrdersRespDto toGetUserOrdersRespDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println(orderProducts);
         return GetUserOrdersRespDto.builder()
                 .orderId(orderId)
                 .userId(userId)
-                .orderDate(orderDate.format(dateTimeFormatter))
+                .orderDate(orderDate.format(formatter))
                 .shippingName(shippingName)
                 .shippingPhone(shippingPhone)
                 .shippingAddressNumber(shippingAddressNumber)
                 .shippingAddressName(shippingAddressName)
                 .shippingAddressDetailName(shippingAddressDetailName)
                 .orderStatus(orderStatus)
-                .getUserOrderProductsRespDtos(orderProducts.stream().map(OrderProducts::toGetUserOrderProductsRespDto).collect(Collectors.toList()))
+                .getUserOrderProductsRespDtos(orderProducts.stream().map(OrderProducts::toGetOrderProductsRespDto).collect(Collectors.toList()))
                 .build();
     }
-
-
-
 }

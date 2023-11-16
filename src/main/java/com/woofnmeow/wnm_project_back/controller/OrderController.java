@@ -13,13 +13,13 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // order > order_product_tb(주문 상품 등록)
     @PostMapping("/api/order")
     public ResponseEntity<?> addOrder(@RequestBody AddOrderReqDto addOrderReqDto) {
         return ResponseEntity.ok().body(orderService.addOrder(addOrderReqDto));
     }
 
     @GetMapping("/api/orders/{searchOption}")
+
     public ResponseEntity<?> findOrders(SearchOrderReqDto searchOrderReqDto) {
 
         return ResponseEntity.ok().body(orderService.selectOrders(searchOrderReqDto));

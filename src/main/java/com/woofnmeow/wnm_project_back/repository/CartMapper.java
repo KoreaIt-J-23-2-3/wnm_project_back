@@ -11,6 +11,8 @@ import java.util.Map;
 public interface CartMapper {
     public List<Cart> findCartByUserId(int userId);
 
+    public int getProductCount(Map<String, Object> map);
+
     public int deleteCartProduct(int cartId);
 
     public int addCart(List<Cart> cart);
