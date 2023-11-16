@@ -179,6 +179,9 @@
             <when test="sortOption.equals('number')">
                 pmt.product_mst_id desc
             </when>
+            <otherwise>
+                pmt.product_mst_id desc
+            </otherwise>
         </choose>
         limit #{pageIndex}, #{limit}
     </select>

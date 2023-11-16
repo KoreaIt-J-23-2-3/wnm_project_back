@@ -78,6 +78,10 @@ public class ProductService {
     public List<GetMasterProductRespDto> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
         return productMapper.getMasterProductList(searchMasterProductReqDto.toVo()).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
     }
+    public List<GetMasterProductRespDto> getSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        System.out.println("service" + searchMasterProductReqDto);
+        return productMapper.getMasterProductList(searchMasterProductReqDto.toSearchedProduct()).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public boolean editProduct(int productDtlId, EditProductReqDto editProductReqDto) {
