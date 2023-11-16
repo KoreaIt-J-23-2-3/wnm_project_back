@@ -36,17 +36,7 @@ public class OrderService {
     }
 
     public List<GetUserOrdersRespDto> selectOrders(SearchOrderReqDto searchOrderReqDto) {
-        Map<String, Object> reqMap = new HashMap<>();
-
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userId = principalUser.getName();
-
-        reqMap.put("pageIndex", (searchOrderReqDto.getPageIndex() - 1) * 10);
-        reqMap.put("userId", userId);
-        reqMap.put("searchOption", searchOrderReqDto.getSearchOption());
-        reqMap.put("searchValue", searchOrderReqDto.getSearchValue());
-        reqMap.put("sortOption", searchOrderReqDto.getSortOption());
-
-        return orderMapper.selectOrders(reqMap).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
+        return orderMapper.selectOrders(searchOrderReqDto.toVo(principalUser.getUser().getUserId())).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
     }
 }

@@ -153,17 +153,17 @@
         where
         1 = 1
         <choose>
-            <when test="searchOption.equals('마스터아이디')">
+            <when test="searchOption.equals('number')">
                 and pmt.product_mst_id = #{searchValue}
             </when>
-            <when test="searchOption.equals('제목')">
+            <when test="searchOption.equals('name')">
                 and pmt.product_name like concat("%", #{searchValue}, "%")
             </when>
-            <otherwise>
+            <when test="searchOption.equals('all')">
                 and (pmt.product_name like concat("%", #{searchValue}, "%")
                     or pct.product_category_name like concat("%", #{searchValue}, "%")
                     or ptt.pet_type_name like concat("%", #{searchValue}, "%"))
-            </otherwise>
+            </when>
         </choose>
         <if test="!petTypeName.equals('all')">
             and ptt.pet_type_name = #{petTypeName}
@@ -173,12 +173,12 @@
         </if>
         order by
         <choose>
-            <when test="sortOption.equals('상품명')">
+            <when test="sortOption.equals('name')">
                 pmt.product_name COLLATE utf8mb4_unicode_ci
             </when>
-            <otherwise>
+            <when test="sortOption.equals('number')">
                 pmt.product_mst_id desc
-            </otherwise>
+            </when>
         </choose>
         limit #{pageIndex}, 10
     </select>

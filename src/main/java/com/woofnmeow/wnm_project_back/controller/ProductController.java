@@ -48,14 +48,14 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getProductByProductMstId(productMstId));
     }
 
-    @GetMapping("/api/products/{petTypeName}/{productCategoryName}")
+    @GetMapping("/api/admin/products")
     public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        System.out.println(searchMasterProductReqDto);
         return ResponseEntity.ok().body(productService.getProducts(searchMasterProductReqDto));
     }
 
     @PutMapping("/api/admin/product/{productDtlId}")
     public ResponseEntity<?> editProduct(@PathVariable int productDtlId, @RequestBody EditProductReqDto editProductReqDto) {
-        System.out.println(editProductReqDto);
         return ResponseEntity.ok().body(productService.editProduct(productDtlId, editProductReqDto));
     }
 
