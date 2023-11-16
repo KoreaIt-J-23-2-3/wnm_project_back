@@ -3,6 +3,7 @@ package com.woofnmeow.wnm_project_back.service;
 import com.woofnmeow.wnm_project_back.dto.*;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
+import com.woofnmeow.wnm_project_back.vo.SearchMasterProductVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,15 +76,7 @@ public class ProductService {
     }
 
     public List<GetMasterProductRespDto> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        Map<String, Object> reqMap = new HashMap<>();
-        reqMap.put("petTypeName", searchMasterProductReqDto.getPetTypeName());
-        reqMap.put("productCategoryName", searchMasterProductReqDto.getProductCategoryName());
-        reqMap.put("pageIndex", (searchMasterProductReqDto.getPageIndex() - 1) * 10);
-        reqMap.put("searchOption", searchMasterProductReqDto.getSearchOption());
-        reqMap.put("searchValue", searchMasterProductReqDto.getSearchValue());
-        reqMap.put("sortOption", searchMasterProductReqDto.getSortOption());
-
-        return productMapper.getMasterProductList(reqMap).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
+        return productMapper.getMasterProductList(searchMasterProductReqDto.toVo()).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = Exception.class)
