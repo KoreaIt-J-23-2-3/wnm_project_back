@@ -29,25 +29,18 @@ public class ProductMst {
     private Category category;
     private List<ProductDtl> productDtlList;
 
-
     public GetProductRespDto toProductRespDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String detailText = productDetailText;
         if(productDetailText != null) {
-            detailText = productDetailText.replaceAll("\n", "<br>");
+            productDetailText.replaceAll("\n", "<br>");
         }
         return GetProductRespDto.builder()
-                .productMstId(productMstId)
                 .productName(productName)
-                .petTypeId(petTypeId)
-                .petTypeName(petType.getPetTypeName())
-                .productCategoryId(productCategoryId)
-                .productCategoryName(category.getProductCategoryName())
-                .createDate(createDate.format(formatter))
-                .productDetailText(detailText)
+                .productDetailText(productDetailText)
                 .productThumbnailUrl(productThumbnailUrl)
                 .productDetailUrl(productDetailUrl)
-                .productDetailData(productDtlList)
+                .createDate(createDate.format(formatter))
+                .productDtlList(productDtlList)
                 .build();
     }
 

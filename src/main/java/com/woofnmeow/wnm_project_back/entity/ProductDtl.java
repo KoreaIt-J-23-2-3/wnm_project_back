@@ -18,4 +18,7 @@ public class ProductDtl {
 
     private Size size;
     private ProductMst productMst;
+
+
+
 }
