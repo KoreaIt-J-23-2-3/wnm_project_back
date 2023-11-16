@@ -13,8 +13,9 @@ public class ProductDtl {
     private int productDtlId;
     private int price;
     private int sizeId;
-    private String sizeName;
     private int actualStock;
     private int tempStock;
 
+    private Size size;
+    private ProductMst productMst;
 }

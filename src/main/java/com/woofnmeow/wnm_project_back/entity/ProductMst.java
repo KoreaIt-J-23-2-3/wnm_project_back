@@ -19,14 +19,16 @@ public class ProductMst {
     private int productMstId;
     private String productName;
     private int petTypeId;
-    private String petTypeName;
     private int productCategoryId;
-    private String productCategoryName;
     private String productDetailText;
     private String productThumbnailUrl;
     private String productDetailUrl;
     private LocalDateTime createDate;
+
+    private PetType petType;
+    private Category category;
     private List<ProductDtl> productDtlList;
+
 
     public GetProductRespDto toProductRespDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -38,9 +40,9 @@ public class ProductMst {
                 .productMstId(productMstId)
                 .productName(productName)
                 .petTypeId(petTypeId)
-                .petTypeName(petTypeName)
+                .petTypeName(petType.getPetTypeName())
                 .productCategoryId(productCategoryId)
-                .productCategoryName(productCategoryName)
+                .productCategoryName(category.getProductCategoryName())
                 .createDate(createDate.format(formatter))
                 .productDetailText(detailText)
                 .productThumbnailUrl(productThumbnailUrl)
@@ -54,8 +56,8 @@ public class ProductMst {
         return GetMasterProductRespDto.builder()
                 .productMstId(productMstId)
                 .productName(productName)
-                .petTypeName(petTypeName)
-                .productCategoryName(productCategoryName)
+                .petTypeName(petType.getPetTypeName())
+                .productCategoryName(category.getProductCategoryName())
                 .productThumbnailUrl(productThumbnailUrl)
                 .createDate(createDate.format(formatter))
                 .build();
