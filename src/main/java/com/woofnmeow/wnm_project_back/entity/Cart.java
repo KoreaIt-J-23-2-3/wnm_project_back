@@ -1,15 +1,12 @@
 package com.woofnmeow.wnm_project_back.entity;
 
 import com.woofnmeow.wnm_project_back.dto.GetUserCartProductsRespDto;
-import com.woofnmeow.wnm_project_back.dto.GetUserCartRespDto;
-import com.woofnmeow.wnm_project_back.dto.GetUserOrdersRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,12 +18,14 @@ public class Cart {
     private int productDtlId;
     private int count;
 
-    private List<CartProducts> cartProducts;
+    private ProductDtl productDtl;
 
-    public GetUserCartRespDto toGetUserCartRespDto() {
-        return GetUserCartRespDto.builder()
-                .userId(userId)
-                .getUserCartProductsRespDtos(cartProducts.stream().map(CartProducts::toGetUserCartProductsRespDto).collect(Collectors.toList()))
+    public GetUserCartProductsRespDto toGetUserCartProductsRespDto() {
+        return GetUserCartProductsRespDto.builder()
+                .cartId(cartId)
+                .productDtlId(productDtlId)
+                .count(count)
+                .product(productDtl)
                 .build();
     }
 }

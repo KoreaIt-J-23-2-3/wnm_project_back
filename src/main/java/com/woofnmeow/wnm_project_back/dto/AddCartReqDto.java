@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.dto;
 
-import com.woofnmeow.wnm_project_back.entity.CartProducts;
+import com.woofnmeow.wnm_project_back.entity.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +14,9 @@ public class AddCartReqDto {
     private int productDtlId;
     private int count;
 
-    public CartProducts toCartProductsEntity() {
-        return CartProducts.builder()
+    public Cart toCartProductsEntity(int userid) {
+        return Cart.builder()
+                .userId(userid)
                 .productDtlId(productDtlId)
                 .count(count)
                 .build();

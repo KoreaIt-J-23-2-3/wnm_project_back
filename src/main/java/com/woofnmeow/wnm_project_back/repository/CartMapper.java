@@ -15,7 +15,7 @@ public interface CartMapper {
 
     public int deleteCartProduct(int cartId);
 
-    public int addCart(Cart cart);
+    public int addCart(List<Cart> cart);
 
     public int deleteOrderCart(DeleteOrderCartVo deleteOrderCartVo);
 }

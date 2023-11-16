@@ -26,26 +26,4 @@ public class Order {
     private String shippingAddressName;
     private String shippingAddressDetailName;
     private int orderStatus;
-
-    private List<OrderProducts> orderProducts;
-
-    public GetUserOrdersRespDto toGetUserOrdersRespDto () {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        return GetUserOrdersRespDto.builder()
-                .orderId(orderId)
-                .userId(userId)
-                .orderDate(orderDate.format(dateTimeFormatter))
-                .shippingName(shippingName)
-                .shippingPhone(shippingPhone)
-                .shippingAddressNumber(shippingAddressNumber)
-                .shippingAddressName(shippingAddressName)
-                .shippingAddressDetailName(shippingAddressDetailName)
-                .orderStatus(orderStatus)
-                .getUserOrderProductsRespDtos(orderProducts.stream().map(OrderProducts::toGetUserOrderProductsRespDto).collect(Collectors.toList()))
-                .build();
-    }
-
-
-
 }
