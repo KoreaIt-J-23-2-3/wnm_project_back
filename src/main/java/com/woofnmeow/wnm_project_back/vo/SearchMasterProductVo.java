@@ -13,4 +13,5 @@ public class SearchMasterProductVo {
     private String searchValue;
     private String sortOption;
     private int pageIndex;
+    private int limit;
 }

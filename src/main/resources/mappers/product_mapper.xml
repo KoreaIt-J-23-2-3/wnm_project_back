@@ -180,7 +180,7 @@
                 pmt.product_mst_id desc
             </when>
         </choose>
-        limit #{pageIndex}, 10
+        limit #{pageIndex}, #{limit}
     </select>
 
 

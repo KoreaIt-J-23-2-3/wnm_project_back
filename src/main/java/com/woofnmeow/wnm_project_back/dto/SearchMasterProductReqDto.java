@@ -23,6 +23,7 @@ public class SearchMasterProductReqDto {
                 .searchValue(searchValue)
                 .sortOption(sortOption)
                 .pageIndex((pageIndex - 1) * 10)
+                .limit(10)
                 .build();
     }
 }
