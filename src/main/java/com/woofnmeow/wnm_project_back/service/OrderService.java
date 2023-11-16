@@ -50,6 +50,8 @@ public class OrderService {
         reqMap.put("searchValue", value);
         reqMap.put("sortOption", sort);
 
-        return null;
+        return orderMapper.selectOrders(reqMap).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
+
+//        return orderMapper.selectOrders(searchOrderReqDto.toVo(principalUser.getUser().getUserId())).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList())
     }
 }

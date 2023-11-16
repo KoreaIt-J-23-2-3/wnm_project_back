@@ -1,5 +1,6 @@
 package com.woofnmeow.wnm_project_back.dto;
 
+import com.woofnmeow.wnm_project_back.entity.ProductDtl;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +15,6 @@ public class GetUserOrderProductsRespDto {
     private int oderProductsId;
     private int productDtlId;
     private int count;
-    private int productMstId;
-    private int price;
-    private String sizeName;
-    private String productName;
-    private String productThumbnailUrl;
+
+    private ProductDtl productDtl;
 }

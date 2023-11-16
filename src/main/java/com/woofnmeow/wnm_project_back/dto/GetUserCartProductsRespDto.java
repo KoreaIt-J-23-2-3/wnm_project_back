@@ -11,5 +11,5 @@ public class GetUserCartProductsRespDto {
     private int productDtlId;
     private int count;
 
-    private ProductDtl product;
+    private ProductDtl productDtl;
 }

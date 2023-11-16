@@ -26,4 +26,23 @@ public class Order {
     private String shippingAddressName;
     private String shippingAddressDetailName;
     private int orderStatus;
+
+    private List<OrderProducts> orderProducts;
+
+    public GetUserOrdersRespDto toGetUserOrdersRespDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println(orderProducts);
+        return GetUserOrdersRespDto.builder()
+                .orderId(orderId)
+                .userId(userId)
+                .orderDate(orderDate.format(formatter))
+                .shippingName(shippingName)
+                .shippingPhone(shippingPhone)
+                .shippingAddressNumber(shippingAddressNumber)
+                .shippingAddressName(shippingAddressName)
+                .shippingAddressDetailName(shippingAddressDetailName)
+                .orderStatus(orderStatus)
+                .getUserOrderProductsRespDtos(orderProducts.stream().map(OrderProducts::toGetOrderProductsRespDto).collect(Collectors.toList()))
+                .build();
+    }
 }
