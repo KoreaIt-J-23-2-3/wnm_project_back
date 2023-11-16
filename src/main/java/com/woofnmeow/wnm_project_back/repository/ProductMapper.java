@@ -19,8 +19,8 @@ public interface ProductMapper {
     public Integer outgoingQuantity(Map<String, Object> map);
     public ProductMst getProductByProductDtlId(int productDtlId);
     public ProductMst getProductByProductMstId(int productMstId);
+    public List<ProductMst> getMasterProductList(Map<String, Object> reqMap);
     public Integer updateProductMst(Map<String, Object> map);
     public Integer updateProductDtl(ProductDtl productDtl);
     public Integer deleteProduct(int productMstId);
-    public List<ProductMst> getMasterProductList(Map<String, Object> reqMap);
 }

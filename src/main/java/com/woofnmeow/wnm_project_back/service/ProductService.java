@@ -3,6 +3,7 @@ package com.woofnmeow.wnm_project_back.service;
 import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.GetMasterProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetProductRespDto;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,12 +69,12 @@ public class ProductService {
         return productMapper.outgoingQuantity(map) > 0;
     }
 
-    public GetMasterProductRespDto getProductByProductDtlId(int productDtlId) {
-        return productMapper.getProductByProductDtlId(productDtlId).toMasterProductRespDto();
+    public GetProductRespDto getProductByProductDtlId(int productDtlId) {
+        return productMapper.getProductByProductDtlId(productDtlId).toProductRespDto();
     }
 
-    public GetMasterProductRespDto getProductByProductMstId(int productMstId) {
-        return productMapper.getProductByProductMstId(productMstId).toMasterProductRespDto();
+    public GetProductRespDto getProductByProductMstId(int productMstId) {
+        return productMapper.getProductByProductMstId(productMstId).toProductRespDto();
     }
 
     public List<GetMasterProductRespDto> getProducts(String petTypeName,
@@ -81,7 +83,6 @@ public class ProductService {
                                                String value,
                                                String sort,
                                                int page) {
-        List<GetMasterProductRespDto> respList = new ArrayList<>();
         Map<String, Object> reqMap = new HashMap<>();
 
         reqMap.put("petTypeName", petTypeName);
@@ -91,11 +92,8 @@ public class ProductService {
         reqMap.put("searchValue", value);
         reqMap.put("sortOption", sort);
         System.out.println(reqMap);
-        productMapper.getMasterProductList(reqMap).forEach(productMst -> {
-            respList.add(productMst.toMasterProductRespDto());
-        });
 
-        return respList;
+        return productMapper.getMasterProductList(reqMap).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = Exception.class)
