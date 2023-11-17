@@ -10,5 +10,5 @@ import java.util.Map;
 @Data
 public class DeleteOrderCartVo {
     private int userId;
-    private List<Map<String, Object>> products;
+    private List<Integer> products;
 }

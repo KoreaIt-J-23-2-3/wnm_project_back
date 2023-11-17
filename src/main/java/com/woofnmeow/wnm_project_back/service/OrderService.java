@@ -21,17 +21,28 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
     private final OrderMapper orderMapper;
+    private final CartMapper cartMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public boolean addOrder(AddOrderReqDto addOrderReqDto) {
 
-            Order order = addOrderReqDto.toOrderEntity();
-            orderMapper.addOrder(order);
+        Order order = addOrderReqDto.toOrderEntity();
+        orderMapper.addOrder(order);
 
-            addOrderReqDto.getOrderProductData().forEach(productData -> {
+        addOrderReqDto.getOrderProductData().forEach(productData -> {
+            orderMapper.addOrderProducts(productData.toProductDtlMap(order.getOrderId()));
+        });
 
-                orderMapper.addOrderProducts(productData.toProductDtlMap(order.getOrderId()));
-            });
+        if(addOrderReqDto.getIsCart()) {
+            Map<String, Object> map = new HashMap<>();
+            cartMapper.deleteOrderCart(DeleteOrderCartVo.builder()
+                            .userId(addOrderReqDto.getUserId())
+                            .products(addOrderReqDto.getOrderProductData().stream()
+                                    .map(orderProduct -> orderProduct.getProductDtlId())
+                                    .collect(Collectors.toList()))
+                            .build());
+        }
+
         return true;
     }
 

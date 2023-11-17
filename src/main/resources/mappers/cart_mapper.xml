@@ -35,16 +35,8 @@
         <result property="sizeName" column="size_name"/>
     </resultMap>
 
-    <insert id="addCart" parameterType="arraylist">
-        insert into cart_tb values
-        <foreach collection="list" item="product" separator=",">
-            (
-                0,
-                #{product.userId},
-                #{product.productDtlId},
-                #{product.count}
-            )
-        </foreach>;
+    <insert id="addCart" parameterType="com.woofnmeow.wnm_project_back.entity.Cart" statementType="CALLABLE">
+        {call p_add_cart(#{userId}, #{productDtlId}, #{count})}
     </insert>
 
     <select id="findCartByUserId" resultMap="CartMap">
@@ -90,10 +82,9 @@
             cart_tb
         where
             user_id = #{userId}
-        and (
-        <foreach collection="products" item="product" open="(" close=")" separator="or">
-            product_id = #{product.productId}
-            and size = #{product.size}
+        and product_dtl_id in (
+        <foreach collection="products" item="productDtlId" separator=",">
+            #{productDtlId}
         </foreach>
         )
     </delete>
