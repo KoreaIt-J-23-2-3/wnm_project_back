@@ -11,16 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class AddCartReqDto {
-    private int productId;
-    private String size;
+    private int productDtlId;
     private int count;
-    private int totalPrice;
 
-    public Cart toCartEntity(int userId) {
+    public Cart toCartProductsEntity(int userid) {
         return Cart.builder()
-                .productId(productId)
-                .userId(userId)
-                .size(size)
+                .userId(userid)
+                .productDtlId(productDtlId)
                 .count(count)
                 .build();
     }

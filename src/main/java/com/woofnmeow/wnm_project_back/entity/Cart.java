@@ -1,10 +1,12 @@
 package com.woofnmeow.wnm_project_back.entity;
 
-import com.woofnmeow.wnm_project_back.dto.GetCartProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.GetUserCartProductsRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,25 +15,17 @@ import lombok.NoArgsConstructor;
 public class Cart {
     private int cartId;
     private int userId;
-    private int productId;
-    private String size;
+    private int productDtlId;
     private int count;
 
-    // join 변수
-    private String productName;
-    private int productPrice;
-    private String productThumbnail;
+    private ProductDtl productDtl;
 
-    public GetCartProductsRespDto toCartRespDto() {
-        return GetCartProductsRespDto.builder()
+    public GetUserCartProductsRespDto toGetUserCartProductsRespDto() {
+        return GetUserCartProductsRespDto.builder()
                 .cartId(cartId)
-                .userId(userId)
-                .productId(productId)
-                .size(size)
+                .productDtlId(productDtlId)
                 .count(count)
-                .productName(productName)
-                .productPrice(productPrice)
-                .productThumbnail(productThumbnail)
+                .productDtl(productDtl)
                 .build();
     }
 }

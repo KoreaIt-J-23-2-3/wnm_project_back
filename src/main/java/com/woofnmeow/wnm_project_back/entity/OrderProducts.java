@@ -1,5 +1,6 @@
 package com.woofnmeow.wnm_project_back.entity;
 
+import com.woofnmeow.wnm_project_back.dto.GetUserCartProductsRespDto;
 import com.woofnmeow.wnm_project_back.dto.GetUserOrderProductsRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,34 +9,20 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
+@Data
 public class OrderProducts {
-    // order_products_tb
     private int orderProductsId;
+    private int orderId;
     private int productDtlId;
     private int count;
 
-    // product_dtl_tb
-    private int productMstId;
-    private int price;
-    private String sizeName;
+    private ProductDtl productDtl;
 
-    // product_mst_tb
-    private String productName;
-    private String productThumbnailUrl;
-
-
-    public GetUserOrderProductsRespDto toGetUserOrderProductsRespDto() {
+    public GetUserOrderProductsRespDto toGetOrderProductsRespDto() {
         return GetUserOrderProductsRespDto.builder()
                 .oderProductsId(orderProductsId)
-                .productDtlId(productDtlId)
-                .count(count)
-                .productMstId(productMstId)
-                .price(price)
-                .sizeName(sizeName)
-                .productName(productName)
-                .productThumbnailUrl(productThumbnailUrl)
+                .productDtl(productDtl)
                 .build();
     }
 }

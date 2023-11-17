@@ -17,19 +17,36 @@
         <result property="shippingAddressName" column="shipping_address_name"/>
         <result property="shippingAddressDetailName" column="shipping_address_detail_name"/>
         <result property="orderStatus" column="order_status"/>
-        <collection property="orderProducts" javaType="List" resultMap="orderProductsMap"/>
+        <collection property="orderProducts" javaType="List" resultMap="orderProdutsMap"/>
     </resultMap>
 
-    <resultMap id="orderProductsMap" type="com.woofnmeow.wnm_project_back.entity.OrderProducts">
+    <resultMap id="orderProdutsMap" type="com.woofnmeow.wnm_project_back.entity.OrderProducts">
         <id property="orderProductsId" column="order_products_id"/>
         <result property="productDtlId" column="product_dtl_id"/>
         <result property="count" column="count"/>
-        <result property="productMstId" column="product_mst_id"/>
-        <result property="price" column="price"/>
-        <result property="sizeName" column="size_name"/>
+        <association property="productDtl" resultMap="ProductDtlMap"/>
+    </resultMap>
+
+    <resultMap id="ProductDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+        <id property="productDtlId" column="product_dtl_id" />
+        <result property="productMstId" column="product_mst_id" />
+        <result property="price" column="price" />
+        <result property="sizeId" column="size_id" />
+        <association property="productMst" resultMap="ProductMstMap"/>
+        <association property="size" resultMap="SizeMap"/>
+    </resultMap>
+
+    <resultMap id="ProductMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
+        <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
         <result property="productThumbnailUrl" column="product_thumbnail_url"/>
     </resultMap>
+
+    <resultMap id="SizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
+        <id property="sizeId" column="size_id"/>
+        <result property="sizeName" column="size_name"/>
+    </resultMap>
+
 
 
     <insert id="addOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
