@@ -19,8 +19,10 @@ public class CartService {
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean addCart(int userId, List<AddCartReqDto> addCartReqDto) {
-
-        return cartMapper.addCart(addCartReqDto.stream().map(dto -> dto.toCartProductsEntity(userId)).collect(Collectors.toList())) > 0;
+        return addCartReqDto.stream()
+                .map(dto -> dto.toCartProductsEntity(userId))
+                .map(cart -> cartMapper.addCart(cart))
+                .allMatch(successCount -> successCount == 1);
     }
 
     public List<GetUserCartProductsRespDto> getCartProductsByUserId(int userId) {
