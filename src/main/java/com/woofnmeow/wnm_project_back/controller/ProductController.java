@@ -60,6 +60,17 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getSearchedProducts(searchMasterProductReqDto));
     }
 
+    @GetMapping("api/product/master")
+    public ResponseEntity<?> searchMasterProduct(SearchMasterProductReqDto searchMasterProductReqDto) {
+        searchMasterProductReqDto.setSearchOption("all");
+        searchMasterProductReqDto.setProductCategoryName("all");
+        searchMasterProductReqDto.setPageIndex(13);
+        searchMasterProductReqDto.setSearchValue("");
+        searchMasterProductReqDto.setPetTypeName("all");
+        searchMasterProductReqDto.setSortOption("name");
+        return ResponseEntity.ok().body(productService.searchMasterProduct(searchMasterProductReqDto));
+    }
+
     @PutMapping("/api/admin/product/{productDtlId}")
     public ResponseEntity<?> editProduct(@PathVariable int productDtlId, @RequestBody EditProductReqDto editProductReqDto) {
         return ResponseEntity.ok().body(productService.editProduct(productDtlId, editProductReqDto));

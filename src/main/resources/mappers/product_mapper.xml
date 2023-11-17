@@ -33,6 +33,17 @@
 
 
 
+    <resultMap id="productMapV2" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDetailText" column="product_detail_text"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="productDetailUrl" column="product_detail_url"/>
+        <result property="createDate" column="create_date"/>
+        <result property="sizeAndPrice" column="sizes_and_prices"/>
+    </resultMap>
+
+
 
     <resultMap id="ProductDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
@@ -188,6 +199,62 @@
 
 
 
+    <select id="searchProductMst" resultMap="productMapV2">
+        select
+            pmt.product_mst_id,
+            pmt.product_name,
+            ptt.pet_type_name,
+            pct.product_category_name,
+            pmt.product_thumbnail_url,
+            pmt.product_detail_text,
+            pmt.product_detail_url,
+            pmt.create_date,
+            GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices
+        from
+            product_mst_tb pmt
+            left outer join product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        where
+            1 = 1
+        <choose>
+            <when test="searchOption.equals('number')">
+                and pmt.product_mst_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('name')">
+                and pmt.product_name like concat("%", #{searchValue}, "%")
+            </when>
+            <otherwise>
+                and (pmt.product_name like concat("%", #{searchValue}, "%")
+                or pct.product_category_name like concat("%", #{searchValue}, "%")
+                or ptt.pet_type_name like concat("%", #{searchValue}, "%"))
+            </otherwise>
+        </choose>
+        <if test="!petTypeName.equals('all')">
+            and ptt.pet_type_name = #{petTypeName}
+        </if>
+        <if test="!productCategoryName.equals('all')">
+            and pct.product_category_name = #{productCategoryName}
+        </if>
+        group by
+            pmt.product_mst_id
+        order by
+        <choose>
+            <when test="sortOption.equals('name')">
+                pmt.product_name COLLATE utf8mb4_unicode_ci
+            </when>
+            <when test="sortOption.equals('number')">
+                pmt.product_mst_id desc
+            </when>
+            <otherwise>
+                pmt.product_mst_id desc
+            </otherwise>
+        </choose>
+        limit
+            #{pageIndex}, #{limit}
+
+    </select>
 
 
     <select id="getProductByProductDtlId" resultMap="productMap">
@@ -261,7 +328,7 @@
             left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
             left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
         where
-        1 = 1
+            1 = 1
         <choose>
             <when test="searchOption.equals('number')">
                 and pmt.product_mst_id = #{searchValue}
@@ -289,6 +356,9 @@
             <when test="sortOption.equals('number')">
                 pmt.product_mst_id desc
             </when>
+            <otherwise>
+                pmt.product_mst_id desc
+            </otherwise>
         </choose>
         limit #{pageIndex}, #{limit}
     </select>
