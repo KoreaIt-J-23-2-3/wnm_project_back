@@ -3,6 +3,7 @@ package com.woofnmeow.wnm_project_back.service;
 import com.woofnmeow.wnm_project_back.dto.*;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
+import com.woofnmeow.wnm_project_back.vo.GetProductVo;
 import com.woofnmeow.wnm_project_back.vo.SearchMasterProductVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,8 +80,32 @@ public class ProductService {
         return productMapper.getMasterProductList(searchMasterProductReqDto.toVo()).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
     }
     public List<GetMasterProductRespDto> getSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        System.out.println("service" + searchMasterProductReqDto);
         return productMapper.getMasterProductList(searchMasterProductReqDto.toSearchedProduct()).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
+    }
+
+    public List<SearchMasterProductRespDto> searchMasterProduct(SearchMasterProductReqDto searchMasterProductReqDto) {
+        List<GetProductVo> getProductVo = productMapper.searchProductMst(searchMasterProductReqDto.toVo());
+        Map<String, Object> map = new HashMap<>();
+        List<SearchMasterProductRespDto> reqList= new ArrayList<>();
+        getProductVo.forEach(vo -> {
+            System.out.println(vo);
+            String allSizeAndPrice = vo.getSizeAndPrice();
+            String[] sizeAndPrice = allSizeAndPrice.split(", ");
+            for (int i = 0; i < sizeAndPrice.length; i++) {
+
+                String[] sizes = sizeAndPrice[i].split("/ ", 0);
+                String[] prices = sizeAndPrice[i].split("/ ", 1);
+                String size = sizes[0].substring(1);
+                String price = prices[0].substring(prices[0].indexOf("/ ") + 2).replace(")", "");
+                map.put(size, price.toString());
+            }
+
+            reqList.add(vo.toRespDto(map));
+        });
+            reqList.forEach(req -> {
+                System.out.println(req);
+            });
+       return reqList;
     }
 
     @Transactional(rollbackFor = Exception.class)
