@@ -18,6 +18,10 @@ public class ProductDtl {
     private int actualStock;
     private int tempStock;
 
-    private ProductMst productMst;
     private Size size;
+    private ProductMst productMst;
+
+
+
+
 }

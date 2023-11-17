@@ -7,37 +7,96 @@
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ProductMapper">
 
+
     <resultMap id="productMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id" />
         <result property="productName" column="product_name" />
         <result property="petTypeId" column="pet_type_id" />
-        <result property="petTypeName" column="pet_type_name" />
         <result property="productCategoryId" column="product_category_id" />
-        <result property="productCategoryName" column="product_category_name" />
         <result property="productDetailText" column="product_detail_text" />
         <result property="productThumbnailUrl" column="product_thumbnail_url" />
         <result property="productDetailUrl" column="product_detail_url" />
         <result property="createDate" column="create_date" />
-        <collection property="productDtlList" javaType="list" resultMap="ProductDtlMap"/>
+        <association property="petType" resultMap="petTypeMap"/>
+        <association property="category" resultMap="categoryMap"/>
+        <collection property="productDtlList" javaType="list" resultMap="ProductDtlForMstMap"/>
     </resultMap>
+    <resultMap id="ProductDtlForMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+        <id property="productDtlId" column="product_dtl_id" />
+        <result property="price" column="price" />
+        <result property="sizeId" column="size_id" />
+        <result property="actualStock" column="actual_stock" />
+        <result property="tempStock" column="temp_stock" />
+        <association property="size" resultMap="sizeMap" />
+    </resultMap>
+
+
+
+
 
     <resultMap id="ProductDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
         <result property="price" column="price" />
         <result property="sizeId" column="size_id" />
-        <result property="sizeName" column="size_name" />
         <result property="actualStock" column="actual_stock" />
         <result property="tempStock" column="temp_stock" />
+        <association property="size" resultMap="sizeMap" />
+        <association property="productMst" resultMap="productMstForDtlMap" />
     </resultMap>
+    <resultMap id="productMstForDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="petTypeId" column="product_name"/>
+        <result property="productCategoryId" column="product_name"/>
+        <result property="productDetailText" column="product_detail_text" />
+        <result property="productThumbnailUrl" column="product_thumbnail_url" />
+        <result property="productDetailUrl" column="product_detail_url" />
+        <result property="createDate" column="create_date" />
+        <association property="petType" resultMap="petTypeMap"/>
+        <association property="category" resultMap="categoryMap"/>
+    </resultMap>
+
+
+
+
 
     <resultMap id="productMstListMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
-        <result property="petTypeName" column="pet_type_name"/>
-        <result property="productCategoryName" column="product_category_name"/>
+        <result property="petTypeId" column="pet_type_id"/>
+        <result property="productCategoryId" column="product_category_id"/>
         <result property="productThumbnailUrl" column="product_thumbnail_url"/>
         <result property="createDate" column="create_date"/>
+        <association property="petType" resultMap="petTypeMap"/>
+        <association property="category" resultMap="categoryMap"/>
     </resultMap>
+
+
+
+
+
+    <resultMap id="sizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
+        <id property="sizeId" column="size_id"/>
+        <result property="sizeName" column="size_name"/>
+    </resultMap>
+
+    <resultMap id="petTypeMap" type="com.woofnmeow.wnm_project_back.entity.PetType">
+        <id property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
+    </resultMap>
+
+    <resultMap id="categoryMap" type="com.woofnmeow.wnm_project_back.entity.Category">
+        <id property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
+    </resultMap>
+
+
+
+
+
+
+
+
 
     <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.ProductMst" useGeneratedKeys="true" keyProperty="productMstId">
         insert into
@@ -51,11 +110,24 @@
         values(0, #{productMstId}, #{price}, #{sizeId})
     </insert>
 
-    <insert id="incomingQuantity" parameterType="hashmap">
+    <insert id="outgoingQuantity" parameterType="hashmap">
         insert into
-            incoming_history_tb
+        outgoing_history_tb
         values(0, #{productDtlId}, #{count}, now())
     </insert>
+
+    <insert id="incomingQuantity" parameterType="hashmap">
+        insert into
+        incoming_history_tb
+        values(0, #{productDtlId}, #{count}, now())
+    </insert>
+
+
+
+
+
+
+
 
     <update id="updateIncomingQuantity" parameterType="hashmap">
         update
@@ -66,6 +138,34 @@
             incoming_history_id = #{incomingHistoryId}
     </update>
 
+    <update id="updateProductMst" parameterType="hashmap">
+        update
+        product_mst_tb
+        set
+        product_name = #{productName},
+        product_detail_text = #{productDetailText},
+        product_thumbnail_url = #{productThumbnailUrl},
+        product_detail_url = #{productDetailUrl}
+        where
+        product_mst_id = #{productMstId}
+    </update>
+
+    <update id="updateProductDtl" parameterType="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+        update
+        product_dtl_tb
+        set
+        price = #{price}
+        where
+        product_dtl_id = #{productDtlId}
+    </update>
+
+
+
+
+
+
+
+
     <delete id="deleteIncomingQuantity">
         delete
             from
@@ -74,11 +174,21 @@
                 incoming_history_id = #{incomingHistoryId}
     </delete>
 
-    <insert id="outgoingQuantity" parameterType="hashmap">
-        insert into
-            outgoing_history_tb
-        values(0, #{productDtlId}, #{count}, now())
-    </insert>
+    <delete id="deleteProduct">
+        delete
+        from
+        product_mst_tb
+        where
+        product_mst_id = #{productMstId}
+    </delete>
+
+
+
+
+
+
+
+
 
     <select id="getProductByProductDtlId" resultMap="productMap">
         select
@@ -179,42 +289,8 @@
             <when test="sortOption.equals('number')">
                 pmt.product_mst_id desc
             </when>
-            <otherwise>
-                pmt.product_mst_id desc
-            </otherwise>
         </choose>
         limit #{pageIndex}, #{limit}
     </select>
-
-
-    <update id="updateProductMst" parameterType="hashmap">
-        update
-            product_mst_tb
-        set
-            product_name = #{productName},
-            product_detail_text = #{productDetailText},
-            product_thumbnail_url = #{productThumbnailUrl},
-            product_detail_url = #{productDetailUrl}
-        where
-            product_mst_id = #{productMstId}
-    </update>
-
-    <update id="updateProductDtl" parameterType="com.woofnmeow.wnm_project_back.entity.ProductDtl">
-        update
-            product_dtl_tb
-        set
-            price = #{price}
-        where
-            product_dtl_id = #{productDtlId}
-    </update>
-
-    <delete id="deleteProduct">
-        delete
-            from
-                product_mst_tb
-            where
-                product_mst_id = #{productMstId}
-    </delete>
-
 
 </mapper>
