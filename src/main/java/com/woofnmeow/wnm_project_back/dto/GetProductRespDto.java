@@ -16,6 +16,8 @@ public class GetProductRespDto {
     private String productDetailText;
     private String productThumbnailUrl;
     private String productDetailUrl;
+    private int petTypeId;
+    private int productCategoryId;
     private String createDate;
 
     private List<ProductDtl> productDtlList;

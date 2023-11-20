@@ -232,10 +232,10 @@
             </otherwise>
         </choose>
         <if test="!petTypeName.equals('all')">
-            and ptt.pet_type_name = #{petTypeName}
+            and ptt.pet_type_name_eng = #{petTypeName}
         </if>
         <if test="!productCategoryName.equals('all')">
-            and pct.product_category_name = #{productCategoryName}
+            and pct.product_category_name_eng = #{productCategoryName}
         </if>
         group by
             pmt.product_mst_id
@@ -343,10 +343,10 @@
             </when>
         </choose>
         <if test="!petTypeName.equals('all')">
-            and ptt.pet_type_name = #{petTypeName}
+            and ptt.pet_type_name_eng = #{petTypeName}
         </if>
         <if test="!productCategoryName.equals('all')">
-            and pct.product_category_name = #{productCategoryName}
+            and pct.product_category_name_eng = #{productCategoryName}
         </if>
         order by
         <choose>
@@ -360,7 +360,7 @@
                 pmt.product_mst_id desc
             </otherwise>
         </choose>
-        limit #{pageIndex}, #{limit}
+        limit #{pageIndex}, 12
     </select>
 
 </mapper>
