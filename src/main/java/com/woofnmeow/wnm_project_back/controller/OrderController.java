@@ -19,9 +19,12 @@ public class OrderController {
     }
 
     @GetMapping("/api/orders/{searchOption}")
-
     public ResponseEntity<?> findOrders(SearchOrderReqDto searchOrderReqDto) {
-
         return ResponseEntity.ok().body(orderService.selectOrders(searchOrderReqDto));
+    }
+
+    @DeleteMapping("/api/order/{orderId}")
+    public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
+        return ResponseEntity.ok().body(orderService.deleteOrder(orderId));
     }
 }
