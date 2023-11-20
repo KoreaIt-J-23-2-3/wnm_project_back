@@ -10,5 +10,4 @@ public class SearchOrderVo {
     private String searchOption;
     private String searchValue;
     private String sortOption;
-    private int pageIndex;
 }
