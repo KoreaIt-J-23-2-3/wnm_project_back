@@ -23,6 +23,7 @@
     </resultMap>
     <resultMap id="ProductDtlForMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
+        <result property="productMstId" column="product_mst_id" />
         <result property="price" column="price" />
         <result property="sizeId" column="size_id" />
         <result property="actualStock" column="actual_stock" />
@@ -33,15 +34,6 @@
 
 
 
-    <resultMap id="productMapV2" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
-        <id property="productMstId" column="product_mst_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="productDetailText" column="product_detail_text"/>
-        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
-        <result property="productDetailUrl" column="product_detail_url"/>
-        <result property="createDate" column="create_date"/>
-        <result property="sizeAndPrice" column="sizes_and_prices"/>
-    </resultMap>
 
 
 
@@ -71,6 +63,25 @@
 
 
 
+
+    <resultMap id="productMapV2" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDetailText" column="product_detail_text"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="productDetailUrl" column="product_detail_url"/>
+        <result property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="sizeAndPrice" column="sizes_and_prices"/>
+    </resultMap>
+
+
+
+
+
     <resultMap id="productMstListMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
@@ -82,6 +93,20 @@
         <association property="category" resultMap="categoryMap"/>
     </resultMap>
 
+
+    <resultMap id="incomingMap" type="com.woofnmeow.wnm_project_back.entity.Incoming" >
+        <id property="incomingHistoryId" column="incoming_history_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="incomingCount" column="incoming_count"/>
+        <result property="incomingDate" column="incoming_date"/>
+    </resultMap>
+
+    <resultMap id="outgoingMap" type="com.woofnmeow.wnm_project_back.entity.Outgoing" >
+        <id property="outgoingHistoryId" column="outgoing_history_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="outgoingCount" column="outgoing_count"/>
+        <result property="outgoingDate" column="outgoing_date"/>
+    </resultMap>
 
 
 
@@ -151,23 +176,24 @@
 
     <update id="updateProductMst" parameterType="hashmap">
         update
-        product_mst_tb
+            product_mst_tb
         set
-        product_name = #{productName},
-        product_detail_text = #{productDetailText},
-        product_thumbnail_url = #{productThumbnailUrl},
-        product_detail_url = #{productDetailUrl}
+            product_name = #{productName},
+            product_detail_text = #{productDetailText},
+            product_thumbnail_url = #{productThumbnailUrl},
+            product_detail_url = #{productDetailUrl}
         where
-        product_mst_id = #{productMstId}
+            product_mst_id = #{productMstId}
     </update>
 
-    <update id="updateProductDtl" parameterType="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+    <update id="updateProductDtl" parameterType="hashmap">
         update
-        product_dtl_tb
+            product_dtl_tb pdt
         set
-        price = #{price}
+            price = #{price}
         where
-        product_dtl_id = #{productDtlId}
+            product_mst_id = #{productMstId}
+            and size_id = #{sizeId}
     </update>
 
 
@@ -199,11 +225,37 @@
 
 
 
+    <select id="getIncomingByDtlId" resultMap="incomingMap">
+        select
+            incoming_history_id,
+            product_dtl_id,
+            incoming_count,
+            incoming_date
+        from
+            incoming_history_tb
+        where
+            product_dtl_id = #{productDtlId}
+    </select>
+
+    <select id="getOutgoingByDtlId" resultMap="outgoingMap">
+        select
+            outgoing_history_id,
+            product_dtl_id,
+            outgoing_count,
+            outgoing_date
+        from
+            outgoing_history_tb
+        where
+            product_dtl_id = #{productDtlId}
+    </select>
+
     <select id="searchProductMst" resultMap="productMapV2">
         select
             pmt.product_mst_id,
             pmt.product_name,
+            ptt.pet_type_id,
             ptt.pet_type_name,
+            pct.product_category_id,
             pct.product_category_name,
             pmt.product_thumbnail_url,
             pmt.product_detail_text,
@@ -357,7 +409,7 @@
                 pmt.product_mst_id desc
             </when>
             <otherwise>
-                pmt.product_mst_id desc
+                pmt.product_name COLLATE utf8mb4_unicode_ci
             </otherwise>
         </choose>
         limit #{pageIndex}, 12

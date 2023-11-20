@@ -2,7 +2,6 @@ package com.woofnmeow.wnm_project_back.controller;
 
 import com.woofnmeow.wnm_project_back.dto.AddProductReqDto;
 import com.woofnmeow.wnm_project_back.dto.EditProductReqDto;
-import com.woofnmeow.wnm_project_back.dto.GetSearchedMstProductsReqDto;
 import com.woofnmeow.wnm_project_back.dto.SearchMasterProductReqDto;
 import com.woofnmeow.wnm_project_back.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +33,19 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.deleteIncomingQuantity(incomingHistoryId));
     }
 
-    @PostMapping("/api/outgoing/{productDtlId}")
+    @PostMapping("/api/admin/outgoing/{productDtlId}")
     public ResponseEntity<?> outgoingQuantity(@PathVariable int productDtlId, @RequestBody int count) {
         return ResponseEntity.ok().body(productService.outgoingQuantity(productDtlId, count));
+    }
+
+    @GetMapping("/api/admin/incoming/{productDtlId}")
+    public ResponseEntity<?> getIncomingByProductDtlId(@PathVariable int productDtlId) {
+        return ResponseEntity.ok().body(productService.getIncomingByProductDtlId(productDtlId));
+    }
+
+    @GetMapping("/api/outgoing/{productDtlId}")
+    public ResponseEntity<?> getOutgoingByProductDtlId(@PathVariable int productDtlId) {
+        return ResponseEntity.ok().body(productService.getOutgoingByProductDtlId(productDtlId));
     }
 
     @GetMapping("/api/product/detail/{productDtlId}")
@@ -49,36 +58,19 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getProductByProductMstId(productMstId));
     }
 
-    @GetMapping("/api/admin/products")
-    public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        System.out.println(searchMasterProductReqDto);
-        return ResponseEntity.ok().body(productService.getProducts(searchMasterProductReqDto));
-    }
-    @GetMapping("/api/products")
-    public ResponseEntity<?> getSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        System.out.println(searchMasterProductReqDto);
-        return ResponseEntity.ok().body(productService.getSearchedProducts(searchMasterProductReqDto));
-    }
 
-    @GetMapping("api/product/master")
-    public ResponseEntity<?> searchMasterProduct(SearchMasterProductReqDto searchMasterProductReqDto) {
-        searchMasterProductReqDto.setSearchOption("all");
-        searchMasterProductReqDto.setProductCategoryName("all");
-        searchMasterProductReqDto.setPageIndex(13);
-        searchMasterProductReqDto.setSearchValue("");
-        searchMasterProductReqDto.setPetTypeName("all");
-        searchMasterProductReqDto.setSortOption("name");
+    @GetMapping("api/products")
+    public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
         return ResponseEntity.ok().body(productService.searchMasterProduct(searchMasterProductReqDto));
     }
 
-    @PutMapping("/api/admin/product/{productDtlId}")
-    public ResponseEntity<?> editProduct(@PathVariable int productDtlId, @RequestBody EditProductReqDto editProductReqDto) {
-        return ResponseEntity.ok().body(productService.editProduct(productDtlId, editProductReqDto));
+    @PutMapping("/api/admin/product/{productMstId}")
+    public ResponseEntity<?> editProduct(@PathVariable int productMstId, @RequestBody EditProductReqDto editProductReqDto) {
+        return ResponseEntity.ok().body(productService.editProduct(productMstId, editProductReqDto));
     }
 
     @DeleteMapping("/api/admin/product/{productMstId}")
     public ResponseEntity<?> removeProduct(@PathVariable int productMstId) {
         return ResponseEntity.ok().body(productService.removeProduct(productMstId));
     }
-
 }
