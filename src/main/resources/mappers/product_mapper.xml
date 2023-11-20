@@ -23,6 +23,7 @@
     </resultMap>
     <resultMap id="ProductDtlForMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
+        <result property="productMstId" column="product_mst_id" />
         <result property="price" column="price" />
         <result property="sizeId" column="size_id" />
         <result property="actualStock" column="actual_stock" />

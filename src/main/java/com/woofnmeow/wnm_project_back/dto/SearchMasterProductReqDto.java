@@ -27,7 +27,7 @@ public class SearchMasterProductReqDto {
                 .build();
     }
 
-    public SearchMasterProductVo toSearchedProduct() {
+    public SearchMasterProductVo toSearchProduct() {
         return SearchMasterProductVo.builder()
                 .petTypeName(petTypeName)
                 .productCategoryName(productCategoryName)
