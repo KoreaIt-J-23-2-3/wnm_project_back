@@ -1,6 +1,8 @@
 package com.woofnmeow.wnm_project_back.repository;
 
 import com.woofnmeow.wnm_project_back.dto.SearchMasterProductReqDto;
+import com.woofnmeow.wnm_project_back.entity.Incoming;
+import com.woofnmeow.wnm_project_back.entity.Outgoing;
 import com.woofnmeow.wnm_project_back.entity.ProductDtl;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.vo.GetProductVo;
@@ -21,6 +23,8 @@ public interface ProductMapper {
     public Integer updateIncomingQuantity(Map<String, Object> map);
     public Integer deleteIncomingQuantity(int incomingHistoryId);
     public Integer outgoingQuantity(Map<String, Object> map);
+    public List<Incoming> getIncomingByDtlId(int productDtlId);
+    public List<Outgoing> getOutgoingByDtlId(int productDtlId);
     public ProductMst getProductByProductDtlId(int productDtlId);
     public ProductMst getProductByProductMstId(int productMstId);
     public List<GetProductVo> searchProductMst(SearchMasterProductVo searchMasterProductVo);

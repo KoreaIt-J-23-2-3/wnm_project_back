@@ -1,6 +1,8 @@
 package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.*;
+import com.woofnmeow.wnm_project_back.entity.Incoming;
+import com.woofnmeow.wnm_project_back.entity.Outgoing;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
 import com.woofnmeow.wnm_project_back.vo.GetProductVo;
@@ -63,6 +65,14 @@ public class ProductService {
         map.put("productDtlId", productDtlId);
         map.put("count", count);
         return productMapper.outgoingQuantity(map) > 0;
+    }
+
+    public List<GetIncomingAndOutgoingRespDto> getIncomingByProductDtlId(int productDtlId) {
+        return productMapper.getIncomingByDtlId(productDtlId).stream().map(Incoming::toRespDto).collect(Collectors.toList());
+    }
+
+    public List<GetIncomingAndOutgoingRespDto> getOutgoingByProductDtlId(int productDtlId) {
+        return productMapper.getOutgoingByDtlId(productDtlId).stream().map(Outgoing::toRespDto).collect(Collectors.toList());
     }
 
     public GetProductRespDto getProductByProductDtlId(int productDtlId) {
