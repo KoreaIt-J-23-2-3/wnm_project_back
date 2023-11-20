@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
-
     private final OrderService orderService;
 
     @PostMapping("/api/order")
@@ -19,9 +18,7 @@ public class OrderController {
     }
 
     @GetMapping("/api/orders/{searchOption}")
-
     public ResponseEntity<?> findOrders(SearchOrderReqDto searchOrderReqDto) {
-
         return ResponseEntity.ok().body(orderService.selectOrders(searchOrderReqDto));
     }
 }

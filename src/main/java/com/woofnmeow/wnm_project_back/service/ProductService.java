@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,37 +85,40 @@ public class ProductService {
         Map<String, Object> map = new HashMap<>();
         List<SearchMasterProductRespDto> reqList= new ArrayList<>();
         getProductVo.forEach(vo -> {
-            System.out.println(vo);
             String allSizeAndPrice = vo.getSizeAndPrice();
             String[] sizeAndPrice = allSizeAndPrice.split(", ");
             for (int i = 0; i < sizeAndPrice.length; i++) {
-
                 String[] sizes = sizeAndPrice[i].split("/ ", 0);
                 String[] prices = sizeAndPrice[i].split("/ ", 1);
                 String size = sizes[0].substring(1);
                 String price = prices[0].substring(prices[0].indexOf("/ ") + 2).replace(")", "");
                 map.put(size, price.toString());
             }
-
             reqList.add(vo.toRespDto(map));
         });
-            reqList.forEach(req -> {
-                System.out.println(req);
-            });
        return reqList;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public boolean editProduct(int productDtlId, EditProductReqDto editProductReqDto) {
-        Map<String, Object> map = new HashMap<>();
-        productMapper.updateProductDtl(editProductReqDto.toProductDtlEntity(productDtlId));
-        map.put("productName", editProductReqDto.getProductName());
-        map.put("productDetailText", editProductReqDto.getProductDetailText());
-        map.put("productThumbnailUrl", editProductReqDto.getProductThumbnailUrl());
-        map.put("productDetailUrl", editProductReqDto.getProductDetailUrl());
-        map.put("productMstId", editProductReqDto.getProductMstId());
-        productMapper.updateProductMst(map);
+    public boolean editProduct(int productMstId, EditProductReqDto editProductReqDto) {
+        Map<String, Object> mstReqMap = new HashMap<>();
+        mstReqMap.put("productMstId", productMstId);
+        mstReqMap.put("productName", editProductReqDto.getProductName());
+        mstReqMap.put("productDetailText", editProductReqDto.getProductDetailText());
+        mstReqMap.put("productThumbnailUrl", editProductReqDto.getProductThumbnailUrl());
+        mstReqMap.put("productDetailUrl", editProductReqDto.getProductDetailUrl());
+        productMapper.updateProductMst(mstReqMap);
 
+        if(editProductReqDto.getNo().equals("")) {
+            productMapper.updateProductDtl(productMstId, 2, Integer.parseInt(editProductReqDto.getXS()));
+            productMapper.updateProductDtl(productMstId, 3, Integer.parseInt(editProductReqDto.getS()));
+            productMapper.updateProductDtl(productMstId, 4, Integer.parseInt(editProductReqDto.getM()));
+            productMapper.updateProductDtl(productMstId, 5, Integer.parseInt(editProductReqDto.getL()));
+            productMapper.updateProductDtl(productMstId, 6, Integer.parseInt(editProductReqDto.getXL()));
+            productMapper.updateProductDtl(productMstId, 7, Integer.parseInt(editProductReqDto.getXXL()));
+        }else {
+            productMapper.updateProductDtl(productMstId, 1, Integer.parseInt(editProductReqDto.getNo()));
+        }
         return true;
     }
 

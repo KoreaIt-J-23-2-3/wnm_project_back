@@ -1,24 +1,37 @@
 package com.woofnmeow.wnm_project_back.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woofnmeow.wnm_project_back.entity.ProductDtl;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EditProductReqDto {
-    private int productMstId;
     private String productName;
     private String productDetailText;
     private String productThumbnailUrl;
     private String productDetailUrl;
 
-    private int price;
+    // 사이즈별 가격
+    @JsonProperty("no")
+    private String no;
+    @JsonProperty("XS")
+    private String XS;
+    @JsonProperty("S")
+    private String S;
+    @JsonProperty("M")
+    private String M;
+    @JsonProperty("L")
+    private String L;
+    @JsonProperty("XL")
+    private String XL;
+    @JsonProperty("XXL")
+    private String XXL;
 
 
-    public ProductDtl toProductDtlEntity(int productDtlId) {
-        return ProductDtl.builder()
-                .productDtlId(productDtlId)
-                .price(price)
-                .build();
-    }
 }

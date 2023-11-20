@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 public class SearchMasterProductRespDto {
     private int productMstId;
     private String productName;
+    private int petTypeId;
+    private String petTypeName;
+    private int productCategoryId;
+    private String productCategoryName;
     private String productDetailText;
     private String productThumbnailUrl;
     private String productDetailUrl;

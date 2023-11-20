@@ -33,15 +33,6 @@
 
 
 
-    <resultMap id="productMapV2" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
-        <id property="productMstId" column="product_mst_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="productDetailText" column="product_detail_text"/>
-        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
-        <result property="productDetailUrl" column="product_detail_url"/>
-        <result property="createDate" column="create_date"/>
-        <result property="sizeAndPrice" column="sizes_and_prices"/>
-    </resultMap>
 
 
 
@@ -71,6 +62,25 @@
 
 
 
+
+    <resultMap id="productMapV2" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDetailText" column="product_detail_text"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="productDetailUrl" column="product_detail_url"/>
+        <result property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="sizeAndPrice" column="sizes_and_prices"/>
+    </resultMap>
+
+
+
+
+
     <resultMap id="productMstListMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
@@ -81,6 +91,8 @@
         <association property="petType" resultMap="petTypeMap"/>
         <association property="category" resultMap="categoryMap"/>
     </resultMap>
+
+
 
 
 
@@ -151,23 +163,24 @@
 
     <update id="updateProductMst" parameterType="hashmap">
         update
-        product_mst_tb
+            product_mst_tb
         set
-        product_name = #{productName},
-        product_detail_text = #{productDetailText},
-        product_thumbnail_url = #{productThumbnailUrl},
-        product_detail_url = #{productDetailUrl}
+            product_name = #{productName},
+            product_detail_text = #{productDetailText},
+            product_thumbnail_url = #{productThumbnailUrl},
+            product_detail_url = #{productDetailUrl}
         where
-        product_mst_id = #{productMstId}
+            product_mst_id = #{productMstId}
     </update>
 
-    <update id="updateProductDtl" parameterType="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+    <update id="updateProductDtl" parameterType="hashmap">
         update
-        product_dtl_tb
+            product_dtl_tb pdt
         set
-        price = #{price}
+            price = #{price}
         where
-        product_dtl_id = #{productDtlId}
+            product_mst_id = #{productMstId}
+            and size_id = #{sizeId}
     </update>
 
 
@@ -203,7 +216,9 @@
         select
             pmt.product_mst_id,
             pmt.product_name,
+            ptt.pet_type_id,
             ptt.pet_type_name,
+            pct.product_category_id,
             pct.product_category_name,
             pmt.product_thumbnail_url,
             pmt.product_detail_text,
@@ -232,10 +247,10 @@
             </otherwise>
         </choose>
         <if test="!petTypeName.equals('all')">
-            and ptt.pet_type_name = #{petTypeName}
+            and ptt.pet_type_name_eng = #{petTypeName}
         </if>
         <if test="!productCategoryName.equals('all')">
-            and pct.product_category_name = #{productCategoryName}
+            and pct.product_category_name_eng = #{productCategoryName}
         </if>
         group by
             pmt.product_mst_id
@@ -343,10 +358,10 @@
             </when>
         </choose>
         <if test="!petTypeName.equals('all')">
-            and ptt.pet_type_name = #{petTypeName}
+            and ptt.pet_type_name_eng = #{petTypeName}
         </if>
         <if test="!productCategoryName.equals('all')">
-            and pct.product_category_name = #{productCategoryName}
+            and pct.product_category_name_eng = #{productCategoryName}
         </if>
         order by
         <choose>
@@ -357,7 +372,7 @@
                 pmt.product_mst_id desc
             </when>
             <otherwise>
-                pmt.product_mst_id desc
+                pmt.product_name COLLATE utf8mb4_unicode_ci
             </otherwise>
         </choose>
         limit #{pageIndex}, #{limit}
