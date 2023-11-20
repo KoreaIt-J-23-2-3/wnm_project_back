@@ -26,7 +26,7 @@ public class GetSearchedMstProductsReqDto {
                 .searchValue(searchValue)
                 .sortOption(sortOption)
                 .pageIndex((pageIndex - 1) * 10)
-                .limit(9)
+                .limit(12)
                 .build();
     }
 }
