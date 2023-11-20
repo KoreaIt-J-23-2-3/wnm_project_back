@@ -39,6 +39,16 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.outgoingQuantity(productDtlId, count));
     }
 
+    @GetMapping("/api/incoming/{productDtlId}")
+    public ResponseEntity<?> getIncomingByProductDtlId(@PathVariable int productDtlId) {
+        return ResponseEntity.ok().body(productService.getIncomingByProductDtlId(productDtlId));
+    }
+
+    @GetMapping("/api/outgoing/{productDtlId}")
+    public ResponseEntity<?> getOutgoingByProductDtlId(@PathVariable int productDtlId) {
+        return ResponseEntity.ok().body(productService.getOutgoingByProductDtlId(productDtlId));
+    }
+
     @GetMapping("/api/product/detail/{productDtlId}")
     public ResponseEntity<?> getProductByProductDtlId(@PathVariable int productDtlId) {
         return ResponseEntity.ok().body(productService.getProductByProductDtlId(productDtlId));

@@ -93,7 +93,19 @@
     </resultMap>
 
 
+    <resultMap id="incomingMap" type="com.woofnmeow.wnm_project_back.entity.Incoming" >
+        <id property="incomingHistoryId" column="incoming_history_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="incomingCount" column="incoming_count"/>
+        <result property="incomingDate" column="incoming_date"/>
+    </resultMap>
 
+    <resultMap id="outgoingMap" type="com.woofnmeow.wnm_project_back.entity.Outgoing" >
+        <id property="outgoingHistoryId" column="outgoing_history_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="outgoingCount" column="outgoing_count"/>
+        <result property="outgoingDate" column="outgoing_date"/>
+    </resultMap>
 
 
 
@@ -211,6 +223,30 @@
 
 
 
+
+    <select id="getIncomingByDtlId" resultMap="incomingMap">
+        select
+            incoming_history_id,
+            product_dtl_id,
+            incoming_count,
+            incoming_date
+        from
+            incoming_history_tb
+        where
+            product_dtl_id = #{productDtlId}
+    </select>
+
+    <select id="getOutgoingByDtlId" resultMap="outgoingMap">
+        select
+            outgoing_history_id,
+            product_dtl_id,
+            outgoing_count,
+            outgoing_date
+        from
+            outgoing_history_tb
+        where
+            product_dtl_id = #{productDtlId}
+    </select>
 
     <select id="searchProductMst" resultMap="productMapV2">
         select
