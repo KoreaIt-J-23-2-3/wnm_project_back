@@ -46,8 +46,14 @@ public class OrderService {
         return true;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public List<GetUserOrdersRespDto> selectOrders(SearchOrderReqDto searchOrderReqDto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return orderMapper.selectOrders(searchOrderReqDto.toVo(principalUser.getUser().getUserId())).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean deleteOrder(int orderId) {
+        return orderMapper.deleteOrder(orderId) > 0;
     }
 }

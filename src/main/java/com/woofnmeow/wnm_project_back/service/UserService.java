@@ -44,5 +44,4 @@ public class UserService {
         return userMapper.deleteUser(userId) > 0;
     }
 
-
 }

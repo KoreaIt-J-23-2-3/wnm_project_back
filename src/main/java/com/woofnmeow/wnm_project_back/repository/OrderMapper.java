@@ -1,6 +1,7 @@
 package com.woofnmeow.wnm_project_back.repository;
 
 import com.woofnmeow.wnm_project_back.entity.Order;
+import com.woofnmeow.wnm_project_back.entity.OrderProducts;
 import com.woofnmeow.wnm_project_back.vo.SearchOrderVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -14,4 +15,5 @@ public interface OrderMapper {
     public Integer addOrder(Order order);
     public Integer addOrderProducts(Map<String, Object> reqMap);
     public List<Order> selectOrders(SearchOrderVo searchOrderVo);
+    public Integer deleteOrder(int orderId);
 }
