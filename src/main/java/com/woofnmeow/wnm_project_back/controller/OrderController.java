@@ -17,8 +17,9 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.addOrder(addOrderReqDto));
     }
 
-    @GetMapping("/api/orders/{searchOption}")
+    @GetMapping("/api/orders")
     public ResponseEntity<?> findOrders(SearchOrderReqDto searchOrderReqDto) {
+        System.out.println(searchOrderReqDto);
         return ResponseEntity.ok().body(orderService.selectOrders(searchOrderReqDto));
     }
 

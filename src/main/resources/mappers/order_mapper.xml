@@ -106,6 +106,9 @@
             <when test="searchOption.equals('product')">
                 and pmt.product_name like concat("%", #{searchValue}, "%")
             </when>
+            <otherwise>
+                and pmt.product_name like concat("%", #{searchValue}, "%")
+            </otherwise>
         </choose>
         order by
         <choose>
@@ -116,7 +119,6 @@
                 UNIX_TIMESTAMP(order_date) desc
             </otherwise>
         </choose>
-        limit #{pageIndex}, 10
     </select>
 
     <delete id="deleteOrder">
