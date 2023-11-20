@@ -51,34 +51,25 @@ public class ProductController {
 
     @GetMapping("/api/admin/products")
     public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        System.out.println(searchMasterProductReqDto);
         return ResponseEntity.ok().body(productService.getProducts(searchMasterProductReqDto));
     }
     @GetMapping("/api/products")
     public ResponseEntity<?> getSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        System.out.println(searchMasterProductReqDto);
         return ResponseEntity.ok().body(productService.getSearchedProducts(searchMasterProductReqDto));
     }
 
     @GetMapping("api/product/master")
     public ResponseEntity<?> searchMasterProduct(SearchMasterProductReqDto searchMasterProductReqDto) {
-        searchMasterProductReqDto.setSearchOption("all");
-        searchMasterProductReqDto.setProductCategoryName("all");
-        searchMasterProductReqDto.setPageIndex(13);
-        searchMasterProductReqDto.setSearchValue("");
-        searchMasterProductReqDto.setPetTypeName("all");
-        searchMasterProductReqDto.setSortOption("name");
         return ResponseEntity.ok().body(productService.searchMasterProduct(searchMasterProductReqDto));
     }
 
-    @PutMapping("/api/admin/product/{productDtlId}")
-    public ResponseEntity<?> editProduct(@PathVariable int productDtlId, @RequestBody EditProductReqDto editProductReqDto) {
-        return ResponseEntity.ok().body(productService.editProduct(productDtlId, editProductReqDto));
+    @PutMapping("/api/admin/product/{productMstId}")
+    public ResponseEntity<?> editProduct(@PathVariable int productMstId, @RequestBody EditProductReqDto editProductReqDto) {
+        return ResponseEntity.ok().body(productService.editProduct(productMstId, editProductReqDto));
     }
 
     @DeleteMapping("/api/admin/product/{productMstId}")
     public ResponseEntity<?> removeProduct(@PathVariable int productMstId) {
         return ResponseEntity.ok().body(productService.removeProduct(productMstId));
     }
-
 }

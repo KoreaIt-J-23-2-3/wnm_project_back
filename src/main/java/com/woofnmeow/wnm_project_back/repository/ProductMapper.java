@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Mapper
 public interface ProductMapper {
@@ -25,6 +26,6 @@ public interface ProductMapper {
     public List<GetProductVo> searchProductMst(SearchMasterProductVo searchMasterProductVo);
     public List<ProductMst> getMasterProductList(SearchMasterProductVo searchMasterProductVo);
     public Integer updateProductMst(Map<String, Object> map);
-    public Integer updateProductDtl(ProductDtl productDtl);
+    public Integer updateProductDtl(int productMstId, int sizeId, int price);
     public Integer deleteProduct(int productMstId);
 }
