@@ -103,6 +103,7 @@ public class ProductService {
             }
             reqList.add(vo.toRespDto(map));
         });
+        System.out.println(reqList);
        return reqList;
     }
 

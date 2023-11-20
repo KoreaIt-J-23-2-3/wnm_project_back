@@ -415,4 +415,41 @@
         limit #{pageIndex}, 12
     </select>
 
+
+
+<!--    select-->
+<!--        pmt.product_mst_id,-->
+<!--        pmt.product_name,-->
+<!--        ptt.pet_type_id,-->
+<!--        ptt.pet_type_name,-->
+<!--        pct.product_category_id,-->
+<!--        pct.product_category_name,-->
+<!--        pmt.product_thumbnail_url,-->
+<!--        pmt.product_detail_text,-->
+<!--        pmt.product_detail_url,-->
+<!--        pmt.create_date,-->
+<!--        GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices-->
+<!--    from-->
+<!--        product_mst_tb pmt-->
+<!--        left outer join (select-->
+<!--        product_mst_id,-->
+<!--        row_number() over(partition by product_mst_id order by price) as num,-->
+<!--        row_number() over(partition by product_mst_id order by price desc) as num2,-->
+<!--        size_id,-->
+<!--        price-->
+<!--    from-->
+<!--        product_dtl_tb) pdt on(pdt.product_mst_id = pmt.product_mst_id and (pdt.num = 1 or pdt.num2 = 1))-->
+<!--        left outer join size_tb st on(st.size_id = pdt.size_id)-->
+<!--        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)-->
+<!--        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)-->
+<!--    where-->
+<!--        1 = 1-->
+<!--    group by-->
+<!--        pmt.product_mst_id;-->
+
+
+
+
+
+
 </mapper>

@@ -61,6 +61,7 @@ public class ProductController {
 
     @GetMapping("api/products")
     public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        System.out.println(searchMasterProductReqDto);
         return ResponseEntity.ok().body(productService.searchMasterProduct(searchMasterProductReqDto));
     }
 
