@@ -16,4 +16,6 @@ public interface OrderMapper {
     public Integer addOrderProducts(Map<String, Object> reqMap);
     public List<Order> selectOrders(SearchOrderVo searchOrderVo);
     public Integer deleteOrder(int orderId);
+    public List<Order> selectOrdersForAdmin(SearchOrderVo searchOrderVo);
+    public Integer updateOrderStatus(Map<String, Object> map);
 }

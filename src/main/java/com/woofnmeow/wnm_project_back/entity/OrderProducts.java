@@ -21,7 +21,7 @@ public class OrderProducts {
 
     public GetUserOrderProductsRespDto toGetOrderProductsRespDto() {
         return GetUserOrderProductsRespDto.builder()
-                .oderProductsId(orderProductsId)
+                .orderProductsId(orderProductsId)
                 .productDtl(productDtl)
                 .count(count)
                 .build();

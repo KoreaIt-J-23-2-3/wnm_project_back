@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class GetUserOrderProductsRespDto {
     // 사용자 주문 상품 조회
-    private int oderProductsId;
+    private int orderProductsId;
     private int productDtlId;
     private int count;
 

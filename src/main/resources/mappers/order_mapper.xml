@@ -72,6 +72,7 @@
             ot.shipping_address_number,
             ot.shipping_address_name,
             ot.shipping_address_detail_name,
+            ot.order_status,
             opt.order_products_id,
             opt.count,
             pdt.product_dtl_id,
@@ -96,15 +97,72 @@
             <when test="searchOption.equals('전화번호')">
                 and ot.shipping_phone like concat("%", #{searchValue}, "%")
             </when>
-            <when test="searchOption.equals('우편번호')">
-                and ot.shipping_address_number like concat("%", #{searchValue}, "%")
-            </when>
             <when test="searchOption.equals('주소')">
                 and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
                     or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
             </when>
             <when test="searchOption.equals('product')">
                 and pmt.product_name like concat("%", #{searchValue}, "%")
+            </when>
+            <otherwise>
+                and pmt.product_name like concat("%", #{searchValue}, "%")
+            </otherwise>
+        </choose>
+        order by
+        <choose>
+            <when test="sortOption.equals('일자올림차순')">
+                UNIX_TIMESTAMP(order_date) asc
+            </when>
+            <otherwise>
+                UNIX_TIMESTAMP(order_date) desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectOrdersForAdmin" resultMap="ordersMap" parameterType="hashmap">
+        select
+            ot.order_id,
+            ot.user_id,
+            ot.order_date,
+            ot.shipping_name,
+            ot.shipping_phone,
+            ot.shipping_address_number,
+            ot.shipping_address_name,
+            ot.shipping_address_detail_name,
+            ot.order_status,
+            opt.order_products_id,
+            opt.count,
+            pdt.product_dtl_id,
+            pdt.price,
+            st.size_id,
+            st.size_name,
+            pmt.product_mst_id,
+            pmt.product_name,
+            pmt.product_thumbnail_url
+        from
+            order_tb ot
+            left outer join order_products_tb opt on(opt.order_id = ot.order_id)
+            left outer join product_dtl_tb pdt on(pdt.product_dtl_id = opt.product_dtl_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
+        where
+            1 = 1
+        <choose>
+            <when test="searchOption.equals('받는사람')">
+                and ot.shipping_name like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('전화번호')">
+                and ot.shipping_phone like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('주소')">
+                and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
+                or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
+            </when>
+            <when test="searchOption.equals('유저번호')">
+                and ot.user_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('주문번호')">
+                and ot.order_id = #{searchValue}
             </when>
             <otherwise>
                 and pmt.product_name like concat("%", #{searchValue}, "%")
@@ -128,5 +186,14 @@
         where
             order_id = #{orderId}
     </delete>
+
+    <update id="updateOrderStatus" parameterType="hashmap">
+        update
+            order_tb
+        set
+            order_status = #{orderStatus}
+        where
+            order_id = #{orderId}
+    </update>
 
 </mapper>
