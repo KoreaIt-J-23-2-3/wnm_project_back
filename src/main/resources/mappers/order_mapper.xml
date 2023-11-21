@@ -101,7 +101,7 @@
                 and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
                     or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
             </when>
-            <when test="searchOption.equals('product')">
+            <when test="searchOption.equals('상품명')">
                 and pmt.product_name like concat("%", #{searchValue}, "%")
             </when>
             <otherwise>
