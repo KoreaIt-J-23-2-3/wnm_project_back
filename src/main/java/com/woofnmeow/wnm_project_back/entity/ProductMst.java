@@ -40,7 +40,9 @@ public class ProductMst {
                 .productThumbnailUrl(productThumbnailUrl)
                 .productDetailUrl(productDetailUrl)
                 .petTypeId(petTypeId)
+                .petTypeName(petType.getPetTypeName())
                 .productCategoryId(productCategoryId)
+                .productCategoryName(category.getProductCategoryName())
                 .createDate(createDate.format(formatter))
                 .productDtlList(productDtlList)
                 .build();
