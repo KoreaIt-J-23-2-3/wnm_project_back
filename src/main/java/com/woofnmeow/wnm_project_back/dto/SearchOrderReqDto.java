@@ -9,7 +9,6 @@ public class SearchOrderReqDto {
     private String searchValue;
     private String sortOption;
 
-
     public SearchOrderVo toVo(int userId) {
         return SearchOrderVo.builder()
                 .userId(userId)

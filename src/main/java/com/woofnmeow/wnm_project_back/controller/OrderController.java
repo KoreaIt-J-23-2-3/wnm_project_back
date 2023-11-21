@@ -27,4 +27,14 @@ public class OrderController {
     public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
         return ResponseEntity.ok().body(orderService.deleteOrder(orderId));
     }
+
+    @GetMapping("/api/admin/orders")
+    public ResponseEntity<?> getOrdersForAdmin(SearchOrderReqDto searchOrderReqDto) {
+        return ResponseEntity.ok().body(orderService.getOrdersForAdmin(searchOrderReqDto));
+    }
+
+    @PutMapping("/api/admin/order/{orderId}/{orderStatus}")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable int orderId, @PathVariable int orderStatus) {
+        return ResponseEntity.ok().body(orderService.updateOrderStatus(orderId, orderStatus));
+    }
 }
