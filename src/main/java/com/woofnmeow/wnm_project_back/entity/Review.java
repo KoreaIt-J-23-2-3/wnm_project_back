@@ -15,6 +15,7 @@ public class Review {
     private int reviewId;
     private int userId;
     private int productMstId;
+    private int productDtlId;
     private String reviewContent;
     private String reviewImgUrl;
     private LocalDate reviewDate;

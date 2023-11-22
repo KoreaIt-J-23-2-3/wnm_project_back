@@ -10,6 +10,22 @@
     <insert id="addReview" parameterType="com.woofnmeow.wnm_project_back.entity.Review">
         insert into
             review_tb
-        values( 0, #{userId}, #{productMstId}, #{reviewContent}, #{reviewImgUrl}, now() )
+        values(0, #{userId}, #{productMstId}, #{productDtlId}, #{reviewContent}, #{reviewImgUrl}, now())
     </insert>
+    <update id="editReview"  parameterType="com.woofnmeow.wnm_project_back.entity.Review">
+        update
+            review_tb
+        set
+            review_content = #{reviewContent},
+            review_img_url = #{reviewImgUrl},
+            review_date = now()
+        where
+            review_id = #{reviewId}
+    </update>
+    <delete id="deleteReview">
+        delete from
+            review_tb
+        where
+            review_id = #{reviewId}
+    </delete>
 </mapper>
