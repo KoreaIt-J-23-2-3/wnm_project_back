@@ -62,14 +62,14 @@ public class GetProductVo {
         return test;
     }
 
-    public GetMasterProductRespDto toSearchProductRespDto(Map<String, Object> map) {
-        System.out.println("size" + sizeAndPrice);
-        GetMasterProductRespDto test = GetMasterProductRespDto.builder()
-                .productMstId(productMstId)
-                .productName(productName)
-                .productThumbnailUrl(productThumbnailUrl)
-                .sizeAndPrice(sizeAndPrice)
-                .build();
-        return test;
-    }
+//    public GetMasterProductRespDto toSearchProductRespDto(Map<String, Object> map) {
+//        System.out.println("size" + sizeAndPrice);
+//        GetMasterProductRespDto test = GetMasterProductRespDto.builder()
+//                .productMstId(productMstId)
+//                .productName(productName)
+//                .productThumbnailUrl(productThumbnailUrl)
+//                .sizeAndPrice(sizeAndPrice)
+//                .build();
+//        return test;
+//    }
 }
