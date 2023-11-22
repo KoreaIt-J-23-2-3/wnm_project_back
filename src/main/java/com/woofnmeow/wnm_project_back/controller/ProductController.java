@@ -58,10 +58,20 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getProductByProductMstId(productMstId));
     }
 
-
     @GetMapping("api/products")
     public ResponseEntity<?> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
         return ResponseEntity.ok().body(productService.searchMasterProduct(searchMasterProductReqDto));
+    }
+
+    @GetMapping("api/allproduct")
+    public ResponseEntity<?> getAllProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        return ResponseEntity.ok().body(productService.getAllProducts(searchMasterProductReqDto));
+    }
+
+    @GetMapping("api/productcount")
+    public ResponseEntity<?> getProductsCount(SearchMasterProductReqDto searchMasterProductReqDto) {
+        System.out.println("controller : " + searchMasterProductReqDto);
+        return ResponseEntity.ok().body(productService.getBoardCount(searchMasterProductReqDto));
     }
 
     @PutMapping("/api/admin/product/{productMstId}")

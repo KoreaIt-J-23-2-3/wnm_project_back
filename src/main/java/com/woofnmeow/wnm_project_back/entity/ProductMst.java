@@ -49,14 +49,12 @@ public class ProductMst {
     }
 
     public GetMasterProductRespDto toMasterProductRespDto() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return GetMasterProductRespDto.builder()
                 .productMstId(productMstId)
                 .productName(productName)
                 .petTypeName(petType.getPetTypeName())
                 .productCategoryName(category.getProductCategoryName())
                 .productThumbnailUrl(productThumbnailUrl)
-                .createDate(createDate.format(formatter))
                 .build();
     }
 

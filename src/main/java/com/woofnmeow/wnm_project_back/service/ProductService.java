@@ -5,8 +5,8 @@ import com.woofnmeow.wnm_project_back.entity.Incoming;
 import com.woofnmeow.wnm_project_back.entity.Outgoing;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
+import com.woofnmeow.wnm_project_back.vo.GetAllProductsVo;
 import com.woofnmeow.wnm_project_back.vo.GetProductVo;
-import com.woofnmeow.wnm_project_back.vo.SearchMasterProductVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,10 +87,40 @@ public class ProductService {
         return productMapper.getMasterProductList(searchMasterProductReqDto.toVo()).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
     }
 
+    public List<GetAllProductsRespDto> getAllProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        List<GetAllProductsVo> getAllProductsVo = productMapper.getAllProductMst(searchMasterProductReqDto.toSearchProduct());
+        List<GetAllProductsRespDto> respDto = new ArrayList<>();
+        Map<String, Object> respMap = new HashMap<>();
+
+        getAllProductsVo.forEach(vo -> {
+                String allSizeAndPrice = vo.getSizeAndPrice();
+                String[] sizeAndPrice = allSizeAndPrice.split(", ");
+                List<String> priceList = new ArrayList<>();
+                for(String price: sizeAndPrice) {
+                    priceList.add(price);
+                }
+                String minPrice = priceList.get(0).replace("/ ", ": ");
+                String maxPrice = "";
+                if (priceList.size() == 2) {
+                    maxPrice = priceList.get(1).replace("/ ", ": ");
+                }
+                respDto.add(vo.toRespDto(minPrice, maxPrice));
+            }
+        );
+        return respDto;
+    }
+
+    public int getBoardCount(SearchMasterProductReqDto searchMasterProductReqDto) {
+        int count = productMapper.getProductCount(searchMasterProductReqDto.toSearchProduct());
+        System.out.println("service : " + count);
+        return count;
+    }
+
     public List<SearchMasterProductRespDto> searchMasterProduct(SearchMasterProductReqDto searchMasterProductReqDto) {
         List<GetProductVo> getProductVo = productMapper.searchProductMst(searchMasterProductReqDto.toVo());
         Map<String, Object> map = new HashMap<>();
         List<SearchMasterProductRespDto> reqList= new ArrayList<>();
+
         getProductVo.forEach(vo -> {
             String allSizeAndPrice = vo.getSizeAndPrice();
             String[] sizeAndPrice = allSizeAndPrice.split(", ");
@@ -103,7 +133,7 @@ public class ProductService {
             }
             reqList.add(vo.toRespDto(map));
         });
-       return reqList;
+        return reqList;
     }
 
     @Transactional(rollbackFor = Exception.class)
