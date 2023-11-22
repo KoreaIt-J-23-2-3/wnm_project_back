@@ -185,24 +185,24 @@
 
     <update id="updateProductMst" parameterType="hashmap">
         update
-        product_mst_tb
+            product_mst_tb
         set
-        product_name = #{productName},
-        product_detail_text = #{productDetailText},
-        product_thumbnail_url = #{productThumbnailUrl},
-        product_detail_url = #{productDetailUrl}
+            product_name = #{productName},
+            product_detail_text = #{productDetailText},
+            product_thumbnail_url = #{productThumbnailUrl},
+            product_detail_url = #{productDetailUrl}
         where
-        product_mst_id = #{productMstId}
+            product_mst_id = #{productMstId}
     </update>
 
     <update id="updateProductDtl" parameterType="hashmap">
         update
-        product_dtl_tb pdt
+            product_dtl_tb pdt
         set
-        price = #{price}
+            price = #{price}
         where
-        product_mst_id = #{productMstId}
-        and size_id = #{sizeId}
+            product_mst_id = #{productMstId}
+            and size_id = #{sizeId}
     </update>
 
 
@@ -236,49 +236,49 @@
 
     <select id="getIncomingByDtlId" resultMap="incomingMap">
         select
-        incoming_history_id,
-        product_dtl_id,
-        incoming_count,
-        incoming_date
+            incoming_history_id,
+            product_dtl_id,
+            incoming_count,
+            incoming_date
         from
-        incoming_history_tb
+            incoming_history_tb
         where
-        product_dtl_id = #{productDtlId}
+            product_dtl_id = #{productDtlId}
     </select>
 
     <select id="getOutgoingByDtlId" resultMap="outgoingMap">
         select
-        outgoing_history_id,
-        product_dtl_id,
-        outgoing_count,
-        outgoing_date
+            outgoing_history_id,
+            product_dtl_id,
+            outgoing_count,
+            outgoing_date
         from
-        outgoing_history_tb
+            outgoing_history_tb
         where
-        product_dtl_id = #{productDtlId}
+            product_dtl_id = #{productDtlId}
     </select>
 
     <select id="searchProductMst" resultMap="productMapV2">
         select
-        pmt.product_mst_id,
-        pmt.product_name,
-        ptt.pet_type_id,
-        ptt.pet_type_name,
-        pct.product_category_id,
-        pct.product_category_name,
-        pmt.product_thumbnail_url,
-        pmt.product_detail_text,
-        pmt.product_detail_url,
-        pmt.create_date,
-        GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices
+            pmt.product_mst_id,
+            pmt.product_name,
+            ptt.pet_type_id,
+            ptt.pet_type_name,
+            pct.product_category_id,
+            pct.product_category_name,
+            pmt.product_thumbnail_url,
+            pmt.product_detail_text,
+            pmt.product_detail_url,
+            pmt.create_date,
+            GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices
         from
-        product_mst_tb pmt
-        left outer join product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
-        left outer join size_tb st on(st.size_id = pdt.size_id)
-        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
-        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+            product_mst_tb pmt
+            left outer join product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
         where
-        1 = 1
+            1 = 1
         <choose>
             <when test="searchOption.equals('number')">
                 and pmt.product_mst_id = #{searchValue}
