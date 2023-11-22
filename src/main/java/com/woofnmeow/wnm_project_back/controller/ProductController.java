@@ -18,8 +18,8 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.addProduct(addProductReqDto));
     }
 
-    @PostMapping("/api/admin/incoming/{productDtlId}")
-    public ResponseEntity<?> incomingQuantity(@PathVariable int productDtlId, @RequestBody int count) {
+    @PostMapping("/api/admin/incoming/{productDtlId}/{count}")
+    public ResponseEntity<?> incomingQuantity(@PathVariable int productDtlId, @PathVariable int count) {
         return ResponseEntity.ok().body(productService.incomingQuantity(productDtlId, count));
     }
 
@@ -33,8 +33,8 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.deleteIncomingQuantity(incomingHistoryId));
     }
 
-    @PostMapping("/api/admin/outgoing/{productDtlId}")
-    public ResponseEntity<?> outgoingQuantity(@PathVariable int productDtlId, @RequestBody int count) {
+    @PostMapping("/api/admin/outgoing/{productDtlId}/{count}")
+    public ResponseEntity<?> outgoingQuantity(@PathVariable int productDtlId, @PathVariable int count) {
         return ResponseEntity.ok().body(productService.outgoingQuantity(productDtlId, count));
     }
 
@@ -43,7 +43,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getIncomingByProductDtlId(productDtlId));
     }
 
-    @GetMapping("/api/outgoing/{productDtlId}")
+    @GetMapping("/api/admin/outgoing/{productDtlId}")
     public ResponseEntity<?> getOutgoingByProductDtlId(@PathVariable int productDtlId) {
         return ResponseEntity.ok().body(productService.getOutgoingByProductDtlId(productDtlId));
     }

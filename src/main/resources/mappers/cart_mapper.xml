@@ -20,6 +20,8 @@
         <result property="productMstId" column="product_mst_id" />
         <result property="price" column="price" />
         <result property="sizeId" column="size_id" />
+        <result property="actualStock" column="actual_stock" />
+        <result property="tempStock" column="temp_stock" />
         <association property="productMst" resultMap="ProductMstMap"/>
         <association property="size" resultMap="SizeMap"/>
     </resultMap>
@@ -48,12 +50,15 @@
             pdt.price,
             pmt.product_name,
             pmt.product_thumbnail_url,
-            st.size_name
+            st.size_name,
+            psv.actual_stock,
+            psv.temp_stock
         from
             cart_tb ct
             left outer join product_dtl_tb pdt on(pdt.product_dtl_id = ct.product_dtl_id)
             left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
             left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
         where
             ct.user_id = #{user_id}
     </select>
