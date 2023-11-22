@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class AddReviewReqDto {
     private int userId;
+    private int productDtlId;
     private String reviewContent;
     private String reviewImgUrl;
 
@@ -14,6 +15,7 @@ public class AddReviewReqDto {
         return Review.builder()
                 .userId(userId)
                 .productMstId(productMstId)
+                .productDtlId(productDtlId)
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
                 .build();
