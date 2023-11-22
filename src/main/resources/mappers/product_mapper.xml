@@ -23,6 +23,7 @@
     </resultMap>
     <resultMap id="ProductDtlForMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
+        <result property="productMstId" column="product_mst_id" />
         <result property="price" column="price" />
         <result property="sizeId" column="size_id" />
         <result property="actualStock" column="actual_stock" />
@@ -33,15 +34,6 @@
 
 
 
-    <resultMap id="productMapV2" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
-        <id property="productMstId" column="product_mst_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="productDetailText" column="product_detail_text"/>
-        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
-        <result property="productDetailUrl" column="product_detail_url"/>
-        <result property="createDate" column="create_date"/>
-        <result property="sizeAndPrice" column="sizes_and_prices"/>
-    </resultMap>
 
 
 
@@ -71,6 +63,34 @@
 
 
 
+
+    <resultMap id="productMapV2" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDetailText" column="product_detail_text"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="productDetailUrl" column="product_detail_url"/>
+        <result property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="sizeAndPrice" column="sizes_and_prices"/>
+    </resultMap>
+
+
+    <resultMap id="getAllProductMap" type="com.woofnmeow.wnm_project_back.vo.GetAllProductsVo">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="petTypeId" column="id"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="sizeAndPrice" column="sizes_and_prices"/>
+    </resultMap>
+
+
+
+
     <resultMap id="productMstListMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
@@ -82,6 +102,20 @@
         <association property="category" resultMap="categoryMap"/>
     </resultMap>
 
+
+    <resultMap id="incomingMap" type="com.woofnmeow.wnm_project_back.entity.Incoming" >
+        <id property="incomingHistoryId" column="incoming_history_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="incomingCount" column="incoming_count"/>
+        <result property="incomingDate" column="incoming_date"/>
+    </resultMap>
+
+    <resultMap id="outgoingMap" type="com.woofnmeow.wnm_project_back.entity.Outgoing" >
+        <id property="outgoingHistoryId" column="outgoing_history_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="outgoingCount" column="outgoing_count"/>
+        <result property="outgoingDate" column="outgoing_date"/>
+    </resultMap>
 
 
 
@@ -111,13 +145,13 @@
 
     <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.ProductMst" useGeneratedKeys="true" keyProperty="productMstId">
         insert into
-            product_mst_tb
+        product_mst_tb
         values(0, #{productName}, #{petTypeId}, #{productCategoryId}, #{productDetailText}, #{productThumbnailUrl}, #{productDetailUrl}, now())
     </insert>
 
     <insert id="addProductDetail" parameterType="hashmap">
         insert into
-            product_dtl_tb
+        product_dtl_tb
         values(0, #{productMstId}, #{price}, #{sizeId})
     </insert>
 
@@ -142,11 +176,11 @@
 
     <update id="updateIncomingQuantity" parameterType="hashmap">
         update
-            incoming_history_tb
+        incoming_history_tb
         set
-            incoming_count = #{count}
+        incoming_count = #{count}
         where
-            incoming_history_id = #{incomingHistoryId}
+        incoming_history_id = #{incomingHistoryId}
     </update>
 
     <update id="updateProductMst" parameterType="hashmap">
@@ -161,13 +195,14 @@
         product_mst_id = #{productMstId}
     </update>
 
-    <update id="updateProductDtl" parameterType="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+    <update id="updateProductDtl" parameterType="hashmap">
         update
-        product_dtl_tb
+        product_dtl_tb pdt
         set
         price = #{price}
         where
-        product_dtl_id = #{productDtlId}
+        product_mst_id = #{productMstId}
+        and size_id = #{sizeId}
     </update>
 
 
@@ -179,10 +214,10 @@
 
     <delete id="deleteIncomingQuantity">
         delete
-            from
-                incoming_history_tb
-            where
-                incoming_history_id = #{incomingHistoryId}
+        from
+        incoming_history_tb
+        where
+        incoming_history_id = #{incomingHistoryId}
     </delete>
 
     <delete id="deleteProduct">
@@ -199,25 +234,113 @@
 
 
 
+    <select id="getIncomingByDtlId" resultMap="incomingMap">
+        select
+        incoming_history_id,
+        product_dtl_id,
+        incoming_count,
+        incoming_date
+        from
+        incoming_history_tb
+        where
+        product_dtl_id = #{productDtlId}
+    </select>
+
+    <select id="getOutgoingByDtlId" resultMap="outgoingMap">
+        select
+        outgoing_history_id,
+        product_dtl_id,
+        outgoing_count,
+        outgoing_date
+        from
+        outgoing_history_tb
+        where
+        product_dtl_id = #{productDtlId}
+    </select>
+
     <select id="searchProductMst" resultMap="productMapV2">
         select
-            pmt.product_mst_id,
-            pmt.product_name,
-            ptt.pet_type_name,
-            pct.product_category_name,
-            pmt.product_thumbnail_url,
-            pmt.product_detail_text,
-            pmt.product_detail_url,
-            pmt.create_date,
-            GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices
+        pmt.product_mst_id,
+        pmt.product_name,
+        ptt.pet_type_id,
+        ptt.pet_type_name,
+        pct.product_category_id,
+        pct.product_category_name,
+        pmt.product_thumbnail_url,
+        pmt.product_detail_text,
+        pmt.product_detail_url,
+        pmt.create_date,
+        GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices
         from
-            product_mst_tb pmt
-            left outer join product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
-            left outer join size_tb st on(st.size_id = pdt.size_id)
-            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
-            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        product_mst_tb pmt
+        left outer join product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
+        left outer join size_tb st on(st.size_id = pdt.size_id)
+        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
         where
-            1 = 1
+        1 = 1
+        <choose>
+            <when test="searchOption.equals('number')">
+                and pmt.product_mst_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('name')">
+                and pmt.product_name like concat("%", #{searchValue}, "%")
+            </when>
+            <otherwise>
+                and (pmt.product_name like concat("%", #{searchValue}, "%")
+                or pct.product_category_name like concat("%", #{searchValue}, "%")
+                or ptt.pet_type_name like concat("%", #{searchValue}, "%"))
+            </otherwise>
+        </choose>
+        <if test="!petTypeName.equals('all')">
+            and ptt.pet_type_name_eng = #{petTypeName}
+        </if>
+        <if test="!productCategoryName.equals('all')">
+            and pct.product_category_name_eng = #{productCategoryName}
+        </if>
+        group by
+        pmt.product_mst_id
+        order by
+        <choose>
+            <when test="sortOption.equals('name')">
+                pmt.product_name COLLATE utf8mb4_unicode_ci
+            </when>
+            <when test="sortOption.equals('number')">
+                pmt.product_mst_id desc
+            </when>
+            <otherwise>
+                pmt.product_mst_id desc
+            </otherwise>
+        </choose>
+        limit
+        #{pageIndex}, #{limit}
+
+    </select>
+    
+    
+    <select id="getAllProductMst" resultMap="getAllProductMap" >
+    select
+        pmt.product_mst_id,
+        pmt.product_name,
+        ptt.pet_type_id,
+        pct.product_category_id,
+        pmt.product_thumbnail_url,
+        GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices
+    from
+        product_mst_tb pmt
+            left outer join (select
+                                product_mst_id,
+                                row_number() over(partition by product_mst_id order by price) as num,
+                                row_number() over(partition by product_mst_id order by price desc) as num2,
+                                size_id,
+                                price
+                            from
+                                product_dtl_tb) pdt on(pdt.product_mst_id = pmt.product_mst_id and (pdt.num = 1 or pdt.num2 = 1))
+        left outer join size_tb st on(st.size_id = pdt.size_id)
+        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        where
+        1 = 1
         <choose>
             <when test="searchOption.equals('number')">
                 and pmt.product_mst_id = #{searchValue}
@@ -252,83 +375,115 @@
             </otherwise>
         </choose>
         limit
-            #{pageIndex}, #{limit}
+        #{pageIndex}, #{limit}
 
     </select>
+
+    <select id="getProductCount" parameterType="com.woofnmeow.wnm_project_back.vo.SearchMasterProductVo" resultType="java.lang.Integer">
+        select
+        count(*)
+        from
+        product_mst_tb pmt
+        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        where
+        1 = 1
+        <choose>
+            <when test="searchOption.equals('number')">
+                and pmt.product_mst_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('name')">
+                and pmt.product_name like concat("%", #{searchValue}, "%")
+            </when>
+            <otherwise>
+                and (pmt.product_name like concat("%", #{searchValue}, "%")
+                or pct.product_category_name like concat("%", #{searchValue}, "%")
+                or ptt.pet_type_name like concat("%", #{searchValue}, "%"))
+            </otherwise>
+        </choose>
+        <if test="!petTypeName.equals('all')">
+            and ptt.pet_type_name_eng = #{petTypeName}
+        </if>
+        <if test="!productCategoryName.equals('all')">
+            and pct.product_category_name_eng = #{productCategoryName}
+        </if>
+
+    </select>
+    
 
 
     <select id="getProductByProductDtlId" resultMap="productMap">
         select
-            pdt.product_dtl_id,
-            pmt.product_mst_id,
-            pmt.product_name,
-            pdt.price,
-            ptt.pet_type_id,
-            ptt.pet_type_name,
-            pct.product_category_id,
-            pct.product_category_name,
-            st.size_id,
-            st.size_name,
-            pmt.product_detail_text,
-            pmt.product_thumbnail_url,
-            pmt.product_detail_url,
-            psv.actual_stock,
-            psv.temp_stock,
-            pmt.create_date
+        pdt.product_dtl_id,
+        pmt.product_mst_id,
+        pmt.product_name,
+        pdt.price,
+        ptt.pet_type_id,
+        ptt.pet_type_name,
+        pct.product_category_id,
+        pct.product_category_name,
+        st.size_id,
+        st.size_name,
+        pmt.product_detail_text,
+        pmt.product_thumbnail_url,
+        pmt.product_detail_url,
+        psv.actual_stock,
+        psv.temp_stock,
+        pmt.create_date
         from
-            product_dtl_tb pdt
-            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
-            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
-            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
-            left outer join size_tb st on(st.size_id = pdt.size_id)
-            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
+        product_dtl_tb pdt
+        left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
+        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+        left outer join size_tb st on(st.size_id = pdt.size_id)
+        left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
         where
-            pdt.product_dtl_id = #{productDtlId}
+        pdt.product_dtl_id = #{productDtlId}
     </select>
 
     <select id="getProductByProductMstId" resultMap="productMap">
         select
-            pdt.product_dtl_id,
-            pmt.product_mst_id,
-            pmt.product_name,
-            pdt.price,
-            ptt.pet_type_id,
-            ptt.pet_type_name,
-            pct.product_category_id,
-            pct.product_category_name,
-            st.size_id,
-            st.size_name,
-            pmt.product_detail_text,
-            pmt.product_thumbnail_url,
-            pmt.product_detail_url,
-            psv.actual_stock,
-            psv.temp_stock,
-            pmt.create_date
+        pdt.product_dtl_id,
+        pmt.product_mst_id,
+        pmt.product_name,
+        pdt.price,
+        ptt.pet_type_id,
+        ptt.pet_type_name,
+        pct.product_category_id,
+        pct.product_category_name,
+        st.size_id,
+        st.size_name,
+        pmt.product_detail_text,
+        pmt.product_thumbnail_url,
+        pmt.product_detail_url,
+        psv.actual_stock,
+        psv.temp_stock,
+        pmt.create_date
         from
-            product_mst_tb pmt
-            left outer join  product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
-            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
-            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
-            left outer join size_tb st on(st.size_id = pdt.size_id)
-            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
+        product_mst_tb pmt
+        left outer join  product_dtl_tb pdt on(pdt.product_mst_id = pmt.product_mst_id)
+        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+        left outer join size_tb st on(st.size_id = pdt.size_id)
+        left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
         where
-            pmt.product_mst_id = #{productMstId}
+        pmt.product_mst_id = #{productMstId}
     </select>
 
     <select id="getMasterProductList" parameterType="hashmap" resultMap="productMstListMap">
         select
-            pmt.product_mst_id,
-            pmt.product_name,
-            ptt.pet_type_name,
-            pct.product_category_name,
-            pmt.product_thumbnail_url,
-            pmt.create_date
+        pmt.product_mst_id,
+        pmt.product_name,
+        ptt.pet_type_name,
+        pct.product_category_name,
+        pmt.product_thumbnail_url,
+        pmt.create_date
         from
-            product_mst_tb pmt
-            left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
-            left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+        product_mst_tb pmt
+        left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
+        left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
         where
-            1 = 1
+        1 = 1
         <choose>
             <when test="searchOption.equals('number')">
                 and pmt.product_mst_id = #{searchValue}
@@ -338,8 +493,8 @@
             </when>
             <when test="searchOption.equals('all')">
                 and (pmt.product_name like concat("%", #{searchValue}, "%")
-                    or pct.product_category_name like concat("%", #{searchValue}, "%")
-                    or ptt.pet_type_name like concat("%", #{searchValue}, "%"))
+                or pct.product_category_name like concat("%", #{searchValue}, "%")
+                or ptt.pet_type_name like concat("%", #{searchValue}, "%"))
             </when>
         </choose>
         <if test="!petTypeName.equals('all')">
@@ -357,7 +512,7 @@
                 pmt.product_mst_id desc
             </when>
             <otherwise>
-                pmt.product_mst_id desc
+                pmt.product_name COLLATE utf8mb4_unicode_ci
             </otherwise>
         </choose>
         limit #{pageIndex}, 12

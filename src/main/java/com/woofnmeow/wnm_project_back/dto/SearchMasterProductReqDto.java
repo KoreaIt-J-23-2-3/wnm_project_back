@@ -27,15 +27,15 @@ public class SearchMasterProductReqDto {
                 .build();
     }
 
-    public SearchMasterProductVo toSearchedProduct() {
+    public SearchMasterProductVo toSearchProduct() {
         return SearchMasterProductVo.builder()
                 .petTypeName(petTypeName)
                 .productCategoryName(productCategoryName)
                 .searchOption(searchOption)
                 .searchValue(searchValue)
                 .sortOption(sortOption)
-                .pageIndex((pageIndex - 1) * 10)
-                .limit(9)
+                .pageIndex((pageIndex - 1) * 12)
+                .limit(12)
                 .build();
     }
 }

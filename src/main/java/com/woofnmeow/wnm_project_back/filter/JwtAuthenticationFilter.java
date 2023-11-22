@@ -22,7 +22,6 @@ public class JwtAuthenticationFilter extends GenericFilter {
 
         String bearerToken = httpServletRequest.getHeader("Authorization");
         String token = jwtProvider.getToken(bearerToken);
-
         Authentication authentication = jwtProvider.getAuthenticated(token);
 
         if (authentication != null) {

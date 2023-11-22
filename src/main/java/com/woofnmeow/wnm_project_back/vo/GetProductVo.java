@@ -1,5 +1,6 @@
 package com.woofnmeow.wnm_project_back.vo;
 
+import com.woofnmeow.wnm_project_back.dto.GetMasterProductRespDto;
 import com.woofnmeow.wnm_project_back.dto.SearchMasterProductRespDto;
 import lombok.Data;
 
@@ -14,6 +15,10 @@ public class GetProductVo {
     private String productDetailText;
     private String productThumbnailUrl;
     private String productDetailUrl;
+    private int petTypeId;
+    private String petTypeName;
+    private int productCategoryId;
+    private String productCategoryName;
     private LocalDateTime createDate;
     private String sizeAndPrice;
 
@@ -39,6 +44,10 @@ public class GetProductVo {
                 .productDetailText(text)
                 .productThumbnailUrl(productThumbnailUrl)
                 .productDetailUrl(productDetailUrl)
+                .petTypeId(petTypeId)
+                .petTypeName(petTypeName)
+                .productCategoryId(productCategoryId)
+                .productCategoryName(productCategoryName)
                 .createDate(createDate.format(formatter))
                 .no((String) map.get("no"))
                 .XS((String) map.get("XS"))
@@ -48,8 +57,19 @@ public class GetProductVo {
                 .XL((String) map.get("XL"))
                 .XXL((String) map.get("XXL"))
                 .build();
-        System.out.println(test);
-        System.out.println("test");
+//        System.out.println(test);
+//        System.out.println("test");
+        return test;
+    }
+
+    public GetMasterProductRespDto toSearchProductRespDto(Map<String, Object> map) {
+        System.out.println("size" + sizeAndPrice);
+        GetMasterProductRespDto test = GetMasterProductRespDto.builder()
+                .productMstId(productMstId)
+                .productName(productName)
+                .productThumbnailUrl(productThumbnailUrl)
+                .sizeAndPrice(sizeAndPrice)
+                .build();
         return test;
     }
 }

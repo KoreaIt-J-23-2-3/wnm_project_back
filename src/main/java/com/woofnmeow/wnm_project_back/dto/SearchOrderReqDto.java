@@ -8,7 +8,7 @@ public class SearchOrderReqDto {
     private String searchOption;
     private String searchValue;
     private String sortOption;
-    private int pageIndex;
+
 
     public SearchOrderVo toVo(int userId) {
         return SearchOrderVo.builder()
@@ -16,7 +16,6 @@ public class SearchOrderReqDto {
                 .searchOption(searchOption)
                 .searchValue(searchValue)
                 .sortOption(sortOption)
-                .pageIndex(pageIndex)
                 .build();
     }
 }

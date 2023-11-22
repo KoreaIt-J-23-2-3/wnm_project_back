@@ -23,6 +23,7 @@ public class OrderProducts {
         return GetUserOrderProductsRespDto.builder()
                 .oderProductsId(orderProductsId)
                 .productDtl(productDtl)
+                .count(count)
                 .build();
     }
 }
