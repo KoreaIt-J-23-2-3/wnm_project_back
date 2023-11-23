@@ -19,7 +19,6 @@ public class OrderController {
 
     @GetMapping("/api/orders")
     public ResponseEntity<?> findOrders(SearchOrderReqDto searchOrderReqDto) {
-        System.out.println(searchOrderReqDto);
         return ResponseEntity.ok().body(orderService.selectOrders(searchOrderReqDto));
     }
 
@@ -36,5 +35,10 @@ public class OrderController {
     @PutMapping("/api/admin/order/{orderId}/{orderStatus}")
     public ResponseEntity<?> updateOrderStatus(@PathVariable int orderId, @PathVariable int orderStatus) {
         return ResponseEntity.ok().body(orderService.updateOrderStatus(orderId, orderStatus));
+    }
+
+    @PutMapping("/api/order/{orderId}")
+    public ResponseEntity<?> updateShippingConfirmation(@PathVariable int orderId) {
+        return ResponseEntity.ok().body(orderService.updateOrderStatus(orderId, 3));
     }
 }

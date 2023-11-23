@@ -89,34 +89,34 @@
             left outer join size_tb st on(st.size_id = pdt.size_id)
             left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
         where
-            user_id = #{userId}
-        <choose>
-            <when test="searchOption.equals('받는사람')">
-                and ot.shipping_name like concat("%", #{searchValue}, "%")
-            </when>
-            <when test="searchOption.equals('전화번호')">
-                and ot.shipping_phone like concat("%", #{searchValue}, "%")
-            </when>
-            <when test="searchOption.equals('주소')">
-                and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
-                    or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
-            </when>
-            <when test="searchOption.equals('상품명')">
-                and pmt.product_name like concat("%", #{searchValue}, "%")
-            </when>
-            <otherwise>
-                and pmt.product_name like concat("%", #{searchValue}, "%")
-            </otherwise>
-        </choose>
+            ot.user_id = #{userId}
+<!--        <choose>-->
+<!--            <when test="searchOption.equals('받는사람')">-->
+<!--                and ot.shipping_name like concat("%", #{searchValue}, "%")-->
+<!--            </when>-->
+<!--            <when test="searchOption.equals('전화번호')">-->
+<!--                and ot.shipping_phone like concat("%", #{searchValue}, "%")-->
+<!--            </when>-->
+<!--            <when test="searchOption.equals('주소')">-->
+<!--                and (ot.shipping_address_name like concat("%", #{searchValue}, "%")-->
+<!--                    or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))-->
+<!--            </when>-->
+<!--            <when test="searchOption.equals('상품명')">-->
+<!--                and pmt.product_name like concat("%", #{searchValue}, "%")-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                and pmt.product_name like concat("%", #{searchValue}, "%")-->
+<!--            </otherwise>-->
+<!--        </choose>-->
         order by
-        <choose>
-            <when test="sortOption.equals('일자올림차순')">
-                UNIX_TIMESTAMP(order_date) asc
-            </when>
-            <otherwise>
-                UNIX_TIMESTAMP(order_date) desc
-            </otherwise>
-        </choose>
+            <choose>
+                <when test="sortOption.equals('일자올림차순')">
+                    UNIX_TIMESTAMP(order_date) asc
+                </when>
+                <otherwise>
+                    UNIX_TIMESTAMP(order_date) desc
+                </otherwise>
+            </choose>
     </select>
 
     <select id="selectOrdersForAdmin" resultMap="ordersMap" parameterType="hashmap">
@@ -187,13 +187,8 @@
             order_id = #{orderId}
     </delete>
 
-    <update id="updateOrderStatus" parameterType="hashmap">
-        update
-            order_tb
-        set
-            order_status = #{orderStatus}
-        where
-            order_id = #{orderId}
+    <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">
+        call p_update_order_status(#{orderId}, #{orderStatus})
     </update>
 
 </mapper>
