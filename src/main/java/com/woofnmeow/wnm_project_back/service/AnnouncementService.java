@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.service;
 
-import com.woofnmeow.wnm_project_back.dto.AddAnnouncementReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto;
 import com.woofnmeow.wnm_project_back.repository.AnnouncementMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
