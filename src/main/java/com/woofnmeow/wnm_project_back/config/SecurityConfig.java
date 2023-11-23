@@ -40,4 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .userInfoEndpoint()
                 .userService(principalUserDetailsService);
     }
+
+
 }
