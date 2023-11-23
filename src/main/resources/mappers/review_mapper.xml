@@ -14,7 +14,7 @@
 
     <!--  insert  -->
 
-    <resultMap id="reviewMapForProductMstId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByProductMstIdRespDto">
+    <resultMap id="reviewMapForProductMstId" type="com.woofnmeow.wnm_project_back.dto.response.GetReviewByProductMstIdRespDto">
         <result property="profileUrl" column="profile_url"/>
         <result property="nickname" column="nickname"/>
         <result property="productDtlId" column="product_dtl_id"/>
@@ -23,7 +23,7 @@
         <result property="reviewDate" column="review_date"/>
     </resultMap>
 
-    <resultMap id="reviewMapForUserId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByUserIdRespDto">
+    <resultMap id="reviewMapForUserId" type="com.woofnmeow.wnm_project_back.dto.response.GetReviewByUserIdRespDto">
         <result property="productMstId" column="product_mst_id"/>
         <result property="productDtlId" column="product_dtl_id"/>
         <result property="reviewContent" column="review_content"/>

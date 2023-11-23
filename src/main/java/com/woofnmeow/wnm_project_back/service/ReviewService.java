@@ -2,6 +2,7 @@ package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.request.AddReviewReqDto;
 import com.woofnmeow.wnm_project_back.dto.request.EditReviewReqDto;
+import com.woofnmeow.wnm_project_back.entity.Review;
 import com.woofnmeow.wnm_project_back.repository.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

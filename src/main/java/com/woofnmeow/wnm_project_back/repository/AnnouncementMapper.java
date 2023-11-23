@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.repository;
 
-import com.woofnmeow.wnm_project_back.dto.AddAnnouncementReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

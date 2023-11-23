@@ -1,6 +1,7 @@
 package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.request.EditUserReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.SearchUserReqDto;
 import com.woofnmeow.wnm_project_back.dto.response.GetUserRespDto;
 import com.woofnmeow.wnm_project_back.dto.request.SignupReqDto;
 import com.woofnmeow.wnm_project_back.entity.User;
@@ -8,6 +9,9 @@ import com.woofnmeow.wnm_project_back.repository.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,10 @@ public class UserService {
     // R
     public GetUserRespDto getUser(int userId) {
         return userMapper.findUserByUserId(userId).toRespDto();
+    }
+
+    public List<GetUserRespDto> getUserList(SearchUserReqDto searchUserReqDto) {
+        return userMapper.getUserList(searchUserReqDto.toVo()).stream().map(User:: toRespDto).collect(Collectors.toList());
     }
 
     // U
