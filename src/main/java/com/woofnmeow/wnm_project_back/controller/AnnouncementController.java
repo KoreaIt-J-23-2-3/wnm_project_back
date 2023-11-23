@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.controller;
 
-import com.woofnmeow.wnm_project_back.dto.AddAnnouncementReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto;
 import com.woofnmeow.wnm_project_back.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

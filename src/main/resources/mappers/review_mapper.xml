@@ -6,6 +6,7 @@
 
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ReviewMapper">
+
     <!--  resultMap  -->
 
     <resultMap id="reviewMapForProductMstId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByProductMstIdRespDto">
@@ -17,7 +18,7 @@
         <result property="reviewDate" column="review_date"/>
     </resultMap>
 
-    <resultMap id="reviewMapForUserId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByUserIdRespDto">
+    <resultMap id="reviewMapForUserId" type="com.woofnmeow.wnm_project_back.dto.response.GetReviewByUserIdRespDto">
         <result property="productMstId" column="product_mst_id"/>
         <result property="productDtlId" column="product_dtl_id"/>
         <result property="reviewContent" column="review_content"/>

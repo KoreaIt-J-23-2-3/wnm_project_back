@@ -2,6 +2,7 @@ package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.request.EditUserReqDto;
 import com.woofnmeow.wnm_project_back.dto.response.GetProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.request.SearchUserReqDto;
 import com.woofnmeow.wnm_project_back.dto.response.GetUserRespDto;
 import com.woofnmeow.wnm_project_back.dto.request.SignupReqDto;
 import com.woofnmeow.wnm_project_back.entity.User;
@@ -12,8 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.HashMap;
 import java.util.Map;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +55,22 @@ public class UserService {
     }
 
 
+    public List<GetUserRespDto> getUserList(SearchUserReqDto searchUserReqDto) {
+        List<GetUserRespDto> result = new ArrayList<>();
+        try{
+          result = userMapper.getUserList(searchUserReqDto.toVo()).stream().map(User:: toRespDto).collect(Collectors.toList());
+        }catch (Execption e) {
+          Map<String, String> errorMap = new HashMap<>();
+          errorMap.put("사용자 오류", "사용자 정보를 조회하는 중 오류가 발생하였습니다.");
+          throw new UserException(errorMap);
+        }
+        return result;
+    }
 
 
+  
+  
+  
     // U
     @Transactional(rollbackFor = Exception.class)
     public Boolean editUser(int userId, EditUserReqDto editUserReqDto) {
