@@ -36,12 +36,12 @@ public class ReviewService {
         return reviewMapper.deleteReview(reviewId) > 0;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     public List<Review> getReviewsByProductMstId(int productMstId) {
         return reviewMapper.selectReviewsByProductMstId(productMstId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     public List<Review> getReviewsByUserId(int userId) {
         return reviewMapper.selectReviewsByUserId(userId);
     }
