@@ -16,7 +16,6 @@ public class AnnouncementController {
 
     @PostMapping("/api/announcement")
     public ResponseEntity<?> addAnnouncement(@RequestBody AddAnnouncementReqDto addAnnouncementReqDto) {
-        System.out.println(addAnnouncementReqDto);
         return ResponseEntity.ok(announcementService.addAnnouncement(addAnnouncementReqDto));
     }
 }

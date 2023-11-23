@@ -43,4 +43,9 @@ public class ExceptionControllerAdvice {
         return ResponseEntity.badRequest().body(cartException.getErrorMap());
     }
 
+    @ExceptionHandler(AnnouncementExcption.class)
+    public ResponseEntity<?> announcementHandlerException(AnnouncementExcption announcementExcption) {
+        return ResponseEntity.badRequest().body(announcementExcption.getErrorMap());
+    }
+
 }
