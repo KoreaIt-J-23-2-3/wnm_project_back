@@ -174,7 +174,7 @@ public class ProductService {
     public int getCountOfSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
         int count = 0;
         try {
-            count = productMapper.selectCountOfSearchedProducts(searchMasterProductReqDto.toSearchProduct())
+            count = productMapper.selectCountOfSearchedProducts(searchMasterProductReqDto.toSearchProduct());
         }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("상품 오류", "상품 리스트를 불러오는 중 오류가 발생하였습니다.");
@@ -202,7 +202,7 @@ public class ProductService {
             });
         }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("상품 오류", "상품 검색 중 오류가 발생하였습니다.");\
+            errorMap.put("상품 오류", "상품 검색 중 오류가 발생하였습니다.");
             throw new ProductException(errorMap);
         }
         return reqList;
