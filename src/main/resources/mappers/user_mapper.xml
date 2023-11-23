@@ -5,6 +5,8 @@
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.UserMapper">
 
+    <!--  resultMap  -->
+
     <resultMap id="userMap" type="com.woofnmeow.wnm_project_back.entity.User">
         <id property="userId" column="user_id"/>
         <result property="roleName" column="role_name"/>
@@ -18,6 +20,19 @@
         <result property="defaultAddressDetailName" column="default_address_detail_name"/>
         <result property="profileUrl" column="profile_url"/>
     </resultMap>
+
+    <!--  resultMap  -->
+
+
+
+
+
+
+
+
+
+    <!--  Insert  -->
+
     <!-- 정보 등록 -->
     <insert id="saveUser" parameterType="com.woofnmeow.wnm_project_back.entity.User">
         insert into
@@ -26,6 +41,22 @@
                 #{name}, #{nickname}, #{email}, #{phoneNumber},
                 #{defaultAddressNumber}, #{defaultAddressName}, #{defaultAddressDetailName}, default)
     </insert>
+
+
+    <!--  Insert  -->
+
+
+
+
+
+
+
+
+
+
+
+    <!--  select  -->
+
     <!-- Oauth2 회원 정보 검색 -->
     <select id="findUserByOauth2Id" resultMap="userMap">
         select
@@ -46,6 +77,8 @@
         where
             oauth2_id = #{oauth2Id}
     </select>
+
+
     <!-- userId 회원 정보 검색 -->
     <select id="findUserByUserId" resultMap="userMap">
         select
@@ -66,6 +99,22 @@
         where
             user_id = #{userId}
     </select>
+
+    <!--  select  -->
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--  update  -->
+
     <!-- userId 회원 정보 수정 -->
     <update id="editUser" parameterType="com.woofnmeow.wnm_project_back.entity.User">
         update user_tb
@@ -80,6 +129,16 @@
             user_id = #{userId}
     </update>
     <!-- userId 회원 정보 삭제 -->
+
+    <!--  update  -->
+
+
+
+
+
+
+    <!--  delete  -->
+
     <delete id="deleteUser">
         delete
         from
@@ -87,4 +146,7 @@
         where
             user_id = #{userId}
     </delete>
+
+    <!--  delete  -->
+
 </mapper>

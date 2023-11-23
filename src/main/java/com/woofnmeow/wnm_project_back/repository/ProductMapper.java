@@ -14,22 +14,28 @@ import java.util.Map;
 
 @Mapper
 public interface ProductMapper {
+    // C
     @Options(useGeneratedKeys = true, keyProperty = "productMstId")
     public Integer addProductMaster(ProductMst productMst);
     public Integer addProductDetail(Map<String, Object> map);
-    public Integer incomingQuantity(Map<String, Object> map);
+    public Integer addIncomingQuantity(Map<String, Object> map);
+    public Integer addOutgoingQuantity(Map<String, Object> map);
+
+    // R
+    public List<Incoming> selectIncomingByDtlId(int productDtlId);
+    public List<Outgoing> selectOutgoingByDtlId(int productDtlId);
+    public ProductMst selectProductByProductDtlId(int productDtlId);
+    public ProductMst selectProductByProductMstId(int productMstId);
+    public List<GetProductVo> searchProductsWithAllSizes(SearchMasterProductVo searchMasterProductVo);
+    public List<GetAllProductsVo> searchProductsWithMinPriceAndMaxPrice(SearchMasterProductVo searchMasterProductVo);
+    public Integer selectCountOfSearchedProducts(SearchMasterProductVo searchMasterProductVo);
+
+    // U
     public Integer updateIncomingQuantity(Map<String, Object> map);
-    public Integer deleteIncomingQuantity(int incomingHistoryId);
-    public Integer outgoingQuantity(Map<String, Object> map);
-    public List<Incoming> getIncomingByDtlId(int productDtlId);
-    public List<Outgoing> getOutgoingByDtlId(int productDtlId);
-    public ProductMst getProductByProductDtlId(int productDtlId);
-    public ProductMst getProductByProductMstId(int productMstId);
-    public List<GetProductVo> searchProductMst(SearchMasterProductVo searchMasterProductVo);
-    public List<GetAllProductsVo> getAllProductMst(SearchMasterProductVo searchMasterProductVo);
-    public Integer getProductCount(SearchMasterProductVo searchMasterProductVo);
-    public List<ProductMst> getMasterProductList(SearchMasterProductVo searchMasterProductVo);
     public Integer updateProductMst(Map<String, Object> map);
     public Integer updateProductDtl(int productMstId, int sizeId, int price);
+
+    // D
     public Integer deleteProduct(int productMstId);
+
 }

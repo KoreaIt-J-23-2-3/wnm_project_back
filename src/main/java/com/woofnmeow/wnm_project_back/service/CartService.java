@@ -1,7 +1,7 @@
 package com.woofnmeow.wnm_project_back.service;
 
-import com.woofnmeow.wnm_project_back.dto.AddCartReqDto;
-import com.woofnmeow.wnm_project_back.dto.GetUserCartProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.request.AddCartReqDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetUserCartProductsRespDto;
 import com.woofnmeow.wnm_project_back.entity.Cart;
 import com.woofnmeow.wnm_project_back.repository.CartMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,26 +14,45 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CartService {
-
     private final CartMapper cartMapper;
 
+
+    // C
     @Transactional(rollbackFor = Exception.class)
-    public Boolean addCart(int userId, List<AddCartReqDto> addCartReqDto) {
+    public Boolean addProductToCart(int userId, List<AddCartReqDto> addCartReqDto) {
         return addCartReqDto.stream()
                 .map(dto -> dto.toCartProductsEntity(userId))
-                .map(cart -> cartMapper.addCart(cart))
+                .map(cart -> cartMapper.insertCart(cart))
                 .allMatch(successCount -> successCount == 1);
     }
 
-    public List<GetUserCartProductsRespDto> getCartProductsByUserId(int userId) {
 
-        return cartMapper.findCartByUserId(userId).stream().map(Cart::toGetUserCartProductsRespDto).collect(Collectors.toList());
+
+
+
+    // R
+    public List<GetUserCartProductsRespDto> getCartByUserId(int userId) {
+        return cartMapper.selectCartByUserId(userId).stream().map(Cart::toGetUserCartProductsRespDto).collect(Collectors.toList());
     }
 
+
+
+
+
+    // U
+
+
+
+
+
+
+
+    // D
     @Transactional(rollbackFor = Exception.class)
-    public Boolean deleteCartProduct(int cartId) {
-
-        return cartMapper.deleteCartProduct(cartId) > 0;
+    public Boolean removeProductOfCart(int cartId) {
+        return cartMapper.deleteProductOfCart(cartId) > 0;
     }
+
+
 
 }

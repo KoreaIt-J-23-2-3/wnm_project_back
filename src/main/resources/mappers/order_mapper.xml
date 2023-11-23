@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.OrderMapper">
+
+    <!--  resultMap  -->
 
     <resultMap id="ordersMap" type="com.woofnmeow.wnm_project_back.entity.Order">
         <id property="orderId" column="order_id"/>
@@ -17,109 +17,68 @@
         <result property="shippingAddressName" column="shipping_address_name"/>
         <result property="shippingAddressDetailName" column="shipping_address_detail_name"/>
         <result property="orderStatus" column="order_status"/>
-        <collection property="orderProducts" javaType="List" resultMap="orderProdutsMap"/>
+        <collection property="orderProducts" javaType="List" resultMap="orderProductsMap"/>
     </resultMap>
-
-    <resultMap id="orderProdutsMap" type="com.woofnmeow.wnm_project_back.entity.OrderProducts">
+    <resultMap id="orderProductsMap" type="com.woofnmeow.wnm_project_back.entity.OrderProducts">
         <id property="orderProductsId" column="order_products_id"/>
         <result property="productDtlId" column="product_dtl_id"/>
         <result property="count" column="count"/>
-        <association property="productDtl" resultMap="ProductDtlMap"/>
+        <association property="productDtl" resultMap="productDtlMap"/>
     </resultMap>
 
-    <resultMap id="ProductDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+
+    <resultMap id="productDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
         <result property="productMstId" column="product_mst_id" />
         <result property="price" column="price" />
         <result property="sizeId" column="size_id" />
-        <association property="productMst" resultMap="ProductMstMap"/>
-        <association property="size" resultMap="SizeMap"/>
+        <association property="productMst" resultMap="productMstMap"/>
+        <association property="size" resultMap="sizeMap"/>
     </resultMap>
-
-    <resultMap id="ProductMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
+    <resultMap id="productMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
         <result property="productThumbnailUrl" column="product_thumbnail_url"/>
     </resultMap>
 
-    <resultMap id="SizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
+
+    <resultMap id="sizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
         <id property="sizeId" column="size_id"/>
         <result property="sizeName" column="size_name"/>
     </resultMap>
 
+    <!--  resultMap  -->
 
 
-    <insert id="addOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
+
+
+
+
+    <!--  Insert  -->
+
+    <insert id="insertOrder" parameterType="com.woofnmeow.wnm_project_back.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
         insert into
             order_tb
         values
             (0, #{userId}, now(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName}, 0)
     </insert>
 
-    <insert id="addOrderProducts" parameterType="hashmap">
+    <insert id="insertProductsToOrder" parameterType="hashmap">
         insert into
             order_products_tb
         values(0, #{orderId}, #{productDtlId}, #{count})
     </insert>
 
-    <select id="selectOrders" parameterType="hashmap" resultMap="ordersMap">
-        select
-            ot.order_id,
-            ot.user_id,
-            ot.order_date,
-            ot.shipping_name,
-            ot.shipping_phone,
-            ot.shipping_address_number,
-            ot.shipping_address_name,
-            ot.shipping_address_detail_name,
-            ot.order_status,
-            opt.order_products_id,
-            opt.count,
-            pdt.product_dtl_id,
-            pdt.price,
-            st.size_id,
-            st.size_name,
-            pmt.product_mst_id,
-            pmt.product_name,
-            pmt.product_thumbnail_url
-        from
-            order_tb ot
-            left outer join order_products_tb opt on(opt.order_id = ot.order_id)
-            left outer join product_dtl_tb pdt on(pdt.product_dtl_id = opt.product_dtl_id)
-            left outer join size_tb st on(st.size_id = pdt.size_id)
-            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
-        where
-            ot.user_id = #{userId}
-<!--        <choose>-->
-<!--            <when test="searchOption.equals('받는사람')">-->
-<!--                and ot.shipping_name like concat("%", #{searchValue}, "%")-->
-<!--            </when>-->
-<!--            <when test="searchOption.equals('전화번호')">-->
-<!--                and ot.shipping_phone like concat("%", #{searchValue}, "%")-->
-<!--            </when>-->
-<!--            <when test="searchOption.equals('주소')">-->
-<!--                and (ot.shipping_address_name like concat("%", #{searchValue}, "%")-->
-<!--                    or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))-->
-<!--            </when>-->
-<!--            <when test="searchOption.equals('상품명')">-->
-<!--                and pmt.product_name like concat("%", #{searchValue}, "%")-->
-<!--            </when>-->
-<!--            <otherwise>-->
-<!--                and pmt.product_name like concat("%", #{searchValue}, "%")-->
-<!--            </otherwise>-->
-<!--        </choose>-->
-        order by
-            <choose>
-                <when test="sortOption.equals('일자올림차순')">
-                    UNIX_TIMESTAMP(order_date) asc
-                </when>
-                <otherwise>
-                    UNIX_TIMESTAMP(order_date) desc
-                </otherwise>
-            </choose>
-    </select>
+    <!--  Insert  -->
 
-    <select id="selectOrdersForAdmin" resultMap="ordersMap" parameterType="hashmap">
+
+
+
+
+
+    <!--  select  -->
+
+    <select id="selectOrdersByUserId" parameterType="hashmap" resultMap="ordersMap">
         select
             ot.order_id,
             ot.user_id,
@@ -146,7 +105,14 @@
             left outer join size_tb st on(st.size_id = pdt.size_id)
             left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
         where
-            1 = 1
+        <choose>
+            <when test="userId.equals(0)">
+                1 = 1
+            </when>
+            <otherwise>
+                ot.user_id = #{userId}
+            </otherwise>
+        </choose>
         <choose>
             <when test="searchOption.equals('받는사람')">
                 and ot.shipping_name like concat("%", #{searchValue}, "%")
@@ -179,6 +145,41 @@
         </choose>
     </select>
 
+    <!--  select  -->
+
+
+
+
+
+
+    <!--  update  -->
+
+    <update id="updateOrderStatus" parameterType="hashmap">
+        update
+        order_tb
+        set
+        order_status = #{orderStatus}
+        where
+        order_id = #{orderId}
+    </update>
+
+
+
+
+
+    <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">
+        call p_update_order_status(#{orderId}, #{orderStatus})
+    </update>
+
+    <!--  update  -->
+
+
+
+
+
+
+    <!--  delete  -->
+
     <delete id="deleteOrder">
         delete
         from
@@ -187,8 +188,8 @@
             order_id = #{orderId}
     </delete>
 
-    <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">
-        call p_update_order_status(#{orderId}, #{orderStatus})
-    </update>
+    <!--  delete  -->
+
+
 
 </mapper>

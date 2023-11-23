@@ -1,6 +1,8 @@
 package com.woofnmeow.wnm_project_back.service;
 
-import com.woofnmeow.wnm_project_back.dto.*;
+import com.woofnmeow.wnm_project_back.dto.request.AddOrderReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.SearchOrderReqDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetUserOrdersRespDto;
 import com.woofnmeow.wnm_project_back.entity.Order;
 import com.woofnmeow.wnm_project_back.repository.CartMapper;
 import com.woofnmeow.wnm_project_back.repository.OrderMapper;
@@ -22,19 +24,22 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final CartMapper cartMapper;
 
+
+
+
+    // C
     @Transactional(rollbackFor = Exception.class)
     public boolean addOrder(AddOrderReqDto addOrderReqDto) {
-
         Order order = addOrderReqDto.toOrderEntity();
-        orderMapper.addOrder(order);
+        orderMapper.insertOrder(order);
 
         addOrderReqDto.getOrderProductData().forEach(productData -> {
-            orderMapper.addOrderProducts(productData.toProductDtlMap(order.getOrderId()));
+            orderMapper.insertProductsToOrder(productData.toProductDtlMap(order.getOrderId()));
         });
 
         if(addOrderReqDto.getIsCart()) {
             Map<String, Object> map = new HashMap<>();
-            cartMapper.deleteOrderCart(DeleteOrderCartVo.builder()
+            cartMapper.deleteProductOfCartWhenIsCart(DeleteOrderCartVo.builder()
                             .userId(addOrderReqDto.getUserId())
                             .products(addOrderReqDto.getOrderProductData().stream()
                                     .map(orderProduct -> orderProduct.getProductDtlId())
@@ -44,20 +49,29 @@ public class OrderService {
         return true;
     }
 
-    public List<GetUserOrdersRespDto> selectOrders(SearchOrderReqDto searchOrderReqDto) {
-        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return orderMapper.selectOrders(searchOrderReqDto.toVo(principalUser.getUser().getUserId())).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
-    }
 
-    @Transactional(rollbackFor = Exception.class)
-    public Boolean deleteOrder(int orderId) {
-        return orderMapper.deleteOrder(orderId) > 0;
-    }
 
+
+
+
+    // R
     public List<GetUserOrdersRespDto> getOrdersForAdmin(SearchOrderReqDto searchOrderReqDto) {
-        return orderMapper.selectOrdersForAdmin(searchOrderReqDto.toVo(0)).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
+        return orderMapper.selectOrdersByUserId(searchOrderReqDto.toVo(0)).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
     }
 
+
+    public List<GetUserOrdersRespDto> getOrdersByUserId(SearchOrderReqDto searchOrderReqDto) {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return orderMapper.selectOrdersByUserId(searchOrderReqDto.toVo(principalUser.getUser().getUserId())).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
+    }
+
+
+
+
+
+
+
+    // U
     @Transactional(rollbackFor = Exception.class)
     public boolean updateOrderStatus(int orderId, int orderStatus) {
         Map<String, Object> map = new HashMap<>();
@@ -65,5 +79,17 @@ public class OrderService {
         map.put("orderStatus", orderStatus);
         return orderMapper.updateOrderStatus(map) > 0;
     }
+
+
+
+
+
+    // D
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean removeOrder(int orderId) {
+        return orderMapper.deleteOrder(orderId) > 0;
+    }
+
+
 
 }
