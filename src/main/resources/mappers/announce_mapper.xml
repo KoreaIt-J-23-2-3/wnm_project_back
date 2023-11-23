@@ -10,4 +10,8 @@
         values(0, #{title}, #{content}, #{type})
     </insert>
 
+    <select id="getAnnouncements" resultType="java.util.List">
+
+    </select>
+
 </mapper>
