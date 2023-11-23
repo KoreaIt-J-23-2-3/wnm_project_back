@@ -22,8 +22,9 @@ public class Review {
     private String reviewImgUrl;
     private LocalDate reviewDate;
 
-    public GetReviewByProductMstIdRespDto toMypageReviewResponseDto(String nickname) {
+    public GetReviewByProductMstIdRespDto toMypageReviewResponseDto(String nickname, String profileUrl) {
         return GetReviewByProductMstIdRespDto.builder()
+                .profileUrl(profileUrl)
                 .nickname(nickname)
                 .productDtlId(productDtlId)
                 .reviewContent(reviewContent)

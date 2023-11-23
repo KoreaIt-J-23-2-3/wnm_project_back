@@ -8,6 +8,7 @@
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ReviewMapper">
 
     <resultMap id="reviewMapForProductMstId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByProductMstIdRespDto">
+        <result property="profileUrl" column="profile_url"/>
         <result property="nickname" column="nickname"/>
         <result property="productDtlId" column="product_dtl_id"/>
         <result property="reviewContent" column="review_content"/>
@@ -54,6 +55,7 @@
 
     <select id="selectReviewsByProductMstId" resultMap="reviewMapForProductMstId">
         select
+            ut.profile_url,
             ut.nickname,
             rt.product_dtl_id,
             rt.review_content,
