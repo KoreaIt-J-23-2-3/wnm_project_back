@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class GetReviewByProductMstIdRespDto {
+    private String profileUrl;
     private String nickname;
     private int productDtlId;
     private String reviewContent;
