@@ -14,6 +14,25 @@
 
     <!--  insert  -->
 
+    <resultMap id="reviewMapForProductMstId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByProductMstIdRespDto">
+        <result property="profileUrl" column="profile_url"/>
+        <result property="nickname" column="nickname"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="reviewContent" column="review_content"/>
+        <result property="reviewImgUrl" column="review_img_url"/>
+        <result property="reviewDate" column="review_date"/>
+    </resultMap>
+
+    <resultMap id="reviewMapForUserId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByUserIdRespDto">
+        <result property="productMstId" column="product_mst_id"/>
+        <result property="productDtlId" column="product_dtl_id"/>
+        <result property="reviewContent" column="review_content"/>
+        <result property="reviewImgUrl" column="review_img_url"/>
+        <result property="reviewDate" column="review_date"/>
+    </resultMap>
+
+
+
     <insert id="addReview" parameterType="com.woofnmeow.wnm_project_back.entity.Review">
         insert into
             review_tb
@@ -27,7 +46,35 @@
 
 
     <!--  select  -->
+    
+    <select id="selectReviewsByProductMstId" resultMap="reviewMapForProductMstId">
+        select
+            ut.profile_url,
+            ut.nickname,
+            rt.product_dtl_id,
+            rt.review_content,
+            rt.review_img_url,
+            rt.review_date
+        from
+            review_tb rt
+            left outer join user_tb ut on(ut.user_id = rt.user_id)
+        where
+            rt.product_mst_id = #{productMstId}
+    </select>
 
+    <select id="selectReviewsByUserId" resultMap="reviewMapForUserId">
+        select
+            rt.product_mst_id,
+            rt.product_dtl_id,
+            rt.review_content,
+            rt.review_img_url,
+            rt.review_date
+        from
+            review_tb rt
+        where
+            rt.user_id = #{userId}
+    </select>
+  
     <!--  select  -->
 
 
@@ -35,6 +82,7 @@
 
 
     <!--  update  -->
+
 
     <update id="editReview"  parameterType="com.woofnmeow.wnm_project_back.entity.Review">
         update
@@ -46,6 +94,7 @@
         where
             review_id = #{reviewId}
     </update>
+
 
     <!--  update  -->
 
@@ -65,6 +114,7 @@
     </delete>
 
     <!--  delete  -->
+
 
 
 </mapper>

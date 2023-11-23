@@ -22,6 +22,7 @@ public class OrderController {
 
 
 
+
     // R
     @GetMapping("/api/orders")
     public ResponseEntity<?> getOrdersByUserId(SearchOrderReqDto searchOrderReqDto) {
@@ -37,18 +38,24 @@ public class OrderController {
 
 
     // U
-    @DeleteMapping("/api/order/{orderId}")
-    public ResponseEntity<?> removeOrder(@PathVariable int orderId) {
-        return ResponseEntity.ok().body(orderService.removeOrder(orderId));
+      @PutMapping("/api/admin/order/{orderId}/{orderStatus}")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable int orderId, @PathVariable int orderStatus) {
+        return ResponseEntity.ok().body(orderService.updateOrderStatus(orderId, orderStatus));
     }
+
+    @PutMapping("/api/order/{orderId}")
+    public ResponseEntity<?> updateShippingConfirmation(@PathVariable int orderId) {
+        return ResponseEntity.ok().body(orderService.updateOrderStatus(orderId, 3));
+    }
+  
 
 
 
 
     // D
-    @PutMapping("/api/admin/order/{orderId}/{orderStatus}")
-    public ResponseEntity<?> updateOrderStatus(@PathVariable int orderId, @PathVariable int orderStatus) {
-        return ResponseEntity.ok().body(orderService.updateOrderStatus(orderId, orderStatus));
+    @DeleteMapping("/api/order/{orderId}")
+    public ResponseEntity<?> removeOrder(@PathVariable int orderId) {
+        return ResponseEntity.ok().body(orderService.removeOrder(orderId));
     }
 
 }

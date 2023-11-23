@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -31,5 +33,15 @@ public class ReviewService {
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteReview(int reviewId) {
         return reviewMapper.deleteReview(reviewId) > 0;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public List<Review> getReviewsByProductMstId(int productMstId) {
+        return reviewMapper.selectReviewsByProductMstId(productMstId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public List<Review> getReviewsByUserId(int userId) {
+        return reviewMapper.selectReviewsByUserId(userId);
     }
 }
