@@ -8,12 +8,6 @@
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ReviewMapper">
     <!--  resultMap  -->
 
-    <!--  resultMap  -->
-
-
-
-    <!--  insert  -->
-
     <resultMap id="reviewMapForProductMstId" type="com.woofnmeow.wnm_project_back.dto.GetReviewByProductMstIdRespDto">
         <result property="profileUrl" column="profile_url"/>
         <result property="nickname" column="nickname"/>
@@ -31,7 +25,10 @@
         <result property="reviewDate" column="review_date"/>
     </resultMap>
 
+    <!--  resultMap  -->
 
+
+    <!--  insert  -->
 
     <insert id="addReview" parameterType="com.woofnmeow.wnm_project_back.entity.Review">
         insert into

@@ -154,19 +154,6 @@
 
     <!--  update  -->
 
-    <update id="updateOrderStatus" parameterType="hashmap">
-        update
-        order_tb
-        set
-        order_status = #{orderStatus}
-        where
-        order_id = #{orderId}
-    </update>
-
-
-
-
-
     <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">
         call p_update_order_status(#{orderId}, #{orderStatus})
     </update>
