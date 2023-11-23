@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class UserService {
         List<GetUserRespDto> result = new ArrayList<>();
         try{
           result = userMapper.getUserList(searchUserReqDto.toVo()).stream().map(User:: toRespDto).collect(Collectors.toList());
-        }catch (Execption e) {
+        }catch (Exception e) {
           Map<String, String> errorMap = new HashMap<>();
           errorMap.put("사용자 오류", "사용자 정보를 조회하는 중 오류가 발생하였습니다.");
           throw new UserException(errorMap);
