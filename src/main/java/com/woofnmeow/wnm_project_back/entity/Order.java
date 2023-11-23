@@ -30,7 +30,6 @@ public class Order {
 
     public GetUserOrdersRespDto toGetUserOrdersRespDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println(orderProducts);
         return GetUserOrdersRespDto.builder()
                 .orderId(orderId)
                 .userId(userId)

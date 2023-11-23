@@ -10,6 +10,8 @@ import com.woofnmeow.wnm_project_back.dto.response.SearchMasterProductRespDto;
 import com.woofnmeow.wnm_project_back.entity.Incoming;
 import com.woofnmeow.wnm_project_back.entity.Outgoing;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
+import com.woofnmeow.wnm_project_back.exception.CartException;
+import com.woofnmeow.wnm_project_back.exception.ProductException;
 import com.woofnmeow.wnm_project_back.repository.ProductMapper;
 import com.woofnmeow.wnm_project_back.vo.GetAllProductsVo;
 import com.woofnmeow.wnm_project_back.vo.GetProductVo;
@@ -29,22 +31,28 @@ public class ProductService {
     // C
     @Transactional(rollbackFor = Exception.class)
     public boolean addProduct(AddProductReqDto addProductReqDto) {
-        Map<String, Object> map = new HashMap<>();
-        ProductMst productMst = addProductReqDto.toEntity();
-        productMapper.addProductMaster(productMst);
+        try {
+            Map<String, Object> map = new HashMap<>();
+            ProductMst productMst = addProductReqDto.toEntity();
+            productMapper.addProductMaster(productMst);
 
-        map.put("productMstId", productMst.getProductMstId());
-        map.put("price", addProductReqDto.getPrice());
+            map.put("productMstId", productMst.getProductMstId());
+            map.put("price", addProductReqDto.getPrice());
 
-        if(addProductReqDto.getProductCategoryId() == 4 && addProductReqDto.getPetTypeId() == 1) {
-            map.put("sizeId", 2);
-            for(int i = 0; i < 6; i++) {
+            if(addProductReqDto.getProductCategoryId() == 4 && addProductReqDto.getPetTypeId() == 1) {
+                map.put("sizeId", 2);
+                for(int i = 0; i < 6; i++) {
+                    productMapper.addProductDetail(map);
+                    map.replace("sizeId", i + 3);
+                }
+            }else {
+                map.put("sizeId", 1);
                 productMapper.addProductDetail(map);
-                map.replace("sizeId", i + 3);
             }
-        }else {
-            map.put("sizeId", 1);
-            productMapper.addProductDetail(map);
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("상품 오류", "상품 추가 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
         }
         return true;
     }
@@ -54,7 +62,13 @@ public class ProductService {
         Map<String, Object> map = new HashMap<>();
         map.put("productDtlId", productDtlId);
         map.put("count", count);
-        return productMapper.addIncomingQuantity(map) > 0;
+        boolean success = productMapper.addIncomingQuantity(map) > 0;
+        if(!success) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("입고 오류", "상품 입고 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return success;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -62,7 +76,13 @@ public class ProductService {
         Map<String, Object> map = new HashMap<>();
         map.put("productDtlId", productDtlId);
         map.put("count", count);
-        return productMapper.addOutgoingQuantity(map) > 0;
+        boolean success = productMapper.addOutgoingQuantity(map) > 0;
+        if(!success) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("출고 오류", "상품 출고 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return success;
     }
 
 
@@ -76,45 +96,90 @@ public class ProductService {
 
     // R
     public List<GetIncomingAndOutgoingRespDto> getIncomingByProductDtlId(int productDtlId) {
-        return productMapper.selectIncomingByDtlId(productDtlId).stream().map(Incoming::toRespDto).collect(Collectors.toList());
+        List<GetIncomingAndOutgoingRespDto> result = new ArrayList<>();
+        try {
+            result = productMapper.selectIncomingByDtlId(productDtlId).stream().map(Incoming::toRespDto).collect(Collectors.toList());
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("입고 오류", "입고 정보를 조회하는 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return result;
     }
 
     public List<GetIncomingAndOutgoingRespDto> getOutgoingByProductDtlId(int productDtlId) {
-        return productMapper.selectOutgoingByDtlId(productDtlId).stream().map(Outgoing::toRespDto).collect(Collectors.toList());
+        List<GetIncomingAndOutgoingRespDto> result = new ArrayList<>();
+        try {
+            result = productMapper.selectOutgoingByDtlId(productDtlId).stream().map(Outgoing::toRespDto).collect(Collectors.toList());
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("출고 오류", "출고 정보를 조회하는 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return result;
     }
 
     public GetProductRespDto getProductByProductDtlId(int productDtlId) {
-        return productMapper.selectProductByProductDtlId(productDtlId).toProductRespDto();
+        GetProductRespDto result = null;
+        try {
+            result = productMapper.selectProductByProductDtlId(productDtlId).toProductRespDto();
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("상품 오류", "상품 정보 조회 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return result;
     }
 
     public GetProductRespDto getProductByProductMstId(int productMstId) {
-        return productMapper.selectProductByProductMstId(productMstId).toProductRespDto();
+        GetProductRespDto result = null;
+        try {
+            result = productMapper.selectProductByProductMstId(productMstId).toProductRespDto();
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("상품 오류", "상품 정보 조회 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return result;
     }
 
     public List<GetAllProductsRespDto> searchProductsWithMinPriceAndMaxPrice(SearchMasterProductReqDto searchMasterProductReqDto) {
         List<GetAllProductsVo> getAllProductsVo = productMapper.searchProductsWithMinPriceAndMaxPrice(searchMasterProductReqDto.toSearchProduct());
         List<GetAllProductsRespDto> respDto = new ArrayList<>();
 
-        getAllProductsVo.forEach(vo -> {
-                String allSizeAndPrice = vo.getSizeAndPrice();
-                String[] sizeAndPrice = allSizeAndPrice.split(", ");
-                List<String> priceList = new ArrayList<>();
-                for(String price: sizeAndPrice) {
-                    priceList.add(price);
-                }
-                String minPrice = priceList.get(0).replace("/ ", ": ");
-                String maxPrice = "";
-                if (priceList.size() == 2) {
-                    maxPrice = priceList.get(1).replace("/ ", ": ");
-                }
-                respDto.add(vo.toRespDto(minPrice, maxPrice));
-            }
-        );
+        try {
+            getAllProductsVo.forEach(vo -> {
+                        String allSizeAndPrice = vo.getSizeAndPrice();
+                        String[] sizeAndPrice = allSizeAndPrice.split(", ");
+                        List<String> priceList = new ArrayList<>();
+                        for(String price: sizeAndPrice) {
+                            priceList.add(price);
+                        }
+                        String minPrice = priceList.get(0).replace("/ ", ": ");
+                        String maxPrice = "";
+                        if (priceList.size() == 2) {
+                            maxPrice = priceList.get(1).replace("/ ", ": ");
+                        }
+                        respDto.add(vo.toRespDto(minPrice, maxPrice));
+                    }
+            );
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("상품 오류", "상품 검색 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
         return respDto;
     }
 
     public int getCountOfSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        return productMapper.selectCountOfSearchedProducts(searchMasterProductReqDto.toSearchProduct());
+        int count = 0;
+        try {
+            count = productMapper.selectCountOfSearchedProducts(searchMasterProductReqDto.toSearchProduct())
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("상품 오류", "상품 리스트를 불러오는 중 오류가 발생하였습니다.");
+        }
+        return count;
     }
 
     public List<SearchMasterProductRespDto> searchProductsWithAllSizes(SearchMasterProductReqDto searchMasterProductReqDto) {
@@ -122,18 +187,24 @@ public class ProductService {
         Map<String, Object> map = new HashMap<>();
         List<SearchMasterProductRespDto> reqList= new ArrayList<>();
 
-        getProductVo.forEach(vo -> {
-            String allSizeAndPrice = vo.getSizeAndPrice();
-            String[] sizeAndPrice = allSizeAndPrice.split(", ");
-            for (int i = 0; i < sizeAndPrice.length; i++) {
-                String[] sizes = sizeAndPrice[i].split("/ ", 0);
-                String[] prices = sizeAndPrice[i].split("/ ", 1);
-                String size = sizes[0].substring(1);
-                String price = prices[0].substring(prices[0].indexOf("/ ") + 2).replace(")", "");
-                map.put(size, price.toString());
-            }
-            reqList.add(vo.toRespDto(map));
-        });
+        try {
+            getProductVo.forEach(vo -> {
+                String allSizeAndPrice = vo.getSizeAndPrice();
+                String[] sizeAndPrice = allSizeAndPrice.split(", ");
+                for (int i = 0; i < sizeAndPrice.length; i++) {
+                    String[] sizes = sizeAndPrice[i].split("/ ", 0);
+                    String[] prices = sizeAndPrice[i].split("/ ", 1);
+                    String size = sizes[0].substring(1);
+                    String price = prices[0].substring(prices[0].indexOf("/ ") + 2).replace(")", "");
+                    map.put(size, price.toString());
+                }
+                reqList.add(vo.toRespDto(map));
+            });
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("상품 오류", "상품 검색 중 오류가 발생하였습니다.");\
+            throw new ProductException(errorMap);
+        }
         return reqList;
     }
 
@@ -146,7 +217,13 @@ public class ProductService {
         Map<String, Object> map = new HashMap<>();
         map.put("incomingHistoryId", incomingHistoryId);
         map.put("count", count);
-        return productMapper.updateIncomingQuantity(map) > 0;
+        boolean success = productMapper.updateIncomingQuantity(map) > 0;
+        if(!success) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("입고 오류", "입고 정보 갱신 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return success;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -178,6 +255,12 @@ public class ProductService {
     // D
     @Transactional(rollbackFor = Exception.class)
     public boolean removeProduct(int productMstId) {
-        return productMapper.deleteProduct(productMstId) > 0;
+        boolean success = productMapper.deleteProduct(productMstId) > 0;
+        if(!success) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("상품 오류", "상품 삭제 중 오류가 발생하였습니다.");
+            throw new ProductException(errorMap);
+        }
+        return success;
     }
 }
