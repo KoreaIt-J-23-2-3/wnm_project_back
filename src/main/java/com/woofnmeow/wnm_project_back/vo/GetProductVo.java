@@ -1,7 +1,7 @@
 package com.woofnmeow.wnm_project_back.vo;
 
-import com.woofnmeow.wnm_project_back.dto.GetMasterProductRespDto;
-import com.woofnmeow.wnm_project_back.dto.SearchMasterProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetMasterProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.SearchMasterProductRespDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;

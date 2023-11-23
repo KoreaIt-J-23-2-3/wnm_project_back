@@ -1,4 +1,4 @@
-package com.woofnmeow.wnm_project_back.dto;
+package com.woofnmeow.wnm_project_back.dto.request;
 
 import com.woofnmeow.wnm_project_back.vo.SearchMasterProductVo;
 import lombok.*;

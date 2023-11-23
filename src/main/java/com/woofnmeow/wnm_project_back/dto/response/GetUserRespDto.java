@@ -1,4 +1,4 @@
-package com.woofnmeow.wnm_project_back.dto;
+package com.woofnmeow.wnm_project_back.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

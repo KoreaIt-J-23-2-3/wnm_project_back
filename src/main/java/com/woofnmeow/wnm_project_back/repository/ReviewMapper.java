@@ -7,8 +7,16 @@ import java.util.List;
 
 @Mapper
 public interface ReviewMapper {
+    // C
     public Integer addReview(Review review);
+
+    // R
+
+
+    // U
     public Integer editReview(Review review);
+
+    // D
     public Integer deleteReview(int reviewId);
     List<Review> selectReviewsByProductMstId(int productMstId);
     List<Review> selectReviewsByUserId(int userId);

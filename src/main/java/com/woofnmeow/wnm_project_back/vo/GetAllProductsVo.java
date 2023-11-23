@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.vo;
 
-import com.woofnmeow.wnm_project_back.dto.GetAllProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetAllProductsRespDto;
 import lombok.Data;
 
 @Data

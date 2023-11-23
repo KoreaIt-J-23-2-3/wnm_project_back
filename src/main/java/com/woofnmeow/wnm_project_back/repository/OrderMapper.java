@@ -11,11 +11,19 @@ import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
+
+    // C
     @Options(useGeneratedKeys = true, keyProperty = "orderId")
-    public Integer addOrder(Order order);
-    public Integer addOrderProducts(Map<String, Object> reqMap);
-    public List<Order> selectOrders(SearchOrderVo searchOrderVo);
-    public Integer deleteOrder(int orderId);
-    public List<Order> selectOrdersForAdmin(SearchOrderVo searchOrderVo);
+    public Integer insertOrder(Order order);
+    public Integer insertProductsToOrder(Map<String, Object> reqMap);
+
+    // R
+    public List<Order> selectOrdersByUserId(SearchOrderVo searchOrderVo);
+
+    // U
     public Integer updateOrderStatus(Map<String, Object> map);
+
+    // D
+    public Integer deleteOrder(int orderId);
+
 }

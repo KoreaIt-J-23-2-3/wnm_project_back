@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.controller;
 
-import com.woofnmeow.wnm_project_back.dto.PrincipalRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.PrincipalRespDto;
 import com.woofnmeow.wnm_project_back.entity.User;
 import com.woofnmeow.wnm_project_back.security.PrincipalUser;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.entity;
 
-import com.woofnmeow.wnm_project_back.dto.GetIncomingAndOutgoingRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetIncomingAndOutgoingRespDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
