@@ -1,24 +1,24 @@
-package com.woofnmeow.wnm_project_back.dto;
+package com.woofnmeow.wnm_project_back.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
+import com.woofnmeow.wnm_project_back.entity.ProductDtl;
+import com.woofnmeow.wnm_project_back.entity.ProductMst;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDateTime;
-
-@Builder
 @Data
-public class SearchMasterProductRespDto {
-    private int productMstId;
+@AllArgsConstructor
+@NoArgsConstructor
+public class EditProductReqDto {
     private String productName;
-    private int petTypeId;
-    private String petTypeName;
-    private int productCategoryId;
-    private String productCategoryName;
     private String productDetailText;
     private String productThumbnailUrl;
     private String productDetailUrl;
-    private String createDate;
+
+    // 사이즈별 가격
+    @JsonProperty("no")
     private String no;
     @JsonProperty("XS")
     private String XS;
@@ -32,4 +32,6 @@ public class SearchMasterProductRespDto {
     private String XL;
     @JsonProperty("XXL")
     private String XXL;
+
+
 }

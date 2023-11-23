@@ -1,7 +1,7 @@
 package com.woofnmeow.wnm_project_back.entity;
 
-import com.woofnmeow.wnm_project_back.dto.GetUserRespDto;
-import com.woofnmeow.wnm_project_back.dto.PrincipalRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetUserRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.PrincipalRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

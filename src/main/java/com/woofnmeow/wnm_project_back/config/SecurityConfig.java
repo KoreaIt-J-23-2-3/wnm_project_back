@@ -37,6 +37,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .successHandler(oauth2SuccessHandler)
                 .userInfoEndpoint()
                 .userService(principalUserDetailsService);
-
     }
 }

@@ -1,6 +1,12 @@
 package com.woofnmeow.wnm_project_back.service;
 
-import com.woofnmeow.wnm_project_back.dto.*;
+import com.woofnmeow.wnm_project_back.dto.request.AddProductReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.EditProductReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.SearchMasterProductReqDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetAllProductsRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetIncomingAndOutgoingRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetProductRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.SearchMasterProductRespDto;
 import com.woofnmeow.wnm_project_back.entity.Incoming;
 import com.woofnmeow.wnm_project_back.entity.Outgoing;
 import com.woofnmeow.wnm_project_back.entity.ProductMst;
@@ -19,6 +25,8 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductMapper productMapper;
 
+
+    // C
     @Transactional(rollbackFor = Exception.class)
     public boolean addProduct(AddProductReqDto addProductReqDto) {
         Map<String, Object> map = new HashMap<>();
@@ -41,56 +49,51 @@ public class ProductService {
         return true;
     }
 
-    public boolean incomingQuantity(int productDtlId, int count) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addIncomingQuantity(int productDtlId, int count) {
         Map<String, Object> map = new HashMap<>();
         map.put("productDtlId", productDtlId);
         map.put("count", count);
-        return productMapper.incomingQuantity(map) > 0;
+        return productMapper.addIncomingQuantity(map) > 0;
     }
 
-    public boolean updateIncomingQuantity(int incomingHistoryId, int count) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("incomingHistoryId", incomingHistoryId);
-        map.put("count", count);
-        return productMapper.updateIncomingQuantity(map) > 0;
-    }
-
-    public boolean deleteIncomingQuantity(int incomingHistoryId) {
-        return productMapper.deleteIncomingQuantity(incomingHistoryId) > 0;
-    }
-
-
-    public boolean outgoingQuantity(int productDtlId, int count) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addOutgoingQuantity(int productDtlId, int count) {
         Map<String, Object> map = new HashMap<>();
         map.put("productDtlId", productDtlId);
         map.put("count", count);
-        return productMapper.outgoingQuantity(map) > 0;
+        return productMapper.addOutgoingQuantity(map) > 0;
     }
 
+
+
+
+
+
+
+
+
+
+    // R
     public List<GetIncomingAndOutgoingRespDto> getIncomingByProductDtlId(int productDtlId) {
-        return productMapper.getIncomingByDtlId(productDtlId).stream().map(Incoming::toRespDto).collect(Collectors.toList());
+        return productMapper.selectIncomingByDtlId(productDtlId).stream().map(Incoming::toRespDto).collect(Collectors.toList());
     }
 
     public List<GetIncomingAndOutgoingRespDto> getOutgoingByProductDtlId(int productDtlId) {
-        return productMapper.getOutgoingByDtlId(productDtlId).stream().map(Outgoing::toRespDto).collect(Collectors.toList());
+        return productMapper.selectOutgoingByDtlId(productDtlId).stream().map(Outgoing::toRespDto).collect(Collectors.toList());
     }
 
     public GetProductRespDto getProductByProductDtlId(int productDtlId) {
-        return productMapper.getProductByProductDtlId(productDtlId).toProductRespDto();
+        return productMapper.selectProductByProductDtlId(productDtlId).toProductRespDto();
     }
 
     public GetProductRespDto getProductByProductMstId(int productMstId) {
-        return productMapper.getProductByProductMstId(productMstId).toProductRespDto();
+        return productMapper.selectProductByProductMstId(productMstId).toProductRespDto();
     }
 
-    public List<GetMasterProductRespDto> getProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        return productMapper.getMasterProductList(searchMasterProductReqDto.toVo()).stream().map(ProductMst::toMasterProductRespDto).collect(Collectors.toList());
-    }
-
-    public List<GetAllProductsRespDto> getAllProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
-        List<GetAllProductsVo> getAllProductsVo = productMapper.getAllProductMst(searchMasterProductReqDto.toSearchProduct());
+    public List<GetAllProductsRespDto> searchProductsWithMinPriceAndMaxPrice(SearchMasterProductReqDto searchMasterProductReqDto) {
+        List<GetAllProductsVo> getAllProductsVo = productMapper.searchProductsWithMinPriceAndMaxPrice(searchMasterProductReqDto.toSearchProduct());
         List<GetAllProductsRespDto> respDto = new ArrayList<>();
-        Map<String, Object> respMap = new HashMap<>();
 
         getAllProductsVo.forEach(vo -> {
                 String allSizeAndPrice = vo.getSizeAndPrice();
@@ -110,14 +113,12 @@ public class ProductService {
         return respDto;
     }
 
-    public int getBoardCount(SearchMasterProductReqDto searchMasterProductReqDto) {
-        int count = productMapper.getProductCount(searchMasterProductReqDto.toSearchProduct());
-        System.out.println("service : " + count);
-        return count;
+    public int getCountOfSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        return productMapper.selectCountOfSearchedProducts(searchMasterProductReqDto.toSearchProduct());
     }
 
-    public List<SearchMasterProductRespDto> searchMasterProduct(SearchMasterProductReqDto searchMasterProductReqDto) {
-        List<GetProductVo> getProductVo = productMapper.searchProductMst(searchMasterProductReqDto.toVo());
+    public List<SearchMasterProductRespDto> searchProductsWithAllSizes(SearchMasterProductReqDto searchMasterProductReqDto) {
+        List<GetProductVo> getProductVo = productMapper.searchProductsWithAllSizes(searchMasterProductReqDto.toVo());
         Map<String, Object> map = new HashMap<>();
         List<SearchMasterProductRespDto> reqList= new ArrayList<>();
 
@@ -134,6 +135,18 @@ public class ProductService {
             reqList.add(vo.toRespDto(map));
         });
         return reqList;
+    }
+
+
+
+
+    // U
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateIncomingQuantity(int incomingHistoryId, int count) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("incomingHistoryId", incomingHistoryId);
+        map.put("count", count);
+        return productMapper.updateIncomingQuantity(map) > 0;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -159,6 +172,10 @@ public class ProductService {
         return true;
     }
 
+
+
+
+    // D
     @Transactional(rollbackFor = Exception.class)
     public boolean removeProduct(int productMstId) {
         return productMapper.deleteProduct(productMstId) > 0;

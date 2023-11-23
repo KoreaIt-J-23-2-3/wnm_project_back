@@ -1,7 +1,7 @@
 package com.woofnmeow.wnm_project_back.controller;
 
-import com.woofnmeow.wnm_project_back.dto.AddOrderReqDto;
-import com.woofnmeow.wnm_project_back.dto.SearchOrderReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.AddOrderReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.SearchOrderReqDto;
 import com.woofnmeow.wnm_project_back.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     private final OrderService orderService;
 
+
+    // C
     @PostMapping("/api/order")
     public ResponseEntity<?> addOrder(@RequestBody AddOrderReqDto addOrderReqDto) {
         return ResponseEntity.ok().body(orderService.addOrder(addOrderReqDto));
     }
 
-    @GetMapping("/api/orders")
-    public ResponseEntity<?> findOrders(SearchOrderReqDto searchOrderReqDto) {
-        System.out.println(searchOrderReqDto);
-        return ResponseEntity.ok().body(orderService.selectOrders(searchOrderReqDto));
-    }
 
-    @DeleteMapping("/api/order/{orderId}")
-    public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
-        return ResponseEntity.ok().body(orderService.deleteOrder(orderId));
+
+
+    // R
+    @GetMapping("/api/orders")
+    public ResponseEntity<?> getOrdersByUserId(SearchOrderReqDto searchOrderReqDto) {
+        return ResponseEntity.ok().body(orderService.getOrdersByUserId(searchOrderReqDto));
     }
 
     @GetMapping("/api/admin/orders")
@@ -33,8 +33,22 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.getOrdersForAdmin(searchOrderReqDto));
     }
 
+
+
+
+    // U
+    @DeleteMapping("/api/order/{orderId}")
+    public ResponseEntity<?> removeOrder(@PathVariable int orderId) {
+        return ResponseEntity.ok().body(orderService.removeOrder(orderId));
+    }
+
+
+
+
+    // D
     @PutMapping("/api/admin/order/{orderId}/{orderStatus}")
     public ResponseEntity<?> updateOrderStatus(@PathVariable int orderId, @PathVariable int orderStatus) {
         return ResponseEntity.ok().body(orderService.updateOrderStatus(orderId, orderStatus));
     }
+
 }

@@ -6,12 +6,36 @@
 
 
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.ReviewMapper">
+    <!--  resultMap  -->
+
+    <!--  resultMap  -->
+
+
+
+    <!--  insert  -->
 
     <insert id="addReview" parameterType="com.woofnmeow.wnm_project_back.entity.Review">
         insert into
             review_tb
         values(0, #{userId}, #{productMstId}, #{productDtlId}, #{reviewContent}, #{reviewImgUrl}, now())
     </insert>
+
+    <!--  insert  -->
+
+
+
+
+
+    <!--  select  -->
+
+    <!--  select  -->
+
+
+
+
+
+    <!--  update  -->
+
     <update id="editReview"  parameterType="com.woofnmeow.wnm_project_back.entity.Review">
         update
             review_tb
@@ -22,10 +46,25 @@
         where
             review_id = #{reviewId}
     </update>
+
+    <!--  update  -->
+
+
+
+
+
+
+
+    <!--  delete  -->
+
     <delete id="deleteReview">
         delete from
             review_tb
         where
             review_id = #{reviewId}
     </delete>
+
+    <!--  delete  -->
+
+
 </mapper>

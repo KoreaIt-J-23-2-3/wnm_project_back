@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
 <mapper namespace="com.woofnmeow.wnm_project_back.repository.CartMapper">
 
-    <resultMap id="CartMap" type="com.woofnmeow.wnm_project_back.entity.Cart">
+    <!--  resultMap  -->
+
+    <resultMap id="cartMap" type="com.woofnmeow.wnm_project_back.entity.Cart">
         <id property="cartId" column="cart_id"/>
         <result property="userId" column="user_id"/>
         <result property="productDtlId" column="product_dtl_id"/>
         <result property="count" column="count"/>
-        <association property="productDtl" resultMap="ProductDtlMap"/>
+        <association property="productDtl" resultMap="productDtlMap"/>
     </resultMap>
+
+
 
     <resultMap id="ProductDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
@@ -22,26 +24,44 @@
         <result property="sizeId" column="size_id" />
         <result property="actualStock" column="actual_stock" />
         <result property="tempStock" column="temp_stock" />
-        <association property="productMst" resultMap="ProductMstMap"/>
-        <association property="size" resultMap="SizeMap"/>
+        <association property="productMst" resultMap="productMstMap"/>
+        <association property="size" resultMap="sizeMap"/>
     </resultMap>
 
-    <resultMap id="ProductMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
+    <resultMap id="productMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
         <result property="productThumbnailUrl" column="product_thumbnail_url"/>
     </resultMap>
 
-    <resultMap id="SizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
+
+
+    <resultMap id="sizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
         <id property="sizeId" column="size_id"/>
         <result property="sizeName" column="size_name"/>
     </resultMap>
 
-    <insert id="addCart" parameterType="com.woofnmeow.wnm_project_back.entity.Cart" statementType="CALLABLE">
+    <!--  resultMap  -->
+
+
+
+
+    <!--  Insert  -->
+
+    <insert id="insertCart" parameterType="com.woofnmeow.wnm_project_back.entity.Cart" statementType="CALLABLE">
         {call p_add_cart(#{userId}, #{productDtlId}, #{count})}
     </insert>
 
-    <select id="findCartByUserId" resultMap="CartMap">
+    <!--  Insert  -->
+
+
+
+
+
+
+    <!--  select  -->
+
+    <select id="selectCartByUserId" resultMap="cartMap">
         select
             ct.cart_id,
             ct.count,
@@ -73,7 +93,24 @@
             and user_id = #{userId}
     </select>
 
-    <delete id="deleteCartProduct">
+    <!--  select  -->
+
+
+
+
+
+    <!--  update  -->
+
+    <!--  update  -->
+
+
+
+
+
+
+    <!--  delete  -->
+
+    <delete id="deleteProductOfCart">
         delete
         from
             cart_tb
@@ -81,7 +118,7 @@
             cart_id = #{cartId}
     </delete>
 
-    <delete id="deleteOrderCart">
+    <delete id="deleteProductOfCartWhenIsCart">
         delete
         from
             cart_tb
@@ -93,5 +130,7 @@
         </foreach>
         )
     </delete>
+
+    <!--  delete  -->
 
 </mapper >

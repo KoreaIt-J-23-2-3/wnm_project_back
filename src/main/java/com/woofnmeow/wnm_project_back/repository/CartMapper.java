@@ -9,13 +9,16 @@ import java.util.Map;
 
 @Mapper
 public interface CartMapper {
-    public List<Cart> findCartByUserId(int userId);
+    // C
+    public int insertCart(Cart cart);
 
-    public int getProductCount(Map<String, Object> map);
+    // R
+    public List<Cart> selectCartByUserId(int userId);
 
-    public int deleteCartProduct(int cartId);
+    // U
 
-    public int addCart(Cart cart);
 
-    public int deleteOrderCart(DeleteOrderCartVo deleteOrderCartVo);
+    // D
+    public int deleteProductOfCart(int cartId);
+    public int deleteProductOfCartWhenIsCart(DeleteOrderCartVo deleteOrderCartVo);
 }
