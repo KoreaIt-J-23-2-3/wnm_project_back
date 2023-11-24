@@ -11,6 +11,7 @@
         <id property="orderId" column="order_id"/>
         <result property="userId" column="user_id"/>
         <result property="orderDate" column="order_date"/>
+        <result property="orderUpdateDate" column="order_update_date" />
         <result property="shippingName" column="shipping_name"/>
         <result property="shippingPhone" column="shipping_phone"/>
         <result property="shippingAddressNumber" column="shipping_address_number"/>
@@ -60,7 +61,7 @@
         insert into
             order_tb
         values
-            (0, #{userId}, now(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName}, 0)
+            (0, #{userId}, now(), now(), #{shippingName}, #{shippingPhone}, #{shippingAddressNumber}, #{shippingAddressName}, #{shippingAddressDetailName}, 0)
     </insert>
 
     <insert id="insertProductsToOrder" parameterType="hashmap">
@@ -83,6 +84,7 @@
             ot.order_id,
             ot.user_id,
             ot.order_date,
+            ot.order_update_date,
             ot.shipping_name,
             ot.shipping_phone,
             ot.shipping_address_number,

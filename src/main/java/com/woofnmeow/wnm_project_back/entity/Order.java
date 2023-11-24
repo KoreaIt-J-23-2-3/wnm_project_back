@@ -19,6 +19,7 @@ public class Order {
     private int orderId;
     private int userId;
     private LocalDateTime orderDate;
+    private LocalDateTime orderUpdateDate;
     private String shippingName;
     private String shippingPhone;
     private String shippingAddressNumber;
@@ -34,6 +35,7 @@ public class Order {
                 .orderId(orderId)
                 .userId(userId)
                 .orderDate(orderDate.format(formatter))
+                .orderUpdateDate(orderUpdateDate.format(formatter))
                 .shippingName(shippingName)
                 .shippingPhone(shippingPhone)
                 .shippingAddressNumber(shippingAddressNumber)

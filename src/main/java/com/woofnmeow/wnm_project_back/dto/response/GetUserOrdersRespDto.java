@@ -16,6 +16,7 @@ public class GetUserOrdersRespDto {
     private int orderId;
     private int userId;
     private String orderDate;
+    private String orderUpdateDate;
     private String shippingName;
     private String shippingPhone;
     private String shippingAddressNumber;
