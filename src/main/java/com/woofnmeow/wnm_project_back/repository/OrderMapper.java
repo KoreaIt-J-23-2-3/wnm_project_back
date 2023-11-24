@@ -19,6 +19,7 @@ public interface OrderMapper {
 
     // R
     public List<Order> selectOrdersByUserId(SearchOrderVo searchOrderVo);
+    public Order selectOrder(int orderId);
 
     // U
     public Integer updateOrderStatus(Map<String, Object> map);

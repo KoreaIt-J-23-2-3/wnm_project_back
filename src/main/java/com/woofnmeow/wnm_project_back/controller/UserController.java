@@ -2,6 +2,7 @@ package com.woofnmeow.wnm_project_back.controller;
 
 import com.woofnmeow.wnm_project_back.aop.annotation.ValidAop;
 import com.woofnmeow.wnm_project_back.dto.request.EditUserReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.SearchUserReqDto;
 import com.woofnmeow.wnm_project_back.dto.request.SignupReqDto;
 import com.woofnmeow.wnm_project_back.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUser(userId));
     }
 
+    @GetMapping("/api/admin/users")
+    public ResponseEntity<?> getUserList(SearchUserReqDto searchUserReqDto) {
+        return ResponseEntity.ok().body(userService.getUserList(searchUserReqDto));
+    }
+
 
     // U
     @ValidAop
@@ -42,6 +48,11 @@ public class UserController {
     // D
     @DeleteMapping("/api/user/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable int userId) {
+        return ResponseEntity.ok().body(userService.delete(userId));
+    }
+
+    @DeleteMapping("/api/admin/user/{userId}")
+    public ResponseEntity<?> deleteAdminToUser(@PathVariable int userId) {
         return ResponseEntity.ok().body(userService.delete(userId));
     }
 

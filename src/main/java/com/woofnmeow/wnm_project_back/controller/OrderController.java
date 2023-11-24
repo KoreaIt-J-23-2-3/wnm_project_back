@@ -34,6 +34,11 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.getOrdersForAdmin(searchOrderReqDto));
     }
 
+    @GetMapping("/api/order/{orderId}")
+    public ResponseEntity<?> getOrder(@PathVariable int orderId) {
+
+        return ResponseEntity.ok().body(orderService.getOrder(orderId));
+    }
 
 
 
