@@ -7,6 +7,7 @@ import com.woofnmeow.wnm_project_back.repository.AnnouncementMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,5 +24,9 @@ public class AnnouncementService {
             throw new AnnouncementExcption(errorMap);
         }
         return success;
+    }
+
+    public List<?> addAnnouncement() {
+        return announcementMapper.();
     }
 }
