@@ -125,9 +125,11 @@
                 and name like concat("%", #{searchValue}, "%")
             </when>
             <when test="searchOption.equals('휴대전화')">
-                and phone_number like concat("%", #{searchValue}, "%")
+                and phone_number = #{searchValue}
             </when>
             <otherwise>
+                and (name like concat("%", #{searchValue}, "%")
+                    or phone_number = #{searchValue})
             </otherwise>
         </choose>
         order by
