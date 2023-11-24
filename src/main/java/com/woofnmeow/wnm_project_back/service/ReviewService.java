@@ -24,8 +24,8 @@ public class ReviewService {
 
     // C
     @Transactional(rollbackFor = Exception.class)
-    public boolean addReview(int productMstId, AddReviewReqDto addReviewReqDto) {
-        boolean success = reviewMapper.addReview(addReviewReqDto.toReviewEntity(productMstId)) > 0;
+    public boolean addReview(AddReviewReqDto addReviewReqDto) {
+        boolean success = reviewMapper.addReview(addReviewReqDto.toReviewEntity()) > 0;
         if(!success) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("리뷰 오류", "리뷰 추가 중 오류가 발행하였습니다");
@@ -39,28 +39,27 @@ public class ReviewService {
 
     // R
     public List<GetReviewByProductMstIdRespDto> getReviewsByProductMstId(int productMstId) {
-        List<Review> result = reviewMapper.selectReviewsByProductMstId(productMstId);
-//        try {
+        List<Review> result = new ArrayList<>();
+        try {
+            result = reviewMapper.selectReviewsByProductMstId(productMstId);
 
-
-//        }catch (Exception e) {
-//            Map<String, String> errorMap = new HashMap<>();
-//            errorMap.put("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다.");
-//            throw new ReviewException(errorMap);
-//        }
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다.");
+            throw new ReviewException(errorMap);
+        }
         return result.stream().map(Review::toDetailPageReviewResponseDto).collect(Collectors.toList());
     }
 
     public List<GetReviewByUserIdRespDto> getReviewsByUserId(int userId) {
-        List<Review> result = reviewMapper.selectReviewsByUserId(userId);
-//        try {
-//            result =
-//        }catch (Exception e) {
-//            Map<String, String> errorMap = new HashMap<>();
-//            errorMap.put("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다.");
-//            throw new ReviewException(errorMap);
-//        }
-        System.out.println(result);
+        List<Review> result = new ArrayList<>();
+        try {
+            result = reviewMapper.selectReviewsByUserId(userId);
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다.");
+            throw new ReviewException(errorMap);
+        }
         return result.stream().map(Review::toMypageReviewResponseDto).collect(Collectors.toList());
     }
 
