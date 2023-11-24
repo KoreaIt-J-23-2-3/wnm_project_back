@@ -150,7 +150,7 @@
 
 
 
-    <select id="selectOrder" resultType="com.woofnmeow.wnm_project_back.entity.Order">
+    <select id="selectOrder" resultMap="ordersMap">
         select
             ot.order_id,
             ot.user_id,
@@ -178,7 +178,7 @@
             left outer join size_tb st on(st.size_id = pdt.size_id)
             left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
         where
-            order_id = #{orderId}
+            ot.order_id = #{orderId}
     </select>
 
     <!--  select  -->
