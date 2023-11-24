@@ -67,6 +67,7 @@ public class ProductController {
 
     @GetMapping("api/products/count")
     public ResponseEntity<?> getCountOfSearchedProducts(SearchMasterProductReqDto searchMasterProductReqDto) {
+        System.out.println(searchMasterProductReqDto);
         return ResponseEntity.ok().body(productService.getCountOfSearchedProducts(searchMasterProductReqDto));
     }
 
