@@ -90,6 +90,10 @@ public class OrderService {
         return orderMapper.selectOrder(orderId);
     }
 
+    public int getOrderCount() {
+        return orderMapper.getOrderCount();
+    }
+
 
 
 
