@@ -11,13 +11,13 @@ public interface ReviewMapper {
     public Integer addReview(Review review);
 
     // R
-
+    public List<Review> selectReviewsByProductMstId(int productMstId);
+    public List<Review> selectReviewsByUserId(int userId);
 
     // U
     public Integer editReview(Review review);
 
     // D
     public Integer deleteReview(int reviewId);
-    List<Review> selectReviewsByProductMstId(int productMstId);
-    List<Review> selectReviewsByUserId(int userId);
+
 }

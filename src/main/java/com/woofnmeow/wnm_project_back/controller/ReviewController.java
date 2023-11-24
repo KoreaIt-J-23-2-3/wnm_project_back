@@ -18,9 +18,9 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // C
-    @PostMapping("/api/review/{productMstId}")
-    public ResponseEntity<?> addReview(@PathVariable int productMstId, @RequestBody AddReviewReqDto addReviewReqDto) {
-        return ResponseEntity.ok().body(reviewService.addReview(productMstId, addReviewReqDto));
+    @PostMapping("/api/review")
+    public ResponseEntity<?> addReview(@RequestBody AddReviewReqDto addReviewReqDto) {
+        return ResponseEntity.ok().body(reviewService.addReview(addReviewReqDto));
     }
 
   
@@ -31,7 +31,8 @@ public class ReviewController {
     public ResponseEntity<?> getProductReviews(@PathVariable int productMstId) {
         return ResponseEntity.ok().body(reviewService.getReviewsByProductMstId(productMstId));
     }
-      @GetMapping("/api/reviews/user/{userId}")
+
+    @GetMapping("/api/reviews/user/{userId}")
     public ResponseEntity<?> getUserReviews(@PathVariable int userId) {
         return ResponseEntity.ok().body(reviewService.getReviewsByUserId(userId));
     }

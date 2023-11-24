@@ -100,6 +100,42 @@
             user_id = #{userId}
     </select>
 
+
+    <!-- 전체 및 검색 회원 정보 검색 -->
+    <select id="getUserList" resultMap="userMap">
+        select
+            user_id,
+            role_name,
+            oauth2_id,
+            provider,
+            name,
+            nickname,
+            email,
+            phone_number,
+            default_address_number,
+            default_address_name,
+            default_address_detail_name,
+            profile_url
+        from
+            user_tb
+        where
+            1 = 1
+        <choose>
+            <when test="searchOption.equals('이름')">
+                and name like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('휴대전화')">
+                and phone_number = #{searchValue}
+            </when>
+            <otherwise>
+                and (name like concat("%", #{searchValue}, "%")
+                    or phone_number = #{searchValue})
+            </otherwise>
+        </choose>
+        order by
+            user_id asc
+    </select>
+
     <!--  select  -->
 
 

@@ -18,9 +18,7 @@ public class AccountController {
                         .getAuthentication().getPrincipal();
 
         User user = principalUser.getUser();
-
         PrincipalRespDto principalRespDto = user.toPrincipalRespDto();
-
         return ResponseEntity.ok(principalRespDto);
     }
 

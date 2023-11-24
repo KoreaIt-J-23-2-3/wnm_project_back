@@ -19,6 +19,7 @@ public class Order {
     private int orderId;
     private int userId;
     private LocalDateTime orderDate;
+    private LocalDateTime orderUpdateDate;
     private String shippingName;
     private String shippingPhone;
     private String shippingAddressNumber;
@@ -27,14 +28,15 @@ public class Order {
     private int orderStatus;
 
     private List<OrderProducts> orderProducts;
+    private User user;
 
     public GetUserOrdersRespDto toGetUserOrdersRespDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println(orderProducts);
         return GetUserOrdersRespDto.builder()
                 .orderId(orderId)
                 .userId(userId)
                 .orderDate(orderDate.format(formatter))
+                .orderUpdateDate(orderUpdateDate.format(formatter))
                 .shippingName(shippingName)
                 .shippingPhone(shippingPhone)
                 .shippingAddressNumber(shippingAddressNumber)
