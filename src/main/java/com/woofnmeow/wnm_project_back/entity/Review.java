@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -15,31 +16,36 @@ import java.time.LocalDate;
 @Builder
 public class Review {
     private int reviewId;
-    private int userId;
-    private int productMstId;
-    private int productDtlId;
+    private int orderProductsId;
     private String reviewContent;
     private String reviewImgUrl;
     private LocalDate reviewDate;
 
-    public GetReviewByProductMstIdRespDto toMypageReviewResponseDto(String nickname, String profileUrl) {
+    private OrderProducts orderProducts;
+
+    public GetReviewByProductMstIdRespDto toDetailPageReviewResponseDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return GetReviewByProductMstIdRespDto.builder()
-                .profileUrl(profileUrl)
-                .nickname(nickname)
-                .productDtlId(productDtlId)
+                .profileUrl(orderProducts.getOrder().getUser().getProfileUrl())
+                .nickname(orderProducts.getOrder().getUser().getNickname())
+                .sizeName(orderProducts.getProductDtl().getSize().getSizeName())
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
-                .reviewDate(reviewDate)
+                .reviewDate(reviewDate.format(formatter))
                 .build();
     }
 
-    public GetReviewByUserIdRespDto toDetailPageReviewResponseDto() {
+
+    public GetReviewByUserIdRespDto toMypageReviewResponseDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return GetReviewByUserIdRespDto.builder()
-                .productMstId(productMstId)
-                .productDtlId(productDtlId)
+                .sizeName(orderProducts.getProductDtl().getSize().getSizeName())
+                .productName(orderProducts.getProductDtl().getProductMst().getProductName())
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
-                .reviewDate(reviewDate)
+                .reviewDate(reviewDate.format(formatter))
                 .build();
     }
+
+
 }

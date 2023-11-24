@@ -14,8 +14,8 @@ import java.time.LocalDate;
 public class GetReviewByProductMstIdRespDto {
     private String profileUrl;
     private String nickname;
-    private int productDtlId;
+    private String sizeName;
     private String reviewContent;
     private String reviewImgUrl;
-    private LocalDate reviewDate;
+    private String reviewDate;
 }

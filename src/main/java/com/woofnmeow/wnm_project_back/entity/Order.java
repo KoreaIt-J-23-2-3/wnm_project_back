@@ -28,6 +28,7 @@ public class Order {
     private int orderStatus;
 
     private List<OrderProducts> orderProducts;
+    private User user;
 
     public GetUserOrdersRespDto toGetUserOrdersRespDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

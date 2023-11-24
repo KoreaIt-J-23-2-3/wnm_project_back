@@ -86,7 +86,9 @@ public class OrderService {
         return result;
     }
 
-
+    public Order getOrder(int orderId) {
+        return orderMapper.selectOrder(orderId);
+    }
 
 
 

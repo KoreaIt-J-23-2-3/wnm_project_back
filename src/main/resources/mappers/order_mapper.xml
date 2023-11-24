@@ -111,6 +111,7 @@
             <when test="userId.equals(0)">
                 1 = 1
             </when>
+
             <otherwise>
                 ot.user_id = #{userId}
             </otherwise>
@@ -145,6 +146,39 @@
                 UNIX_TIMESTAMP(order_date) desc
             </otherwise>
         </choose>
+    </select>
+
+
+
+    <select id="selectOrder" resultMap="ordersMap">
+        select
+            ot.order_id,
+            ot.user_id,
+            ot.order_date,
+            ot.order_update_date,
+            ot.shipping_name,
+            ot.shipping_phone,
+            ot.shipping_address_number,
+            ot.shipping_address_name,
+            ot.shipping_address_detail_name,
+            ot.order_status,
+            opt.order_products_id,
+            opt.count,
+            pdt.product_dtl_id,
+            pdt.price,
+            st.size_id,
+            st.size_name,
+            pmt.product_mst_id,
+            pmt.product_name,
+            pmt.product_thumbnail_url
+        from
+            order_tb ot
+            left outer join order_products_tb opt on(opt.order_id = ot.order_id)
+            left outer join product_dtl_tb pdt on(pdt.product_dtl_id = opt.product_dtl_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
+        where
+            ot.order_id = #{orderId}
     </select>
 
     <!--  select  -->
