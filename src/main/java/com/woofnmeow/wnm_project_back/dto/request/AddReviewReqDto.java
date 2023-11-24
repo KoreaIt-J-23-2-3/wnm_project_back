@@ -10,7 +10,7 @@ public class AddReviewReqDto {
     private String reviewContent;
     private String reviewImgUrl;
 
-    public Review toReviewEntity(int productMstId){
+    public Review toReviewEntity(){
         return Review.builder()
                 .orderProductsId(orderProductsId)
                 .reviewContent(reviewContent)
