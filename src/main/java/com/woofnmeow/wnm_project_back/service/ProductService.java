@@ -237,12 +237,19 @@ public class ProductService {
         productMapper.updateProductMst(mstReqMap);
 
         if(editProductReqDto.getNo().equals("")) {
-            productMapper.updateProductDtl(productMstId, 2, Integer.parseInt(editProductReqDto.getXS()));
-            productMapper.updateProductDtl(productMstId, 3, Integer.parseInt(editProductReqDto.getS()));
-            productMapper.updateProductDtl(productMstId, 4, Integer.parseInt(editProductReqDto.getM()));
-            productMapper.updateProductDtl(productMstId, 5, Integer.parseInt(editProductReqDto.getL()));
-            productMapper.updateProductDtl(productMstId, 6, Integer.parseInt(editProductReqDto.getXL()));
-            productMapper.updateProductDtl(productMstId, 7, Integer.parseInt(editProductReqDto.getXXL()));
+            Map<String, Integer> dtlReqMap = new HashMap<>();
+            dtlReqMap.put("2", Integer.parseInt(editProductReqDto.getXS()));
+            dtlReqMap.put("3", Integer.parseInt(editProductReqDto.getS()));
+            dtlReqMap.put("4", Integer.parseInt(editProductReqDto.getM()));
+            dtlReqMap.put("5", Integer.parseInt(editProductReqDto.getL()));
+            dtlReqMap.put("6", Integer.parseInt(editProductReqDto.getXL()));
+            dtlReqMap.put("7", Integer.parseInt(editProductReqDto.getXXL()));
+
+            for (Map.Entry<String, Integer> entry : dtlReqMap.entrySet()) {
+                int sizeId = Integer.parseInt((String) entry.getKey());
+                Integer price = entry.getValue();
+                productMapper.updateProductDtl(productMstId, sizeId, price);
+            }
         }else {
             productMapper.updateProductDtl(productMstId, 1, Integer.parseInt(editProductReqDto.getNo()));
         }
