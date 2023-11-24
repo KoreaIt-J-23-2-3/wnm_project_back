@@ -40,6 +40,11 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.getOrder(orderId));
     }
 
+    @GetMapping("/api/order/count")
+    public ResponseEntity<?> getOrderCount() {
+        return ResponseEntity.ok(orderService.getOrderCount());
+    }
+
 
 
     // U
