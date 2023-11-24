@@ -16,17 +16,17 @@ import java.time.LocalDate;
 public class Review {
     private int reviewId;
     private int userId;
-    private int productMstId;
-    private int productDtlId;
     private String reviewContent;
     private String reviewImgUrl;
     private LocalDate reviewDate;
+
+    private Order order;
 
     public GetReviewByProductMstIdRespDto toMypageReviewResponseDto(String nickname, String profileUrl) {
         return GetReviewByProductMstIdRespDto.builder()
                 .profileUrl(profileUrl)
                 .nickname(nickname)
-                .productDtlId(productDtlId)
+
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
                 .reviewDate(reviewDate)
@@ -35,8 +35,6 @@ public class Review {
 
     public GetReviewByUserIdRespDto toDetailPageReviewResponseDto() {
         return GetReviewByUserIdRespDto.builder()
-                .productMstId(productMstId)
-                .productDtlId(productDtlId)
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
                 .reviewDate(reviewDate)

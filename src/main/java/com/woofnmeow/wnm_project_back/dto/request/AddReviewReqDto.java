@@ -14,8 +14,8 @@ public class AddReviewReqDto {
     public Review toReviewEntity(int productMstId){
         return Review.builder()
                 .userId(userId)
-                .productMstId(productMstId)
-                .productDtlId(productDtlId)
+
+
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
                 .build();
