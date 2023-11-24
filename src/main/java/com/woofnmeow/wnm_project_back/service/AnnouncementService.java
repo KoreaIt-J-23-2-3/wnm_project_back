@@ -1,6 +1,6 @@
 package com.woofnmeow.wnm_project_back.service;
 
-import com.woofnmeow.wnm_project_back.dto.AddAnnouncementReqDto;
+import com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto;
 import com.woofnmeow.wnm_project_back.dto.response.GetAllAnnouncementRespDto;
 import com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementByIdRespDto;
 import com.woofnmeow.wnm_project_back.entity.Announcement;
@@ -40,6 +40,6 @@ public class AnnouncementService {
 
     public GetAnnouncementByIdRespDto getAnnouncementById(int announcementId) {
         return announcementMapper.getAnnouncementById(announcementId);
-      
 
+    }
 }
