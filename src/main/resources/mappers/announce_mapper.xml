@@ -7,11 +7,33 @@
     <insert id="addAnnouncement" parameterType="com.woofnmeow.wnm_project_back.dto.AddAnnouncementReqDto">
         insert into
             announcement_tb
-        values(0, #{title}, #{content}, #{type})
+        values(0, #{title}, #{content}, #{type}, 0, now())
     </insert>
 
-    <select id="getAnnouncements" resultType="java.util.List">
+    <select id="getAllAnnouncement" resultType="com.woofnmeow.wnm_project_back.entity.Announcement">
+        select
+            announcement_id,
+            title,
+            content,
+            is_pinned,
+            create_date
+        from
+            announcement_tb
+        order by
+            is_pinned desc
+    </select>
 
+    <select id="getAnnouncementById"
+            parameterType="int"
+            resultType="com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementByIdRespDto">
+        select
+            announcement_id,
+            title,
+            content
+        from
+            announcement_tb
+        where
+            announcement_id = #{announcementId}
     </select>
 
 </mapper>

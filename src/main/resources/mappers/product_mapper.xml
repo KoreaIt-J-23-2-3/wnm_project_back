@@ -335,6 +335,12 @@
             <when test="sortOption.equals('number')">
                 pmt.product_mst_id desc
             </when>
+            <when test="sortOption.equals('highprice')">
+                pdt.price desc
+            </when>
+            <when test="sortOption.equals('lowprice')">
+                pdt.price asc
+            </when>
             <otherwise>
                 pmt.product_mst_id desc
             </otherwise>

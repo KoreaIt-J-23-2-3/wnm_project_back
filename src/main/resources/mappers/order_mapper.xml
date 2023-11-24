@@ -167,9 +167,9 @@
 
 
 
-    <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">
-        call p_update_order_status(#{orderId}, #{orderStatus})
-    </update>
+<!--    <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">-->
+<!--        call p_update_order_status(#{orderId}, #{orderStatus})-->
+<!--    </update>-->
 
     <!--  update  -->
 
