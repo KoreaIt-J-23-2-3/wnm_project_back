@@ -6,16 +6,13 @@ import lombok.Data;
 
 @Data
 public class AddReviewReqDto {
-    private int userId;
-    private int productDtlId;
+    private int orderProductsId;
     private String reviewContent;
     private String reviewImgUrl;
 
     public Review toReviewEntity(int productMstId){
         return Review.builder()
-                .userId(userId)
-
-
+                .orderProductsId(orderProductsId)
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
                 .build();

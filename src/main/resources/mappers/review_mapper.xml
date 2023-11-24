@@ -9,123 +9,184 @@
 
     <!--  resultMap  -->
 
-<!--    <resultMap id="reviewMap" type="com.woofnmeow.wnm_project_back.entity.Review">-->
-<!--        <id property="" column=""/>-->
-<!--        <result property="reviewContent" column="" />-->
-<!--        <result property="reviewImgUrl" column="" />-->
-<!--        <result property="reviewDate" column="" />-->
-<!--    </resultMap>-->
+    <resultMap id="reviewMap" type="com.woofnmeow.wnm_project_back.entity.Review">
+        <id property="reviewId" column="review_id"/>
+        <result property="reviewContent" column="review_content" />
+        <result property="reviewImgUrl" column="review_img_url" />
+        <result property="reviewDate" column="review_date" />
+        <association property="orderProducts" resultMap="orderProductsMap" />
+    </resultMap>
 
-<!--    <resultMap id="orderMap" type="com.woofnmeow.wnm_project_back.entity.Order" >-->
-<!--        <id property="" column=""/>-->
-<!--        <result property="" column="" />-->
-<!--    </resultMap>-->
+    <resultMap id="orderProductsMap" type="com.woofnmeow.wnm_project_back.entity.OrderProducts" >
+        <id property="orderProductsId" column="order_products_id"/>
+        <result property="count" column="count" />
+        <association property="productDtl" resultMap="productDtlMap" />
+        <association property="order" resultMap="orderMap" />
+    </resultMap>
 
-<!--    <resultMap id="userMap" type="com.woofnmeow.wnm_project_back.entity.User" >-->
-<!--        <id property="" column=""/>-->
-<!--        <result property="" column="" />-->
-<!--    </resultMap>-->
+    <resultMap id="orderMap" type="com.woofnmeow.wnm_project_back.entity.Order" >
+        <id property="orderId" column="order_id"/>
+        <result property="orderDate" column="order_date" />
+        <result property="orderUpdateDate" column="order_update_date" />
+        <result property="shippingName" column="shipping_name" />
+        <result property="shippingPhone" column="shipping_phone" />
+        <result property="shippingAddressNumber" column="shipping_address_number" />
+        <result property="shippingAddressName" column="shipping_address_name" />
+        <result property="shippingAddressName" column="shipping_address_detail_name" />
+        <result property="orderStatus" column="order_status" />
+        <association property="user" resultMap="userMap" />
+    </resultMap>
 
-<!--    <resultMap id="productDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl" >-->
-<!--        <id property="" column=""/>-->
-<!--        <result property="" column="" />-->
-<!--    </resultMap>-->
+    <resultMap id="userMap" type="com.woofnmeow.wnm_project_back.entity.User" >
+        <id property="userId" column="user_id"/>
+        <result property="roleName" column="role_name" />
+        <result property="oauth2Id" column="oauth2_id" />
+        <result property="provider" column="provider" />
+        <result property="name" column="name" />
+        <result property="nickname" column="nickname" />
+        <result property="email" column="email" />
+        <result property="phoneNumber" column="phone_number" />
+        <result property="defaultAddressNumber" column="default_address_number" />
+        <result property="defaultAddressName" column="default_address_name" />
+        <result property="defaultAddressDetailName" column="default_address_detail_name" />
+        <result property="profileUrl" column="profile_url" />
+    </resultMap>
 
-<!--    <resultMap id="productMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst" >-->
-<!--        <id property="" column=""/>-->
-<!--        <result property="" column="" />-->
-<!--    </resultMap>-->
+    <resultMap id="productDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl" >
+        <id property="productDtlId" column="product_dtl_id"/>
+        <result property="price" column="price" />
+        <result property="sizeId" column="size_id" />
+        <result property="actualStock" column="actual_stock" />
+        <result property="tempStock" column="temp_stock" />
+        <association property="size" resultMap="sizeMap" />
+        <association property="productMst" resultMap="productMstMap" />
+    </resultMap>
 
+    <resultMap id="sizeMap" type="com.woofnmeow.wnm_project_back.entity.Size" >
+        <id property="sizeId" column="size_id"/>
+        <result property="sizeName" column="size_name" />
+    </resultMap>
 
+    <resultMap id="productMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst" >
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name" />
+        <result property="productDetailText" column="product_detail_text" />
+        <result property="productThumbnailUrl" column="product_thumbnail_url" />
+        <result property="productDetailUrl" column="product_detail_url" />
+        <result property="createDate" column="create_date" />
+        <association property="petType" resultMap="petTypeMap" />
+        <association property="category" resultMap="categoryMap" />
+    </resultMap>
 
-<!--    &lt;!&ndash;  resultMap  &ndash;&gt;-->
+    <resultMap id="petTypeMap" type="com.woofnmeow.wnm_project_back.entity.PetType" >
+        <id property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name" />
+    </resultMap>
 
+    <resultMap id="categoryMap" type="com.woofnmeow.wnm_project_back.entity.Category" >
+        <id property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name" />
+    </resultMap>
 
-
-
-<!--    &lt;!&ndash;  insert  &ndash;&gt;-->
-
-<!--    <insert id="addReview" parameterType="com.woofnmeow.wnm_project_back.entity.Review">-->
-<!--        insert into-->
-<!--            review_tb-->
-<!--        values(0, #{userId}, #{productMstId}, #{productDtlId}, #{reviewContent}, #{reviewImgUrl}, now())-->
-<!--    </insert>-->
-
-<!--    &lt;!&ndash;  insert  &ndash;&gt;-->
-
-
-
-
-
-<!--    &lt;!&ndash;  select  &ndash;&gt;-->
-
-<!--    <select id="selectReviewsByProductMstId" resultMap="reviewMapForProductMstId">-->
-<!--        select-->
-<!--            ut.profile_url,-->
-<!--            ut.nickname,-->
-<!--            rt.product_dtl_id,-->
-<!--            rt.review_content,-->
-<!--            rt.review_img_url,-->
-<!--            rt.review_date-->
-<!--        from-->
-<!--            review_tb rt-->
-<!--            left outer join user_tb ut on(ut.user_id = rt.user_id)-->
-<!--        where-->
-<!--            rt.product_mst_id = #{productMstId}-->
-<!--    </select>-->
-
-<!--    <select id="selectReviewsByUserId" resultMap="reviewMapForUserId">-->
-<!--        select-->
-<!--            rt.product_mst_id,-->
-<!--            rt.product_dtl_id,-->
-<!--            rt.review_content,-->
-<!--            rt.review_img_url,-->
-<!--            rt.review_date-->
-<!--        from-->
-<!--            review_tb rt-->
-<!--        where-->
-<!--            rt.user_id = #{userId}-->
-<!--    </select>-->
-
-<!--    &lt;!&ndash;  select  &ndash;&gt;-->
-
-
-
+    <!--  resultMap  -->
 
 
-<!--    &lt;!&ndash;  update  &ndash;&gt;-->
 
 
-<!--    <update id="editReview"  parameterType="com.woofnmeow.wnm_project_back.entity.Review">-->
-<!--        update-->
-<!--            review_tb-->
-<!--        set-->
-<!--            review_content = #{reviewContent},-->
-<!--            review_img_url = #{reviewImgUrl},-->
-<!--            review_date = now()-->
-<!--        where-->
-<!--            review_id = #{reviewId}-->
-<!--    </update>-->
 
+    <!--  insert  -->
 
-<!--    &lt;!&ndash;  update  &ndash;&gt;-->
+    <insert id="addReview" parameterType="com.woofnmeow.wnm_project_back.entity.Review">
+        insert into
+            review_tb
+        values(0, #{orderProductsId}, #{reviewContent}, #{reviewImgUrl}, now())
+    </insert>
+
+    <!--  insert  -->
 
 
 
 
 
 
+    <!--  select  -->
 
-<!--    &lt;!&ndash;  delete  &ndash;&gt;-->
+    <select id="selectReviewsByProductMstId" resultMap="reviewMap">
+        select
+            ut.profile_url,
+            ut.nickname,
+            st.size_name,
+            rt.review_content,
+            rt.review_img_url,
+            rt.review_date
+        from
+            review_tb rt
+            left outer join order_products_tb opt on(opt.order_products_id = rt.order_products_id)
+            left outer join order_tb ot on(ot.order_id = opt.order_id)
+            left outer join user_tb ut on(ut.user_id = ot.user_id)
+            left outer join product_dtl_tb pdt on(pdt.product_dtl_id = opt.product_dtl_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
+        where
+            pmt.product_mst_id = #{productMstId}
+    </select>
 
-<!--    <delete id="deleteReview">-->
-<!--        delete from-->
-<!--            review_tb-->
-<!--        where-->
-<!--            review_id = #{reviewId}-->
-<!--    </delete>-->
+    <select id="selectReviewsByUserId" resultMap="reviewMap">
+        select
+            st.size_name,
+            pmt.product_name,
+            rt.review_content,
+            rt.review_img_url,
+            rt.review_date
+        from
+            review_tb rt
+            left outer join order_products_tb opt on(opt.order_products_id = rt.order_products_id)
+            left outer join order_tb ot on(ot.order_id = opt.order_id)
+            left outer join user_tb ut on(ut.user_id = ot.user_id)
+            left outer join product_dtl_tb pdt on(pdt.product_dtl_id = opt.product_dtl_id)
+            left outer join size_tb st on(st.size_id = pdt.size_id)
+            left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
+        where
+            ut.user_id = #{userId}
+    </select>
 
-<!--    &lt;!&ndash;  delete  &ndash;&gt;-->
+    <!--  select  -->
+
+
+
+
+
+    <!--  update  -->
+
+    <update id="editReview"  parameterType="com.woofnmeow.wnm_project_back.entity.Review">
+        update
+            review_tb
+        set
+            review_content = #{reviewContent},
+            review_img_url = #{reviewImgUrl},
+            review_date = now()
+        where
+            review_id = #{reviewId}
+    </update>
+
+    <!--  update  -->
+
+
+
+
+
+
+
+    <!--  delete  -->
+
+    <delete id="deleteReview">
+        delete from
+            review_tb
+        where
+            review_id = #{reviewId}
+    </delete>
+
+    <!--  delete  -->
 
 
 

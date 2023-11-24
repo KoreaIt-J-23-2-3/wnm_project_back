@@ -31,7 +31,8 @@ public class ReviewController {
     public ResponseEntity<?> getProductReviews(@PathVariable int productMstId) {
         return ResponseEntity.ok().body(reviewService.getReviewsByProductMstId(productMstId));
     }
-      @GetMapping("/api/reviews/user/{userId}")
+
+    @GetMapping("/api/reviews/user/{userId}")
     public ResponseEntity<?> getUserReviews(@PathVariable int userId) {
         return ResponseEntity.ok().body(reviewService.getReviewsByUserId(userId));
     }

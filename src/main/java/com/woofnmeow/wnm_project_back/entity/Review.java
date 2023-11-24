@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -15,29 +16,36 @@ import java.time.LocalDate;
 @Builder
 public class Review {
     private int reviewId;
-    private int userId;
+    private int orderProductsId;
     private String reviewContent;
     private String reviewImgUrl;
     private LocalDate reviewDate;
 
-    private Order order;
+    private OrderProducts orderProducts;
 
-    public GetReviewByProductMstIdRespDto toMypageReviewResponseDto(String nickname, String profileUrl) {
+    public GetReviewByProductMstIdRespDto toDetailPageReviewResponseDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return GetReviewByProductMstIdRespDto.builder()
-                .profileUrl(profileUrl)
-                .nickname(nickname)
-
+                .profileUrl(orderProducts.getOrder().getUser().getProfileUrl())
+                .nickname(orderProducts.getOrder().getUser().getNickname())
+                .sizeName(orderProducts.getProductDtl().getSize().getSizeName())
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
-                .reviewDate(reviewDate)
+                .reviewDate(reviewDate.format(formatter))
                 .build();
     }
 
-    public GetReviewByUserIdRespDto toDetailPageReviewResponseDto() {
+
+    public GetReviewByUserIdRespDto toMypageReviewResponseDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return GetReviewByUserIdRespDto.builder()
+                .sizeName(orderProducts.getProductDtl().getSize().getSizeName())
+                .productName(orderProducts.getProductDtl().getProductMst().getProductName())
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
-                .reviewDate(reviewDate)
+                .reviewDate(reviewDate.format(formatter))
                 .build();
     }
+
+
 }

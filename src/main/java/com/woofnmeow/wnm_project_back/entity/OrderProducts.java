@@ -17,6 +17,7 @@ public class OrderProducts {
     private int count;
 
     private ProductDtl productDtl;
+    private Order order;
 
     public GetUserOrderProductsRespDto toGetOrderProductsRespDto() {
         return GetUserOrderProductsRespDto.builder()
