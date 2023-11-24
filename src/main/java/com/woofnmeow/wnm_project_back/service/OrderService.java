@@ -98,8 +98,10 @@ public class OrderService {
         Map<String, Object> map = new HashMap<>();
         map.put("orderId", orderId);
         map.put("orderStatus", orderStatus);
-        boolean success = orderMapper.updateOrderStatus(map) > 0;
-        if(!success) {
+        boolean success = true;
+        try {
+            success = orderMapper.updateOrderStatus(map) > 0;
+        }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("주문 오류", "배송 상태 수정 중 오류가 발생하였습니다.");
             throw new OrderException(errorMap);
