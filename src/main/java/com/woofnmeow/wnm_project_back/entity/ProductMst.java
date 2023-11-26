@@ -48,14 +48,4 @@ public class ProductMst {
                 .build();
     }
 
-    public GetMasterProductRespDto toMasterProductRespDto() {
-        return GetMasterProductRespDto.builder()
-                .productMstId(productMstId)
-                .productName(productName)
-                .petTypeName(petType.getPetTypeName())
-                .productCategoryName(category.getProductCategoryName())
-                .productThumbnailUrl(productThumbnailUrl)
-                .build();
-    }
-
 }

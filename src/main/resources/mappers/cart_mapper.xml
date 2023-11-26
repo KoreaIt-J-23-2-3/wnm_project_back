@@ -15,8 +15,6 @@
         <association property="productDtl" resultMap="productDtlMap"/>
     </resultMap>
 
-
-
     <resultMap id="productDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
         <result property="productMstId" column="product_mst_id" />
@@ -31,10 +29,24 @@
     <resultMap id="productMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id"/>
         <result property="productName" column="product_name"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="productDetailText" column="product_detail_text"/>
         <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="productDetailUrl" column="product_detail_url"/>
+        <result property="createDate" column="create_date"/>
+        <association property="petType" resultMap="petTypeMap" />
+        <association property="category" resultMap="categoryMap" />
     </resultMap>
 
+    <resultMap id="petTypeMap" type="com.woofnmeow.wnm_project_back.entity.PetType">
+        <id property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
+    </resultMap>
 
+    <resultMap id="categoryMap" type="com.woofnmeow.wnm_project_back.entity.Category">
+        <id property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
+    </resultMap>
 
     <resultMap id="sizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
         <id property="sizeId" column="size_id"/>
