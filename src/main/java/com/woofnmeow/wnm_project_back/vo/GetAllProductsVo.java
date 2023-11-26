@@ -11,6 +11,7 @@ public class GetAllProductsVo {
     private String productCategoryId;
     private String productThumbnailUrl;
     private String sizeAndPrice;
+    private int tempStock;
 
     public GetAllProductsRespDto toRespDto(String minPrice, String maxPrice) {
         GetAllProductsRespDto respDto = GetAllProductsRespDto.builder()
@@ -21,6 +22,7 @@ public class GetAllProductsVo {
                 .productThumbnailUrl(productThumbnailUrl)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
+                .tempStock(tempStock)
                 .build();
         return respDto;
     }

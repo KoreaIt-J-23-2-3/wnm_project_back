@@ -13,4 +13,5 @@ public class GetAllProductsRespDto {
     private String productThumbnailUrl;
     private String minPrice;
     private String maxPrice;
+    private int tempStock;
 }
