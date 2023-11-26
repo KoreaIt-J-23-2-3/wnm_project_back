@@ -292,7 +292,16 @@
             pct.product_category_id,
             pmt.product_thumbnail_url,
             GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices,
-            psv.temp_stock
+            (select
+                sum(temp_stock) as temp_stock
+            from
+                product_stock_view psv
+                left outer join product_dtl_tb pdt on(pdt.product_dtl_id = psv.product_dtl_id)
+                left outer join product_mst_tb subpmt on(subpmt.product_mst_id = pdt.product_mst_id)
+            where
+                subpmt.product_mst_id = pmt.product_mst_id
+            group by
+                pmt.product_mst_id) as temp_stock
         from
             product_mst_tb pmt
             left outer join (select
@@ -308,7 +317,6 @@
             left outer join size_tb st on(st.size_id = pdt.size_id)
             left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
             left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
-            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
         where
         1 = 1
         <choose>
