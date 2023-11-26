@@ -293,7 +293,7 @@
             pmt.product_thumbnail_url,
             GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices,
             (select
-                sum(temp_stock) as temp_stock
+                sum(temp_stock)
             from
                 product_stock_view psv
                 left outer join product_dtl_tb pdt on(pdt.product_dtl_id = psv.product_dtl_id)
