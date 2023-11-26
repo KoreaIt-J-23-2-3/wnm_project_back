@@ -19,6 +19,6 @@ public class GetReviewByUserIdRespDto {
     private String reviewDate;
     private String productName;
     private String sizeName;
-
+    private String productThumbnailUrl;
 
 }

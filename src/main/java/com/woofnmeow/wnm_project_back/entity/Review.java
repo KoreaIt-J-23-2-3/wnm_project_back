@@ -44,6 +44,7 @@ public class Review {
                 .reviewContent(reviewContent)
                 .reviewImgUrl(reviewImgUrl)
                 .reviewDate(reviewDate.format(formatter))
+                .productThumbnailUrl(orderProducts.getProductDtl().getProductMst().getProductThumbnailUrl())
                 .build();
     }
 

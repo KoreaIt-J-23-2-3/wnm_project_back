@@ -137,7 +137,8 @@
             pmt.product_name,
             rt.review_content,
             rt.review_img_url,
-            rt.review_date
+            rt.review_date,
+            pmt.product_thumbnail_url
         from
             review_tb rt
             left outer join order_products_tb opt on(opt.order_products_id = rt.order_products_id)
