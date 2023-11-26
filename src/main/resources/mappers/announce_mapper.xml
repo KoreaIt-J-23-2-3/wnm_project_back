@@ -7,8 +7,10 @@
     <insert id="addAnnouncement" parameterType="com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto">
         insert into
             announcement_tb
-        values(0, #{title}, #{content}, #{type}, 0, now())
+        values(0, #{title}, #{content}, #{type}, #{isPinned}, now())
     </insert>
+
+
 
     <select id="getAllAnnouncement" resultType="com.woofnmeow.wnm_project_back.entity.Announcement">
         select
@@ -25,15 +27,37 @@
 
     <select id="getAnnouncementById"
             parameterType="int"
-            resultType="com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementByIdRespDto">
+            resultType="com.woofnmeow.wnm_project_back.entity.Announcement">
         select
             announcement_id,
             title,
-            content
+            content,
+            is_pinned,
+            create_date
         from
             announcement_tb
         where
             announcement_id = #{announcementId}
     </select>
+
+    <update id="editAnnouncement" parameterType="com.woofnmeow.wnm_project_back.entity.Announcement">
+        update
+            announcement_tb
+        set
+            title = #{announcement.title},
+            content = #{announcement.content},
+            is_pinned = #{announcement.isPinned},
+            create_date = now()
+        where
+            announcement_id = #{announcementId};
+    </update>
+
+
+    <delete id="deleteAnnouncement" parameterType="int">
+        delete from
+            announcement_tb
+        where
+            announcement_id = #{announcementId}
+    </delete>
 
 </mapper>
