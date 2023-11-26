@@ -30,13 +30,13 @@ public class UserService {
     // C
     @Transactional(rollbackFor = Exception.class)
     public Boolean signup(SignupReqDto signupReqDto) {
-        boolean success = userMapper.saveUser(signupReqDto.toEntity()) > 0;
-        if(!success) {
+        try {
+            return userMapper.saveUser(signupReqDto.toEntity()) > 0;
+        }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("회원가입 오류", "회원가입 중 오류가 발생하였습니다.");
             throw new SignupException(errorMap);
         }
-        return success;
     }
 
 

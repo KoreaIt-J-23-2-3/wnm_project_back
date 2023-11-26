@@ -134,7 +134,7 @@
                 and ot.order_id = #{searchValue}
             </when>
             <otherwise>
-                and pmt.product_name like concat("%", #{searchValue}, "%")
+                and ot.shipping_name like concat("%", #{searchValue}, "%")
             </otherwise>
         </choose>
         order by
@@ -147,6 +147,9 @@
             </otherwise>
         </choose>
     </select>
+
+
+
 
 
 
@@ -181,6 +184,12 @@
             ot.order_id = #{orderId}
     </select>
 
+
+
+
+
+
+
     <select id="getOrderCount" resultType="int">
         select
             count(*)
@@ -191,7 +200,6 @@
             <when test="userId.equals(0)">
                 1 = 1
             </when>
-
             <otherwise>
                 ot.user_id = #{userId}
             </otherwise>
@@ -237,9 +245,9 @@
 
     <!--  update  -->
 
-<!--    <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">-->
-<!--        call p_update_order_status(#{orderId}, #{orderStatus})-->
-<!--    </update>-->
+    <update id="updateOrderStatus" statementType="CALLABLE" parameterType="hashmap">
+        call p_update_order_status(#{orderId}, #{orderStatus})
+    </update>
 
     <!--  update  -->
 

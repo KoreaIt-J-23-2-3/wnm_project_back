@@ -64,6 +64,7 @@
         <result property="petTypeId" column="id"/>
         <result property="productCategoryId" column="product_category_id"/>
         <result property="sizeAndPrice" column="sizes_and_prices"/>
+        <result property="tempStock" column="temp_stock"/>
     </resultMap>
 
 
@@ -290,20 +291,24 @@
             ptt.pet_type_id,
             pct.product_category_id,
             pmt.product_thumbnail_url,
-            GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices
+            GROUP_CONCAT(CONCAT('(', st.size_name, '/ ', pdt.price, ')') SEPARATOR ', ') AS sizes_and_prices,
+            psv.temp_stock
         from
             product_mst_tb pmt
             left outer join (select
-            product_mst_id,
-            row_number() over(partition by product_mst_id order by price) as num,
-            row_number() over(partition by product_mst_id order by price desc) as num2,
-            size_id,
-            price
-        from
-            product_dtl_tb) pdt on(pdt.product_mst_id = pmt.product_mst_id and (pdt.num = 1 or pdt.num2 = 1))
+                                product_dtl_id,
+                                product_mst_id,
+                                row_number() over(partition by product_mst_id order by price) as num,
+                                row_number() over(partition by product_mst_id order by price desc) as num2,
+                                size_id,
+                                price
+                            from
+                                product_dtl_tb)
+            pdt on(pdt.product_mst_id = pmt.product_mst_id and (pdt.num = 1 or pdt.num2 = 1))
             left outer join size_tb st on(st.size_id = pdt.size_id)
             left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
             left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
+            left outer join product_stock_view psv on(psv.product_dtl_id = pdt.product_dtl_id)
         where
         1 = 1
         <choose>
@@ -326,7 +331,7 @@
             and pct.product_category_name_eng = #{productCategoryName}
         </if>
         group by
-        pmt.product_mst_id
+            pmt.product_mst_id
         order by
         <choose>
             <when test="sortOption.equals('name')">
