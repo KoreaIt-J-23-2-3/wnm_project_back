@@ -136,6 +136,13 @@
             user_id asc
     </select>
 
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            user_tb
+    </select>
+
     <!--  select  -->
 
 

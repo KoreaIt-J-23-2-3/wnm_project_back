@@ -150,6 +150,25 @@
             <when test="searchOption.equals('주문번호')">
                 and ot.order_id = #{searchValue}
             </when>
+            <when test="searchOption.equals('배송상태')">
+                <choose>
+                    <when test="searchValue.equals('배송준비')">
+                        and ot.order_status = 0
+                    </when>
+                    <when test="searchValue.equals('배송중')">
+                        and ot.order_status = 1
+                    </when>
+                    <when test="searchValue.equals('배송완료')">
+                        and ot.order_status = 2
+                    </when>
+                    <when test="searchValue.equals('구매확정')">
+                        and ot.order_status = 3
+                    </when>
+                    <otherwise>
+                        and ot.order_status = 0
+                    </otherwise>
+                </choose>
+            </when>
             <otherwise>
                 and ot.shipping_name like concat("%", #{searchValue}, "%")
             </otherwise>
@@ -166,8 +185,7 @@
     </select>
 
 
-
-    <select id="selectOrdersToPageNation" parameterType="hashmap" resultMap="ordersMap">
+    <select id="selectOrdersForAdmin" parameterType="hashmap" resultMap="ordersMap">
         select
             order_id,
             user_id,
@@ -182,7 +200,48 @@
         from
             order_tb
         where
-                1 = 1
+        1 = 1
+        <choose>
+            <when test="searchOption.equals('받는사람')">
+                and shipping_name like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('전화번호')">
+                and shipping_phone like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('주소')">
+                and (shipping_address_name like concat("%", #{searchValue}, "%")
+                or shipping_address_detail_name like concat("%", #{searchValue}, "%"))
+            </when>
+            <when test="searchOption.equals('유저번호')">
+                and user_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('주문번호')">
+                and order_id = #{searchValue}
+            </when>
+            <otherwise>
+                and shipping_name like concat("%", #{searchValue}, "%")
+            </otherwise>
+        </choose>
+        order by
+        <choose>
+            <when test="sortOption.equals('일자올림차순')">
+                UNIX_TIMESTAMP(order_date) asc
+            </when>
+            <otherwise>
+                UNIX_TIMESTAMP(order_date) desc
+            </otherwise>
+        </choose>
+        limit
+        #{pageIndex}, 10;
+    </select>
+
+    <select id="getOrderCount" parameterType="com.woofnmeow.wnm_project_back.vo.SearchOrderVo" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            order_tb
+        where
+        1 = 1
         <choose>
             <when test="searchOption.equals('받는사람')">
                 and shipping_name like concat("%", #{searchValue}, "%")
@@ -214,7 +273,6 @@
             </otherwise>
         </choose>
     </select>
-        
 
 
 
@@ -251,55 +309,6 @@
 
 
 
-
-
-
-
-    <select id="getOrderCount" resultType="int">
-        select
-            count(*)
-        from
-            order_tb
-        where
-        <choose>
-            <when test="userId.equals(0)">
-                1 = 1
-            </when>
-            <otherwise>
-                ot.user_id = #{userId}
-            </otherwise>
-        </choose>
-        <choose>
-            <when test="searchOption.equals('받는사람')">
-                and ot.shipping_name like concat("%", #{searchValue}, "%")
-            </when>
-            <when test="searchOption.equals('전화번호')">
-                and ot.shipping_phone like concat("%", #{searchValue}, "%")
-            </when>
-            <when test="searchOption.equals('주소')">
-                and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
-                or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
-            </when>
-            <when test="searchOption.equals('유저번호')">
-                and ot.user_id = #{searchValue}
-            </when>
-            <when test="searchOption.equals('주문번호')">
-                and ot.order_id = #{searchValue}
-            </when>
-            <otherwise>
-                and pmt.product_name like concat("%", #{searchValue}, "%")
-            </otherwise>
-        </choose>
-        order by
-        <choose>
-            <when test="sortOption.equals('일자올림차순')">
-                UNIX_TIMESTAMP(order_date) asc
-            </when>
-            <otherwise>
-                UNIX_TIMESTAMP(order_date) desc
-            </otherwise>
-        </choose>
-    </select>
 
     <!--  select  -->
 

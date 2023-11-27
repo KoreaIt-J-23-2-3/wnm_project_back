@@ -36,6 +36,11 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUserList(searchUserReqDto));
     }
 
+    @GetMapping("/api/admin/user/count")
+    public ResponseEntity<?> getUserCount() {
+        return ResponseEntity.ok(userService.getUserCount());
+    }
+
 
     // U
     @ValidAop

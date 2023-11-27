@@ -19,8 +19,9 @@ public interface OrderMapper {
 
     // R
     public List<Order> selectOrdersByUserId(SearchOrderVo searchOrderVo);
+    public List<Order> selectOrdersForAdmin(SearchOrderVo searchOrderVo);
+    public int getOrderCount(SearchOrderVo searchOrderVo);
     public Order selectOrder(int orderId);
-    public int getOrderCount();
 
     // U
     public Integer updateOrderStatus(Map<String, Object> map);

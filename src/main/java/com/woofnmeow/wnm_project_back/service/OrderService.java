@@ -61,16 +61,28 @@ public class OrderService {
 
 
     // R
-    public List<GetUserOrdersRespDto> getOrdersForAdmin(SearchOrderReqDto searchOrderReqDto) {
+   public List<GetUserOrdersRespDto> getOrdersForAdmin(SearchOrderReqDto searchOrderReqDto) {
+        List<GetUserOrdersRespDto> result = new ArrayList<>();
         try {
-            return orderMapper.selectOrdersByUserId(searchOrderReqDto.toVo(0))
-                    .stream()
-                    .map(Order::toGetUserOrdersRespDto)
-                    .collect(Collectors.toList());
+            result = orderMapper.selectOrdersForAdmin(searchOrderReqDto.toVo(0)).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
         }catch (Exception e) {
-            throw new OrderException
-                    (errorMapper.errorMapper("주문 오류", "주문 조회 중 오류가 발생하였습니다."));
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("주문 오류", "주문 조회 중 오류가 발생하였습니다.");
+            throw new OrderException(errorMap);
         }
+        return result;
+    }
+
+    public int getOrderCount(SearchOrderReqDto searchOrderReqDto) {
+        int count = 0;
+        try {
+            count = orderMapper.getOrderCount(searchOrderReqDto.toVo(0));
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("주문 오류", "주문 갯수 조회 중 오류가 발생하였습니다.");
+            throw new OrderException(errorMap);
+        }
+        return count;
     }
 
 
@@ -96,17 +108,6 @@ public class OrderService {
                     (errorMapper.errorMapper("주문 오류", "배송 조회 중 오류가 발생하였습니다."));
         }
     }
-
-
-    public int getOrderCount() {
-        try {
-            return orderMapper.getOrderCount();
-        }catch (Exception e) {
-            throw new OrderException
-                    (errorMapper.errorMapper("주문 오류", "배송 조회 중 오류가 발생하였습니다."));
-        }
-    }
-
 
 
 

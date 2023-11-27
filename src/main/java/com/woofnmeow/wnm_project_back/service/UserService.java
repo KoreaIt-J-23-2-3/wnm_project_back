@@ -73,6 +73,18 @@ public class UserService {
         }
     }
 
+    public int getUserCount() {
+        int result = 0;
+        try {
+            result = userMapper.getUserCount();
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("사용자 수 조회 오류", "사용자 수를 조회하는 중 오류가 발생하였습니다.");
+            throw new UserException(errorMap);
+        }
+        return result;
+    }
+
 
   
 

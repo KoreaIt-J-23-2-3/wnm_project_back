@@ -16,6 +16,7 @@ public interface UserMapper {
     public User findUserByOauth2Id(String oauth2Id);
     public User findUserByUserId(int userId);
     public List<User> getUserList(SearchOrderVo searchOrderVo);
+    public int getUserCount();
 
     // U
     public Integer editUser(User user);

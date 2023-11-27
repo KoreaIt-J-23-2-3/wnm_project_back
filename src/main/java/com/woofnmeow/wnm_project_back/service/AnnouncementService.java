@@ -2,8 +2,7 @@ package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto;
 import com.woofnmeow.wnm_project_back.dto.request.EditAnnouncementReqDto;
-import com.woofnmeow.wnm_project_back.dto.response.GetAllAnnouncementRespDto;
-import com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementByIdRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementRespDto;
 import com.woofnmeow.wnm_project_back.entity.Announcement;
 import com.woofnmeow.wnm_project_back.exception.AnnouncementExcption;
 import com.woofnmeow.wnm_project_back.repository.AnnouncementMapper;
@@ -35,33 +34,34 @@ public class AnnouncementService {
         }
     }
 
-
-
-
-
-
-
-
-
-
-    // R
-    public List<GetAllAnnouncementRespDto> getAllAnnouncement() {
+    public List<GetAnnouncementRespDto> getAllAnnouncement() {
+        List<Announcement> list = announcementMapper.getAllAnnouncement();
+        List<GetAnnouncementRespDto> respList = new ArrayList<>();
         try {
-            return announcementMapper.getAllAnnouncement()
-                    .stream()
-                    .map(Announcement::toGetAllAnnouncementRespDto)
-                    .collect(Collectors.toList());
+            list.forEach(ann -> {
+                respList.add(ann.toGetAnnouncementRespDto());
+            });
         }catch (Exception e) {
             throw new AnnouncementExcption
                     (errorMapper.errorMapper("공지사항", "공지사항 조회 중 오류가 발생하였습니다."));
         }
     }
-
-
-
-    public GetAnnouncementByIdRespDto getAnnouncementById(int announcementId) {
+    public int getAnnouncementCount() {
+        int count = 0;
         try {
-            return announcementMapper.getAnnouncementById(announcementId).toAnnouncementByIdRespDto();
+            count = announcementMapper.getAnnouncementCount();
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("공지사항", "공지사항 갯수 조회 중 오류가 발생하였습니다.");
+            throw new AnnouncementExcption(errorMap);
+        }
+        return count;
+    }
+
+    public GetAnnouncementRespDto getAnnouncementById(int announcementId) {
+            GetAnnouncementRespDto RespDto = null;
+        try {
+            RespDto = announcementMapper.getAnnouncementById(announcementId).toGetAnnouncementRespDto();
         }catch (Exception e) {
             throw new AnnouncementExcption
                     (errorMapper.errorMapper("공지사항", "공지사항 조회 중 오류가 발생하였습니다."));

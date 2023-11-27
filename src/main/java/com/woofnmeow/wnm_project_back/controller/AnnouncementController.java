@@ -2,7 +2,7 @@ package com.woofnmeow.wnm_project_back.controller;
 
 import com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto;
 import com.woofnmeow.wnm_project_back.dto.request.EditAnnouncementReqDto;
-import com.woofnmeow.wnm_project_back.dto.response.GetAllAnnouncementRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementRespDto;
 import com.woofnmeow.wnm_project_back.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +26,13 @@ public class AnnouncementController {
   
     @GetMapping("/api/announcement/all")
     public ResponseEntity<?> getAllAnnouncement() {
-        List<GetAllAnnouncementRespDto> response =  announcementService.getAllAnnouncement();
+        List<GetAnnouncementRespDto> response =  announcementService.getAllAnnouncement();
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/announcement/count")
+    public int getAnnouncementCount() {
+        return announcementService.getAnnouncementCount();
     }
 
     @GetMapping("/api/announcement/{announcementId}")
