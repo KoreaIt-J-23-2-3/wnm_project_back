@@ -7,6 +7,7 @@ import com.woofnmeow.wnm_project_back.dto.response.GetReviewByUserIdRespDto;
 import com.woofnmeow.wnm_project_back.entity.Review;
 import com.woofnmeow.wnm_project_back.exception.ReviewException;
 import com.woofnmeow.wnm_project_back.repository.ReviewMapper;
+import com.woofnmeow.wnm_project_back.utils.utilClass.ErrorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,48 +22,58 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewMapper reviewMapper;
+    private final ErrorMapper errorMapper;
 
     // C
     @Transactional(rollbackFor = Exception.class)
     public boolean addReview(AddReviewReqDto addReviewReqDto) {
-        boolean success = reviewMapper.addReview(addReviewReqDto.toReviewEntity()) > 0;
-        if(!success) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("리뷰 오류", "리뷰 추가 중 오류가 발행하였습니다");
-            throw new ReviewException(errorMap);
+        try {
+            return reviewMapper.addReview(addReviewReqDto.toReviewEntity()) > 0;
+        }catch (Exception e) {
+            throw new ReviewException
+                    (errorMapper.errorMapper("리뷰 오류", "리뷰 추가 중 오류가 발행하였습니다"));
         }
-        return success;
     }
+
 
 
 
 
     // R
     public List<GetReviewByProductMstIdRespDto> getReviewsByProductMstId(int productMstId) {
-        List<Review> result = new ArrayList<>();
         try {
+<<<<<<< HEAD
             result = reviewMapper.selectReviewsByProductMstId(productMstId);
             System.out.println("mapper이후" + result);
 
+=======
+            return reviewMapper.selectReviewsByProductMstId(productMstId)
+                    .stream()
+                    .map(Review::toDetailPageReviewResponseDto)
+                    .collect(Collectors.toList());
+>>>>>>> 05b10b55ddaf3a516529d24f25474f462ddc32a5
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다.");
-            throw new ReviewException(errorMap);
+            throw new ReviewException
+                    (errorMapper.errorMapper("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다."));
         }
-        return result.stream().map(Review::toDetailPageReviewResponseDto).collect(Collectors.toList());
     }
 
+
+
+
+
     public List<GetReviewByUserIdRespDto> getReviewsByUserId(int userId) {
-        List<Review> result = new ArrayList<>();
         try {
-            result = reviewMapper.selectReviewsByUserId(userId);
+            return reviewMapper.selectReviewsByUserId(userId)
+                    .stream()
+                    .map(Review::toMypageReviewResponseDto)
+                    .collect(Collectors.toList());
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다.");
-            throw new ReviewException(errorMap);
+            throw new ReviewException
+                    (errorMapper.errorMapper("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다."));
         }
-        return result.stream().map(Review::toMypageReviewResponseDto).collect(Collectors.toList());
     }
+
 
 
 
@@ -70,14 +81,14 @@ public class ReviewService {
     // U
     @Transactional(rollbackFor = Exception.class)
     public boolean editReview(int reviewId, EditReviewReqDto editReviewReqDto) {
-        boolean success = reviewMapper.editReview(editReviewReqDto.toEditReviewEntity(reviewId)) > 0;
-        if(!success) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("리뷰 오류", "리뷰 수정 중 오류가 발생하였습니다.");
-            throw new ReviewException(errorMap);
+        try {
+            return reviewMapper.editReview(editReviewReqDto.toEditReviewEntity(reviewId)) > 0;
+        }catch (Exception e) {
+            throw new ReviewException
+                    (errorMapper.errorMapper("리뷰 오류", "리뷰 수정 중 오류가 발생하였습니다."));
         }
-        return success;
     }
+
 
 
 
@@ -85,14 +96,14 @@ public class ReviewService {
     // D
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteReview(int reviewId) {
-        boolean success = reviewMapper.deleteReview(reviewId) > 0;
-        if(!success) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("리뷰 오류", "리뷰 삭제 중 오류가 발생하였습니다.");
-            throw new ReviewException(errorMap);
+        try {
+            return reviewMapper.deleteReview(reviewId) > 0;
+        }catch (Exception e) {
+            throw new ReviewException
+                    (errorMapper.errorMapper("리뷰 오류", "리뷰 삭제 중 오류가 발생하였습니다."));
         }
-        return success;
     }
+
 
 
 

@@ -28,13 +28,6 @@ public class PrincipalUserDetailsService extends DefaultOAuth2UserService {
                 nameAttributeKey = "id";
                 attributes.put("provider", registrationId);
                 break;
-//            case "google":
-//                attributes = new HashMap<>();
-//                nameAttributeKey = "sub";
-//                attributes.putAll(oAuth2User.getAttributes());
-//                System.out.println("google attributes 넣을 때 :" + attributes);
-//                attributes.put("provider", registrationId);
-//                break;
             case "kakao":
                 attributes = new HashMap<>();
                 attributes.putAll(oAuth2User.getAttributes());
