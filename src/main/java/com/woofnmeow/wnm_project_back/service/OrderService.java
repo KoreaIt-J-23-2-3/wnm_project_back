@@ -8,6 +8,7 @@ import com.woofnmeow.wnm_project_back.exception.OrderException;
 import com.woofnmeow.wnm_project_back.repository.CartMapper;
 import com.woofnmeow.wnm_project_back.repository.OrderMapper;
 import com.woofnmeow.wnm_project_back.security.PrincipalUser;
+import com.woofnmeow.wnm_project_back.utils.utilClass.ErrorMapper;
 import com.woofnmeow.wnm_project_back.vo.DeleteOrderCartVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderMapper orderMapper;
     private final CartMapper cartMapper;
+    private final ErrorMapper errorMapper;
 
 
 
@@ -38,7 +40,6 @@ public class OrderService {
             addOrderReqDto.getOrderProductData().forEach(productData -> {
                 orderMapper.insertProductsToOrder(productData.toProductDtlMap(order.getOrderId()));
             });
-
             if(addOrderReqDto.getIsCart()) {
                 cartMapper.deleteProductOfCartWhenIsCart(DeleteOrderCartVo.builder()
                         .userId(addOrderReqDto.getUserId())
@@ -47,11 +48,11 @@ public class OrderService {
                                 .collect(Collectors.toList()))
                         .build());
             }
+            return true;
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("주문 오류", "주문 중 오류가 발생하였습니다.");
+            throw new OrderException
+                    (errorMapper.errorMapper("주문 오류", "주문 중 오류가 발생하였습니다."));
         }
-        return true;
     }
 
 
@@ -61,37 +62,49 @@ public class OrderService {
 
     // R
     public List<GetUserOrdersRespDto> getOrdersForAdmin(SearchOrderReqDto searchOrderReqDto) {
-        List<GetUserOrdersRespDto> result = new ArrayList<>();
         try {
-            result = orderMapper.selectOrdersByUserId(searchOrderReqDto.toVo(0)).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
+            return orderMapper.selectOrdersByUserId(searchOrderReqDto.toVo(0))
+                    .stream()
+                    .map(Order::toGetUserOrdersRespDto)
+                    .collect(Collectors.toList());
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("주문 오류", "주문 조회 중 오류가 발생하였습니다.");
-            throw new OrderException(errorMap);
+            throw new OrderException
+                    (errorMapper.errorMapper("주문 오류", "주문 조회 중 오류가 발생하였습니다."));
         }
-        return result;
     }
 
 
     public List<GetUserOrdersRespDto> getOrdersByUserId(SearchOrderReqDto searchOrderReqDto) {
-        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<GetUserOrdersRespDto> result = new ArrayList<>();
         try {
-            result = orderMapper.selectOrdersByUserId(searchOrderReqDto.toVo(principalUser.getUser().getUserId())).stream().map(Order::toGetUserOrdersRespDto).collect(Collectors.toList());
+            PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return orderMapper.selectOrdersByUserId(searchOrderReqDto.toVo(principalUser.getUser().getUserId()))
+                    .stream()
+                    .map(Order::toGetUserOrdersRespDto)
+                    .collect(Collectors.toList());
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("주문 오류", "주문 조회 중 오류가 발생하였습니다.");
-            throw new OrderException(errorMap);
+            throw new OrderException
+                    (errorMapper.errorMapper("주문 오류", "주문 조회 중 오류가 발생하였습니다."));
         }
-        return result;
     }
+
 
     public Order getOrder(int orderId) {
-        return orderMapper.selectOrder(orderId);
+        try {
+            return orderMapper.selectOrder(orderId);
+        }catch (Exception e) {
+            throw new OrderException
+                    (errorMapper.errorMapper("주문 오류", "배송 조회 중 오류가 발생하였습니다."));
+        }
     }
 
+
     public int getOrderCount() {
-        return orderMapper.getOrderCount();
+        try {
+            return orderMapper.getOrderCount();
+        }catch (Exception e) {
+            throw new OrderException
+                    (errorMapper.errorMapper("주문 오류", "배송 조회 중 오류가 발생하였습니다."));
+        }
     }
 
 
@@ -101,18 +114,15 @@ public class OrderService {
     // U
     @Transactional(rollbackFor = Exception.class)
     public boolean updateOrderStatus(int orderId, int orderStatus) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("orderId", orderId);
-        map.put("orderStatus", orderStatus);
-        boolean success = true;
         try {
-            success = orderMapper.updateOrderStatus(map) > 0;
+            Map<String, Object> map = new HashMap<>();
+            map.put("orderId", orderId);
+            map.put("orderStatus", orderStatus);
+            return orderMapper.updateOrderStatus(map) > 0;
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("주문 오류", "배송 상태 수정 중 오류가 발생하였습니다.");
-            throw new OrderException(errorMap);
+            throw new OrderException
+                    (errorMapper.errorMapper("주문 오류", "배송 상태 수정 중 오류가 발생하였습니다."));
         }
-        return success;
     }
 
 
@@ -122,14 +132,14 @@ public class OrderService {
     // D
     @Transactional(rollbackFor = Exception.class)
     public Boolean removeOrder(int orderId) {
-        boolean success = orderMapper.deleteOrder(orderId) > 0;
-        if(!success) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("주문 오류", "주문 삭제 중 오류가 발생하였습니다.");
-            throw new OrderException(errorMap);
+        try {
+            return orderMapper.deleteOrder(orderId) > 0;
+        }catch (Exception e) {
+            throw new OrderException
+                    (errorMapper.errorMapper("주문 오류", "주문 삭제 중 오류가 발생하였습니다."));
         }
-        return success;
     }
+
 
 
 

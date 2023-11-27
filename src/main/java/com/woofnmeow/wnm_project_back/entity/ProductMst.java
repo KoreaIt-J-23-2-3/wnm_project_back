@@ -31,9 +31,7 @@ public class ProductMst {
 
     public GetProductRespDto toProductRespDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        if(productDetailText != null) {
-            productDetailText.replaceAll("\n", "<br>");
-        }
+
         return GetProductRespDto.builder()
                 .productName(productName)
                 .productDetailText(productDetailText)
