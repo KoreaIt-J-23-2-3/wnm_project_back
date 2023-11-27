@@ -46,7 +46,7 @@ public class AnnouncementService {
         try {
             return announcementMapper.getAllAnnouncement()
                     .stream()
-                    .map(Announcement::toGetAllAnnouncementRespDto)
+                    .map(Announcement::toGetAnnouncementRespDto)
                     .collect(Collectors.toList());
         }catch (Exception e) {
             throw new AnnouncementExcption
