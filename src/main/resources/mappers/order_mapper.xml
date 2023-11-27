@@ -167,6 +167,54 @@
 
 
 
+    <select id="selectOrdersToPageNation" parameterType="hashmap" resultMap="ordersMap">
+        select
+            order_id,
+            user_id,
+            order_date,
+            order_update_date,
+            shipping_name,
+            shipping_phone,
+            shipping_address_number,
+            shipping_address_name,
+            shipping_address_detail_name,
+            order_status
+        from
+            order_tb
+        where
+                1 = 1
+        <choose>
+            <when test="searchOption.equals('받는사람')">
+                and shipping_name like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('전화번호')">
+                and shipping_phone like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('주소')">
+                and (shipping_address_name like concat("%", #{searchValue}, "%")
+                or shipping_address_detail_name like concat("%", #{searchValue}, "%"))
+            </when>
+            <when test="searchOption.equals('유저번호')">
+                and user_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('주문번호')">
+                and order_id = #{searchValue}
+            </when>
+            <otherwise>
+                and shipping_name like concat("%", #{searchValue}, "%")
+            </otherwise>
+        </choose>
+        order by
+        <choose>
+            <when test="sortOption.equals('일자올림차순')">
+                UNIX_TIMESTAMP(order_date) asc
+            </when>
+            <otherwise>
+                UNIX_TIMESTAMP(order_date) desc
+            </otherwise>
+        </choose>
+    </select>
+        
 
 
 
