@@ -42,16 +42,10 @@ public class ReviewService {
     // R
     public List<GetReviewByProductMstIdRespDto> getReviewsByProductMstId(int productMstId) {
         try {
-<<<<<<< HEAD
-            result = reviewMapper.selectReviewsByProductMstId(productMstId);
-            System.out.println("mapper이후" + result);
-
-=======
             return reviewMapper.selectReviewsByProductMstId(productMstId)
                     .stream()
                     .map(Review::toDetailPageReviewResponseDto)
                     .collect(Collectors.toList());
->>>>>>> 05b10b55ddaf3a516529d24f25474f462ddc32a5
         }catch (Exception e) {
             throw new ReviewException
                     (errorMapper.errorMapper("리뷰 오류", "리뷰를 불러오는 중 오류가 발생하였습니다."));
