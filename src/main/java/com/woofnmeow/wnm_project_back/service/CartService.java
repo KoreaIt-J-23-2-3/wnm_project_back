@@ -5,6 +5,7 @@ import com.woofnmeow.wnm_project_back.dto.response.GetUserCartProductsRespDto;
 import com.woofnmeow.wnm_project_back.entity.Cart;
 import com.woofnmeow.wnm_project_back.exception.CartException;
 import com.woofnmeow.wnm_project_back.repository.CartMapper;
+import com.woofnmeow.wnm_project_back.utils.utilClass.ErrorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,22 +21,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CartService {
     private final CartMapper cartMapper;
+    private final ErrorMapper errorMapper;
 
 
     // C
     @Transactional(rollbackFor = Exception.class)
     public Boolean addProductToCart(int userId, List<AddCartReqDto> addCartReqDto) {
-        boolean success = addCartReqDto.stream()
-                .map(dto -> dto.toCartProductsEntity(userId))
-                .map(cart -> cartMapper.insertCart(cart))
-                .allMatch(successCount -> successCount == 1);
-        if(!success) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("장바구니 오류", "상품을 장바구니에 담는 중 오류가 발생하였습니다.");
-            throw new CartException(errorMap);
+        try {
+            return addCartReqDto.stream()
+                    .map(dto -> dto.toCartProductsEntity(userId))
+                    .map(cart -> cartMapper.insertCart(cart))
+                    .allMatch(successCount -> successCount == 1);
+        }catch (Exception e) {
+            throw new CartException
+                    (errorMapper.errorMapper("장바구니 오류", "상품을 장바구니에 담는 중 오류가 발생하였습니다."));
         }
-        return success;
     }
+
 
 
 
@@ -43,14 +45,15 @@ public class CartService {
 
     // R
     public List<GetUserCartProductsRespDto> getCartByUserId(int userId) {
-        List<GetUserCartProductsRespDto> result = new ArrayList<>();
         try {
-            result = cartMapper.selectCartByUserId(userId).stream().map(Cart::toGetUserCartProductsRespDto).collect(Collectors.toList());
+            return cartMapper.selectCartByUserId(userId)
+                    .stream()
+                    .map(Cart::toGetUserCartProductsRespDto)
+                    .collect(Collectors.toList());
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("장바구니 오류", "장바구니를 불러오는 중 오류가 발생하였습니다.");
+            throw new CartException
+                    (errorMapper.errorMapper("장바구니 오류", "장바구니를 불러오는 중 오류가 발생하였습니다."));
         }
-        return result;
     }
 
 
@@ -68,14 +71,15 @@ public class CartService {
     // D
     @Transactional(rollbackFor = Exception.class)
     public Boolean removeProductOfCart(int cartId) {
-        boolean success = cartMapper.deleteProductOfCart(cartId) > 0;
-        if(!success) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("장바구니 오류", "장바구니에서 상품을 삭제하는 중 오류가 발생하였습니다.");
-            throw new CartException(errorMap);
+        try {
+            return cartMapper.deleteProductOfCart(cartId) > 0;
+        }catch (Exception e) {
+            throw new CartException
+                    (errorMapper.errorMapper("장바구니 오류", "장바구니에서 상품을 삭제하는 중 오류가 발생하였습니다."));
         }
-        return success;
     }
+
+
 
 
 

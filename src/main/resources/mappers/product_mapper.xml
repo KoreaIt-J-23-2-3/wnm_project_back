@@ -8,6 +8,7 @@
 
     <!--  resultMap  -->
 
+        <!--  entity  -->
     <resultMap id="productMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
         <id property="productMstId" column="product_mst_id" />
         <result property="productName" column="product_name" />
@@ -19,9 +20,10 @@
         <result property="createDate" column="create_date" />
         <association property="petType" resultMap="petTypeMap"/>
         <association property="category" resultMap="categoryMap"/>
-        <collection property="productDtlList" javaType="list" resultMap="productDtlForMstMap"/>
+        <collection property="productDtlList" javaType="list" resultMap="productDtlMap"/>
     </resultMap>
-    <resultMap id="productDtlForMstMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
+
+    <resultMap id="productDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
         <id property="productDtlId" column="product_dtl_id" />
         <result property="productMstId" column="product_mst_id" />
         <result property="price" column="price" />
@@ -29,58 +31,6 @@
         <result property="actualStock" column="actual_stock" />
         <result property="tempStock" column="temp_stock" />
         <association property="size" resultMap="sizeMap" />
-    </resultMap>
-
-
-
-
-
-
-
-
-    <resultMap id="productsWithAllSizesMap" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
-        <id property="productMstId" column="product_mst_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="productDetailText" column="product_detail_text"/>
-        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
-        <result property="productDetailUrl" column="product_detail_url"/>
-        <result property="petTypeId" column="pet_type_id"/>
-        <result property="petTypeName" column="pet_type_name"/>
-        <result property="productCategoryId" column="product_category_id"/>
-        <result property="productCategoryName" column="product_category_name"/>
-        <result property="createDate" column="create_date"/>
-        <result property="sizeAndPrice" column="sizes_and_prices"/>
-    </resultMap>
-
-
-
-
-
-
-    <resultMap id="productsWithMinPriceAndMaxPriceMap" type="com.woofnmeow.wnm_project_back.vo.GetAllProductsVo">
-        <id property="productMstId" column="product_mst_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
-        <result property="petTypeId" column="id"/>
-        <result property="productCategoryId" column="product_category_id"/>
-        <result property="sizeAndPrice" column="sizes_and_prices"/>
-        <result property="tempStock" column="temp_stock"/>
-    </resultMap>
-
-
-
-
-
-
-    <resultMap id="productMstListMap" type="com.woofnmeow.wnm_project_back.entity.ProductMst">
-        <id property="productMstId" column="product_mst_id"/>
-        <result property="productName" column="product_name"/>
-        <result property="petTypeId" column="pet_type_id"/>
-        <result property="productCategoryId" column="product_category_id"/>
-        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
-        <result property="createDate" column="create_date"/>
-        <association property="petType" resultMap="petTypeMap"/>
-        <association property="category" resultMap="categoryMap"/>
     </resultMap>
 
     <resultMap id="incomingMap" type="com.woofnmeow.wnm_project_back.entity.Incoming" >
@@ -97,11 +47,6 @@
         <result property="outgoingDate" column="outgoing_date"/>
     </resultMap>
 
-
-
-
-
-
     <resultMap id="sizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
         <id property="sizeId" column="size_id"/>
         <result property="sizeName" column="size_name"/>
@@ -115,6 +60,37 @@
     <resultMap id="categoryMap" type="com.woofnmeow.wnm_project_back.entity.Category">
         <id property="productCategoryId" column="product_category_id"/>
         <result property="productCategoryName" column="product_category_name"/>
+    </resultMap>
+
+
+
+
+
+
+
+        <!--    vo    -->
+    <resultMap id="productsWithAllSizesMap" type="com.woofnmeow.wnm_project_back.vo.GetProductVo">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productDetailText" column="product_detail_text"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="productDetailUrl" column="product_detail_url"/>
+        <result property="petTypeId" column="pet_type_id"/>
+        <result property="petTypeName" column="pet_type_name"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="productCategoryName" column="product_category_name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="sizeAndPrice" column="sizes_and_prices"/>
+    </resultMap>
+
+    <resultMap id="productsWithMinPriceAndMaxPriceMap" type="com.woofnmeow.wnm_project_back.vo.GetAllProductsVo">
+        <id property="productMstId" column="product_mst_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productThumbnailUrl" column="product_thumbnail_url"/>
+        <result property="petTypeId" column="id"/>
+        <result property="productCategoryId" column="product_category_id"/>
+        <result property="sizeAndPrice" column="sizes_and_prices"/>
+        <result property="tempStock" column="temp_stock"/>
     </resultMap>
 
     <!--  resultMap  -->

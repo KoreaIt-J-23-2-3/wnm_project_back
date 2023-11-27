@@ -31,9 +31,7 @@ public class ProductMst {
 
     public GetProductRespDto toProductRespDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        if(productDetailText != null) {
-            productDetailText.replaceAll("\n", "<br>");
-        }
+
         return GetProductRespDto.builder()
                 .productName(productName)
                 .productDetailText(productDetailText)
@@ -45,16 +43,6 @@ public class ProductMst {
                 .productCategoryName(category.getProductCategoryName())
                 .createDate(createDate.format(formatter))
                 .productDtlList(productDtlList)
-                .build();
-    }
-
-    public GetMasterProductRespDto toMasterProductRespDto() {
-        return GetMasterProductRespDto.builder()
-                .productMstId(productMstId)
-                .productName(productName)
-                .petTypeName(petType.getPetTypeName())
-                .productCategoryName(category.getProductCategoryName())
-                .productThumbnailUrl(productThumbnailUrl)
                 .build();
     }
 

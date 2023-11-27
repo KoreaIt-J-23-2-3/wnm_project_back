@@ -20,4 +20,18 @@ public class EditUserReqDto {
     @NotBlank
     private String defaultAddressDetailName;
     private String profileUrl;
+
+
+    public User toEntity(int userId) {
+        return User.builder()
+                .userId(userId)
+                .nickname(nickname)
+                .phoneNumber(phoneNumber)
+                .defaultAddressNumber(defaultAddressNumber)
+                .defaultAddressName(defaultAddressName)
+                .defaultAddressDetailName(defaultAddressDetailName)
+                .profileUrl(profileUrl)
+                .build();
+    }
+
 }
