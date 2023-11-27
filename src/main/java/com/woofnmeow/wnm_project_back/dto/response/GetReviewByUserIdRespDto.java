@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class GetReviewByUserIdRespDto {
+    private int reviewId;
     private String reviewContent;
     private String reviewImgUrl;
     private String reviewDate;

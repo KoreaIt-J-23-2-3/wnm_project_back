@@ -42,6 +42,7 @@ public class ReviewService {
         List<Review> result = new ArrayList<>();
         try {
             result = reviewMapper.selectReviewsByProductMstId(productMstId);
+            System.out.println("mapper이후" + result);
 
         }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
