@@ -34,34 +34,43 @@ public class AnnouncementService {
         }
     }
 
+
+
+
+
+
+
+
+    // R
     public List<GetAnnouncementRespDto> getAllAnnouncement() {
-        List<Announcement> list = announcementMapper.getAllAnnouncement();
-        List<GetAnnouncementRespDto> respList = new ArrayList<>();
         try {
-            list.forEach(ann -> {
-                respList.add(ann.toGetAnnouncementRespDto());
-            });
+            return announcementMapper.getAllAnnouncement()
+                    .stream()
+                    .map(Announcement::toGetAllAnnouncementRespDto)
+                    .collect(Collectors.toList());
         }catch (Exception e) {
             throw new AnnouncementExcption
                     (errorMapper.errorMapper("공지사항", "공지사항 조회 중 오류가 발생하였습니다."));
         }
     }
+
+
+    
     public int getAnnouncementCount() {
-        int count = 0;
         try {
-            count = announcementMapper.getAnnouncementCount();
+            return announcementMapper.getAnnouncementCount();
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("공지사항", "공지사항 갯수 조회 중 오류가 발생하였습니다.");
-            throw new AnnouncementExcption(errorMap);
+            throw new AnnouncementExcption
+                    (errorMapper.errorMapper("공지사항", "공지사항 갯수 조회 중 오류가 발생하였습니다."));
         }
-        return count;
     }
 
+
+
+    
     public GetAnnouncementRespDto getAnnouncementById(int announcementId) {
-            GetAnnouncementRespDto RespDto = null;
         try {
-            RespDto = announcementMapper.getAnnouncementById(announcementId).toGetAnnouncementRespDto();
+            return announcementMapper.getAnnouncementById(announcementId).toGetAnnouncementRespDto();
         }catch (Exception e) {
             throw new AnnouncementExcption
                     (errorMapper.errorMapper("공지사항", "공지사항 조회 중 오류가 발생하였습니다."));
