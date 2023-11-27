@@ -23,6 +23,15 @@
             announcement_tb
         order by
             is_pinned desc
+        limit
+        0, 10;
+    </select>
+
+    <select id="getAnnouncementCount" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            announcement_tb
     </select>
 
     <select id="getAnnouncementById"
@@ -39,6 +48,7 @@
         where
             announcement_id = #{announcementId}
     </select>
+
 
     <update id="editAnnouncement" parameterType="com.woofnmeow.wnm_project_back.entity.Announcement">
         update

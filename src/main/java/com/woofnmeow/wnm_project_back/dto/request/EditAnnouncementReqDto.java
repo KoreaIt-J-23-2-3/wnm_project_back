@@ -9,19 +9,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class EditAnnouncementReqDto {
-    private int announcement_id;
+    private int announcementId;
     private String title;
     private String content;
     private int isPinned;
-    private String createDate;
 
     public Announcement toEntity(int announcementId) {
         return Announcement.builder()
-                .announcement_id(announcementId)
+                .announcementId(announcementId)
                 .title(title)
                 .content(content)
                 .isPinned(isPinned)
-                .createDate(createDate)
                 .build();
     }
 }

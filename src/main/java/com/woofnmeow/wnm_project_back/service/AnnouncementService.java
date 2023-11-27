@@ -2,8 +2,7 @@ package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.request.AddAnnouncementReqDto;
 import com.woofnmeow.wnm_project_back.dto.request.EditAnnouncementReqDto;
-import com.woofnmeow.wnm_project_back.dto.response.GetAllAnnouncementRespDto;
-import com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementByIdRespDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetAnnouncementRespDto;
 import com.woofnmeow.wnm_project_back.entity.Announcement;
 import com.woofnmeow.wnm_project_back.exception.AnnouncementExcption;
 import com.woofnmeow.wnm_project_back.repository.AnnouncementMapper;
@@ -31,12 +30,12 @@ public class AnnouncementService {
       return success;
     }
 
-    public List<GetAllAnnouncementRespDto> getAllAnnouncement() {
+    public List<GetAnnouncementRespDto> getAllAnnouncement() {
         List<Announcement> list = announcementMapper.getAllAnnouncement();
-        List<GetAllAnnouncementRespDto> respList = new ArrayList<>();
+        List<GetAnnouncementRespDto> respList = new ArrayList<>();
         try {
             list.forEach(ann -> {
-                respList.add(ann.toGetAllAnnouncementRespDto());
+                respList.add(ann.toGetAnnouncementRespDto());
             });
         }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
@@ -46,10 +45,22 @@ public class AnnouncementService {
         return respList;
     }
 
-    public GetAnnouncementByIdRespDto getAnnouncementById(int announcementId) {
-            GetAnnouncementByIdRespDto RespDto = null;
+    public int getAnnouncementCount() {
+        int count = 0;
         try {
-            RespDto = announcementMapper.getAnnouncementById(announcementId).toAnnouncementByIdRespDto();
+            count = announcementMapper.getAnnouncementCount();
+        }catch (Exception e) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("공지사항", "공지사항 갯수 조회 중 오류가 발생하였습니다.");
+            throw new AnnouncementExcption(errorMap);
+        }
+        return count;
+    }
+
+    public GetAnnouncementRespDto getAnnouncementById(int announcementId) {
+            GetAnnouncementRespDto RespDto = null;
+        try {
+            RespDto = announcementMapper.getAnnouncementById(announcementId).toGetAnnouncementRespDto();
         }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("공지사항", "공지사항 조회 중 오류가 발생하였습니다.");

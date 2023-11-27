@@ -10,6 +10,7 @@ import java.util.List;
 public interface AnnouncementMapper {
     public int addAnnouncement(AddAnnouncementReqDto addAnnouncementReqDto);
     public List<Announcement> getAllAnnouncement();
+    public int getAnnouncementCount();
     public Announcement getAnnouncementById(int announcementId);
     public int editAnnouncement(int announcementId, Announcement announcement);
     public int deleteAnnouncement(int announcementId);

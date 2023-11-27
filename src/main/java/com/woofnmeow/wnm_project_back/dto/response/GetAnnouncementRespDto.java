@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Builder
 @Data
-public class GetAllAnnouncementRespDto {
-    private int announcement_id;
+public class GetAnnouncementRespDto {
+    private int announcementId;
     private String title;
     private String content;
     private int isPinned;

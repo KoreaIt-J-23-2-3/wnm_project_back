@@ -1,5 +1,6 @@
 package com.woofnmeow.wnm_project_back.entity;
 
+import com.woofnmeow.wnm_project_back.dto.response.GetUserOrdersForAdminResp;
 import com.woofnmeow.wnm_project_back.dto.response.GetUserOrdersRespDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,22 @@ public class Order {
                 .shippingAddressDetailName(shippingAddressDetailName)
                 .orderStatus(orderStatus)
                 .getUserOrderProductsRespDtos(orderProducts.stream().map(OrderProducts::toGetOrderProductsRespDto).collect(Collectors.toList()))
+                .build();
+    }
+
+    public GetUserOrdersForAdminResp toGetUserOrdersForAdminRespDto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return GetUserOrdersForAdminResp.builder()
+                .orderId(orderId)
+                .userId(userId)
+                .orderDate(orderDate.format(formatter))
+                .orderUpdateDate(orderUpdateDate.format(formatter))
+                .shippingName(shippingName)
+                .shippingPhone(shippingPhone)
+                .shippingAddressNumber(shippingAddressNumber)
+                .shippingAddressName(shippingAddressName)
+                .shippingAddressDetailName(shippingAddressDetailName)
+                .orderStatus(orderStatus)
                 .build();
     }
 }
