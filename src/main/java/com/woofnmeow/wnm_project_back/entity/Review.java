@@ -39,6 +39,7 @@ public class Review {
     public GetReviewByUserIdRespDto toMypageReviewResponseDto() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return GetReviewByUserIdRespDto.builder()
+                .reviewId(reviewId)
                 .sizeName(orderProducts.getProductDtl().getSize().getSizeName())
                 .productName(orderProducts.getProductDtl().getProductMst().getProductName())
                 .reviewContent(reviewContent)

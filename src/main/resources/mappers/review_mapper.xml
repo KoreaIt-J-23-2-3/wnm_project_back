@@ -133,6 +133,7 @@
 
     <select id="selectReviewsByUserId" resultMap="reviewMap">
         select
+            rt.review_id,
             st.size_name,
             pmt.product_name,
             rt.review_content,

@@ -29,11 +29,13 @@ public class ReviewController {
     // R
     @GetMapping("/api/reviews/product/{productMstId}")
     public ResponseEntity<?> getProductReviews(@PathVariable int productMstId) {
+        System.out.println(productMstId);
         return ResponseEntity.ok().body(reviewService.getReviewsByProductMstId(productMstId));
     }
 
     @GetMapping("/api/reviews/user/{userId}")
     public ResponseEntity<?> getUserReviews(@PathVariable int userId) {
+        System.out.println(userId);
         return ResponseEntity.ok().body(reviewService.getReviewsByUserId(userId));
     }
 

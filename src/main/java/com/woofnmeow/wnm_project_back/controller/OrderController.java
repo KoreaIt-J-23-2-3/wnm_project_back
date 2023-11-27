@@ -31,6 +31,7 @@ public class OrderController {
 
     @GetMapping("/api/admin/orders")
     public ResponseEntity<?> getOrdersForAdmin(SearchOrderReqDto searchOrderReqDto) {
+        System.out.println(searchOrderReqDto);
         return ResponseEntity.ok().body(orderService.getOrdersForAdmin(searchOrderReqDto));
     }
     @GetMapping("/api/admin/order/count")
