@@ -94,7 +94,6 @@ public class ProductService {
 
     // R
     public List<GetIncomingAndOutgoingRespDto> getIncomingByProductDtlId(int productDtlId) {
-        List<GetIncomingAndOutgoingRespDto> result = new ArrayList<>();
         try {
             return productMapper.selectIncomingByDtlId(productDtlId)
                     .stream()
@@ -173,6 +172,7 @@ public class ProductService {
 
     public List<SearchMasterProductRespDto> searchProductsWithAllSizes(SearchMasterProductReqDto searchMasterProductReqDto) {
         try {
+            System.out.println(searchMasterProductReqDto);
             List<GetProductVo> getProductVo = productMapper.searchProductsWithAllSizes(searchMasterProductReqDto.toVo());
             Map<String, Object> map = new HashMap<>();
             List<SearchMasterProductRespDto> reqList= new ArrayList<>();
@@ -188,6 +188,7 @@ public class ProductService {
                 }
                 reqList.add(vo.toRespDto(map));
             });
+            System.out.println(reqList);
             return reqList;
         }catch (Exception e) {
             throw new ProductException
@@ -201,19 +202,6 @@ public class ProductService {
 
     // U
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateIncomingQuantity(int incomingHistoryId, int count) {
-        try {
-            Map<String, Object> map = new HashMap<>();
-            map.put("incomingHistoryId", incomingHistoryId);
-            map.put("count", count);
-            return productMapper.updateIncomingQuantity(map) > 0;
-        }catch (Exception e) {
-            throw new ProductException
-                    (errorMapper.errorMapper("입고 오류", "입고 정보 갱신 중 오류가 발생하였습니다."));
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class)
     public boolean editProduct(int productMstId, EditProductReqDto editProductReqDto) {
         try {
             Map<String, Object> mstReqMap = new HashMap<>();
@@ -224,7 +212,7 @@ public class ProductService {
             mstReqMap.put("productDetailUrl", editProductReqDto.getProductDetailUrl());
             productMapper.updateProductMst(mstReqMap);
 
-            // 고치고 싶다
+
             if(editProductReqDto.getNo().equals("")) {
                 Map<String, Integer> dtlReqMap = new HashMap<>();
                 dtlReqMap.put("2", Integer.parseInt(editProductReqDto.getXS()));

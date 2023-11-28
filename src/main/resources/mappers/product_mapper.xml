@@ -109,40 +109,31 @@
 
     <insert id="addProductMaster" parameterType="com.woofnmeow.wnm_project_back.entity.ProductMst" useGeneratedKeys="true" keyProperty="productMstId">
         insert into
-        product_mst_tb
+            product_mst_tb
         values(0, #{productName}, #{petTypeId}, #{productCategoryId}, #{productDetailText}, #{productThumbnailUrl}, #{productDetailUrl}, now())
     </insert>
 
 
 
-
-
-
     <insert id="addProductDetail" parameterType="hashmap">
         insert into
-        product_dtl_tb
+            product_dtl_tb
         values(0, #{productMstId}, #{price}, #{sizeId})
     </insert>
 
 
 
-
-
-
     <insert id="addOutgoingQuantity" parameterType="hashmap">
         insert into
-        outgoing_history_tb
+            outgoing_history_tb
         values(0, #{productDtlId}, #{count}, now())
     </insert>
 
 
 
-
-
-
     <insert id="addIncomingQuantity" parameterType="hashmap">
         insert into
-        incoming_history_tb
+            incoming_history_tb
         values(0, #{productDtlId}, #{count}, now())
     </insert>
 
@@ -216,7 +207,9 @@
         1 = 1
         <choose>
             <when test="searchOption.equals('number')">
-                and pmt.product_mst_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and pmt.product_mst_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('name')">
                 and pmt.product_name like concat("%", #{searchValue}, "%")
@@ -249,7 +242,6 @@
         </choose>
         limit
         #{pageIndex}, #{limit}
-
     </select>
 
 
@@ -459,20 +451,6 @@
 
     <!--  update  -->
 
-    <update id="updateIncomingQuantity" parameterType="hashmap">
-        update
-        incoming_history_tb
-        set
-        incoming_count = #{count}
-        where
-        incoming_history_id = #{incomingHistoryId}
-    </update>
-
-
-
-
-
-
     <update id="updateProductMst" parameterType="hashmap">
         update
             product_mst_tb
@@ -484,9 +462,6 @@
         where
             product_mst_id = #{productMstId}
     </update>
-
-
-
 
 
 
@@ -517,19 +492,6 @@
 
 
     <!--  delete  -->
-
-    <delete id="deleteIncomingQuantity">
-        delete
-        from
-        incoming_history_tb
-        where
-        incoming_history_id = #{incomingHistoryId}
-    </delete>
-
-
-
-
-
 
     <delete id="deleteProduct">
         delete

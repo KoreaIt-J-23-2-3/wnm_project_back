@@ -2,6 +2,7 @@ package com.woofnmeow.wnm_project_back.service;
 
 import com.woofnmeow.wnm_project_back.dto.request.AddOrderReqDto;
 import com.woofnmeow.wnm_project_back.dto.request.SearchOrderReqDto;
+import com.woofnmeow.wnm_project_back.dto.response.GetOrderDetailRespDto;
 import com.woofnmeow.wnm_project_back.dto.response.GetUserOrdersRespDto;
 import com.woofnmeow.wnm_project_back.entity.Order;
 import com.woofnmeow.wnm_project_back.exception.OrderException;
@@ -95,15 +96,14 @@ public class OrderService {
     }
 
 
-    public Order getOrder(int orderId) {
+    public GetOrderDetailRespDto getOrder(int orderId) {
         try {
-            return orderMapper.selectOrder(orderId);
+            return orderMapper.selectOrder(orderId).toGetOrderDetailRespDto();
         }catch (Exception e) {
             throw new OrderException
                     (errorMapper.errorMapper("주문 오류", "배송 조회 중 오류가 발생하였습니다."));
         }
     }
-
 
 
 

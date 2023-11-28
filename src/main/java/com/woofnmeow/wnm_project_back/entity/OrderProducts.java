@@ -18,6 +18,7 @@ public class OrderProducts {
 
     private ProductDtl productDtl;
     private Order order;
+    private Review review;
 
     public GetUserOrderProductsRespDto toGetOrderProductsRespDto() {
         return GetUserOrderProductsRespDto.builder()

@@ -31,7 +31,6 @@ public interface ProductMapper {
     public Integer selectCountOfSearchedProducts(SearchMasterProductVo searchMasterProductVo);
 
     // U
-    public Integer updateIncomingQuantity(Map<String, Object> map);
     public Integer updateProductMst(Map<String, Object> map);
     public Integer updateProductDtl(int productMstId, int sizeId, int price);
 

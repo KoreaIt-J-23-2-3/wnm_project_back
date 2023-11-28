@@ -26,6 +26,7 @@
         <result property="productDtlId" column="product_dtl_id"/>
         <result property="count" column="count"/>
         <association property="productDtl" resultMap="productDtlMap"/>
+        <association property="review" resultMap="reviewMap" />
     </resultMap>
 
     <resultMap id="productDtlMap" type="com.woofnmeow.wnm_project_back.entity.ProductDtl">
@@ -64,6 +65,14 @@
     <resultMap id="sizeMap" type="com.woofnmeow.wnm_project_back.entity.Size">
         <id property="sizeId" column="size_id"/>
         <result property="sizeName" column="size_name"/>
+    </resultMap>
+
+    <resultMap id="reviewMap" type="com.woofnmeow.wnm_project_back.entity.Review">
+        <id property="reviewId" column="review_id"/>
+        <result property="orderProductsId" column="order_products_id" />
+        <result property="reviewContent" column="review_content" />
+        <result property="reviewImgUrl" column="review_img_url" />
+        <result property="reviewDate" column="reivew_date" />
     </resultMap>
 
     <!--  resultMap  -->
@@ -193,7 +202,7 @@
         from
             order_tb
         where
-        1 = 1
+            1 = 1
         <choose>
             <when test="searchOption.equals('받는사람')">
                 and shipping_name like concat("%", #{searchValue}, "%")
@@ -259,6 +268,9 @@
                 and shipping_name like concat("%", #{searchValue}, "%")
             </when>
             <when test="searchOption.equals('전화번호')">
+                <if test="!searchValue.equals('')">
+                    and ot.shipping_phone like concat("%", #{searchValue}, "%")
+                </if>
                 and shipping_phone like concat("%", #{searchValue}, "%")
             </when>
             <when test="searchOption.equals('주소')">
@@ -308,21 +320,23 @@
             st.size_name,
             pmt.product_mst_id,
             pmt.product_name,
-            pmt.product_thumbnail_url
+            pmt.product_thumbnail_url,
+            rt.review_id
         from
             order_tb ot
             left outer join order_products_tb opt on(opt.order_id = ot.order_id)
             left outer join product_dtl_tb pdt on(pdt.product_dtl_id = opt.product_dtl_id)
             left outer join size_tb st on(st.size_id = pdt.size_id)
             left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
+            left outer join review_tb rt on(rt.order_products_id = opt.order_products_id)
         where
             ot.order_id = #{orderId}
     </select>
 
-
-
-
     <!--  select  -->
+
+
+
 
 
 
@@ -336,6 +350,8 @@
     </update>
 
     <!--  update  -->
+
+
 
 
 
@@ -357,3 +373,20 @@
 
 
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
