@@ -140,17 +140,23 @@
                 and ot.shipping_name like concat("%", #{searchValue}, "%")
             </when>
             <when test="searchOption.equals('전화번호')">
-                and ot.shipping_phone like concat("%", #{searchValue}, "%")
+                <if test="!searchValue.equals('')">
+                    and ot.shipping_phone like concat("%", #{searchValue}, "%")
+                </if>
             </when>
             <when test="searchOption.equals('주소')">
                 and (ot.shipping_address_name like concat("%", #{searchValue}, "%")
                 or ot.shipping_address_detail_name like concat("%", #{searchValue}, "%"))
             </when>
             <when test="searchOption.equals('유저번호')">
-                and ot.user_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and ot.user_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('주문번호')">
-                and ot.order_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and ot.order_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('배송상태')">
                 <choose>
@@ -208,17 +214,23 @@
                 and shipping_name like concat("%", #{searchValue}, "%")
             </when>
             <when test="searchOption.equals('전화번호')">
-                and shipping_phone like concat("%", #{searchValue}, "%")
+                <if test="!searchValue.equals('')">
+                    and shipping_phone like concat("%", #{searchValue}, "%")
+                </if>
             </when>
             <when test="searchOption.equals('주소')">
                 and (shipping_address_name like concat("%", #{searchValue}, "%")
                 or shipping_address_detail_name like concat("%", #{searchValue}, "%"))
             </when>
             <when test="searchOption.equals('유저번호')">
-                and user_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and user_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('주문번호')">
-                and order_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and order_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('배송상태')">
                 <choose>
@@ -278,10 +290,14 @@
                 or shipping_address_detail_name like concat("%", #{searchValue}, "%"))
             </when>
             <when test="searchOption.equals('유저번호')">
-                and user_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and user_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('주문번호')">
-                and order_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and order_id = #{searchValue}
+                </if>
             </when>
             <otherwise>
                 and shipping_name like concat("%", #{searchValue}, "%")

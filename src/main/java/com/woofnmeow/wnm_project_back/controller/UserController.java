@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @GetMapping("/api/admin/user/count")
-    public ResponseEntity<?> getUserCount() {
-        return ResponseEntity.ok(userService.getUserCount());
+    public ResponseEntity<?> getUserCount(SearchUserReqDto searchUserReqDto) {
+        return ResponseEntity.ok(userService.getUserCount(searchUserReqDto));
     }
 
 

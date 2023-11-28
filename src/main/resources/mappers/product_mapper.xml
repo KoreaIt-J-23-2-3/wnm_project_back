@@ -204,7 +204,7 @@
             left outer join pet_type_tb ptt on(ptt.pet_type_id = pmt.pet_type_id)
             left outer join product_category_tb pct on(pct.product_category_id = pmt.product_category_id)
         where
-        1 = 1
+            1 = 1
         <choose>
             <when test="searchOption.equals('number')">
                 <if test="!searchValue.equals('')">
@@ -227,7 +227,7 @@
             and pct.product_category_name_eng = #{productCategoryName}
         </if>
         group by
-        pmt.product_mst_id
+            pmt.product_mst_id
         order by
         <choose>
             <when test="sortOption.equals('name')">
@@ -289,7 +289,9 @@
         1 = 1
         <choose>
             <when test="searchOption.equals('number')">
-                and pmt.product_mst_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and pmt.product_mst_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('name')">
                 and pmt.product_name like concat("%", #{searchValue}, "%")
@@ -348,7 +350,9 @@
             1 = 1
         <choose>
             <when test="searchOption.equals('number')">
-                and pmt.product_mst_id = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and pmt.product_mst_id = #{searchValue}
+                </if>
             </when>
             <when test="searchOption.equals('name')">
                 and pmt.product_name like concat("%", #{searchValue}, "%")
