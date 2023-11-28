@@ -31,12 +31,10 @@ public class OrderController {
 
     @GetMapping("/api/admin/orders")
     public ResponseEntity<?> getOrdersForAdmin(SearchOrderReqDto searchOrderReqDto) {
-        System.out.println(searchOrderReqDto);
         return ResponseEntity.ok().body(orderService.getOrdersForAdmin(searchOrderReqDto));
     }
     @GetMapping("/api/admin/order/count")
     public ResponseEntity<?> getOrderCount(SearchOrderReqDto searchOrderReqDto) {
-        System.out.println(searchOrderReqDto.getPageIndex());
         return ResponseEntity.ok().body(orderService.getOrderCount(searchOrderReqDto));
     }
 
@@ -44,6 +42,8 @@ public class OrderController {
     public ResponseEntity<?> getOrder(@PathVariable int orderId) {
         return ResponseEntity.ok().body(orderService.getOrder(orderId));
     }
+
+
 
 
 

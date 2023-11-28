@@ -75,11 +75,6 @@ public class ProductController {
 
 
     // U
-    @PutMapping("/api/admin/incoming/{incomingHistoryId}")
-    public ResponseEntity<?> updateIncomingQuantity(@PathVariable int incomingHistoryId, @RequestBody int count) {
-        return ResponseEntity.ok().body(productService.updateIncomingQuantity(incomingHistoryId, count));
-    }
-
     @PutMapping("/api/admin/product/{productMstId}")
     public ResponseEntity<?> editProduct(@PathVariable int productMstId, @RequestBody EditProductReqDto editProductReqDto) {
         return ResponseEntity.ok().body(productService.editProduct(productMstId, editProductReqDto));
