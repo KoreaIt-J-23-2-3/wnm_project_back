@@ -223,19 +223,19 @@
             <when test="searchOption.equals('배송상태')">
                 <choose>
                     <when test="searchValue.equals('배송준비')">
-                        and ot.order_status = 0
+                        and order_status = 0
                     </when>
                     <when test="searchValue.equals('배송중')">
-                        and ot.order_status = 1
+                        and order_status = 1
                     </when>
                     <when test="searchValue.equals('배송완료')">
-                        and ot.order_status = 2
+                        and order_status = 2
                     </when>
                     <when test="searchValue.equals('구매확정')">
-                        and ot.order_status = 3
+                        and order_status = 3
                     </when>
                     <otherwise>
-                        and ot.order_status = 0
+                        and order_status = 0
                     </otherwise>
                 </choose>
             </when>
