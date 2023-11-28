@@ -269,7 +269,7 @@
             </when>
             <when test="searchOption.equals('전화번호')">
                 <if test="!searchValue.equals('')">
-                    and ot.shipping_phone like concat("%", #{searchValue}, "%")
+                    and shipping_phone like concat("%", #{searchValue}, "%")
                 </if>
                 and shipping_phone like concat("%", #{searchValue}, "%")
             </when>
