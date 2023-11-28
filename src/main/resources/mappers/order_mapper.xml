@@ -125,14 +125,7 @@
             left outer join size_tb st on(st.size_id = pdt.size_id)
             left outer join product_mst_tb pmt on(pmt.product_mst_id = pdt.product_mst_id)
         where
-        <choose>
-            <when test="userId.equals(0)">
-                1 = 1
-            </when>
-            <otherwise>
-                ot.user_id = #{userId}
-            </otherwise>
-        </choose>
+            ot.user_id = #{userId}
         <choose>
             <when test="searchOption.equals('받는사람')">
                 and ot.shipping_name like concat("%", #{searchValue}, "%")
@@ -217,6 +210,25 @@
             </when>
             <when test="searchOption.equals('주문번호')">
                 and order_id = #{searchValue}
+            </when>
+            <when test="searchOption.equals('배송상태')">
+                <choose>
+                    <when test="searchValue.equals('배송준비')">
+                        and ot.order_status = 0
+                    </when>
+                    <when test="searchValue.equals('배송중')">
+                        and ot.order_status = 1
+                    </when>
+                    <when test="searchValue.equals('배송완료')">
+                        and ot.order_status = 2
+                    </when>
+                    <when test="searchValue.equals('구매확정')">
+                        and ot.order_status = 3
+                    </when>
+                    <otherwise>
+                        and ot.order_status = 0
+                    </otherwise>
+                </choose>
             </when>
             <otherwise>
                 and shipping_name like concat("%", #{searchValue}, "%")
