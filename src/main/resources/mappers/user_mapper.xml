@@ -121,10 +121,10 @@
         where
             1 = 1
         <choose>
-            <when test="searchOption.equals('이름')">
+            <when test="searchOption.equals('name')">
                 and name like concat("%", #{searchValue}, "%")
             </when>
-            <when test="searchOption.equals('휴대전화')">
+            <when test="searchOption.equals('number')">
                 and phone_number = #{searchValue}
             </when>
             <otherwise>
