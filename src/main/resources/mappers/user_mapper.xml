@@ -125,7 +125,9 @@
                 and name like concat("%", #{searchValue}, "%")
             </when>
             <when test="searchOption.equals('number')">
-                and phone_number = #{searchValue}
+                <if test="!searchValue.equals('')">
+                    and phone_number = #{searchValue}
+                </if>
             </when>
             <otherwise>
                 and (name like concat("%", #{searchValue}, "%")
@@ -136,11 +138,27 @@
             user_id asc
     </select>
 
-    <select id="getUserCount" resultType="java.lang.Integer">
+    <select id="getUserCount" resultType="java.lang.Integer" parameterType="hashmap">
         select
             count(*)
         from
             user_tb
+        where
+            1 = 1
+        <choose>
+            <when test="searchOption.equals('name')">
+                and name like concat("%", #{searchValue}, "%")
+            </when>
+            <when test="searchOption.equals('number')">
+                <if test="!searchValue.equals('')">
+                    and phone_number = #{searchValue}
+                </if>
+            </when>
+            <otherwise>
+                and (name like concat("%", #{searchValue}, "%")
+                or phone_number = #{searchValue})
+            </otherwise>
+        </choose>
     </select>
 
     <!--  select  -->

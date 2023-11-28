@@ -73,16 +73,17 @@ public class UserService {
         }
     }
 
-    public int getUserCount() {
-        int result = 0;
+    public int getUserCount(SearchUserReqDto searchUserReqDto) {
         try {
-            result = userMapper.getUserCount();
+            Map<String, Object> map = new HashMap<>();
+            map.put("searchValue", searchUserReqDto.getSearchValue());
+            map.put("searchOption", searchUserReqDto.getSearchOption());
+            return userMapper.getUserCount(map);
         }catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("사용자 수 조회 오류", "사용자 수를 조회하는 중 오류가 발생하였습니다.");
-            throw new UserException(errorMap);
+            System.out.println(e.fillInStackTrace().toString());
+            throw new UserException(errorMapper.errorMapper("사용자 수 조회 오류", "사용자 수를 조회하는 중 오류가 발생하였습니다."));
         }
-        return result;
+
     }
 
 

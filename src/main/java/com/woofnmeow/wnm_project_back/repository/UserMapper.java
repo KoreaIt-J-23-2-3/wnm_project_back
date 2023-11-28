@@ -6,6 +6,7 @@ import com.woofnmeow.wnm_project_back.vo.SearchOrderVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -16,7 +17,7 @@ public interface UserMapper {
     public User findUserByOauth2Id(String oauth2Id);
     public User findUserByUserId(int userId);
     public List<User> getUserList(SearchOrderVo searchOrderVo);
-    public int getUserCount();
+    public int getUserCount(Map<String, Object> map);
 
     // U
     public Integer editUser(User user);
